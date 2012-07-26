@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="notes.kbtic">
+
+  <include package="plone.app.contentmenu" />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+     <browser:page
+         name="MigratefromNotes_view"
+         for="*"
+         class=".connectNotes.NotesSync"
+		 permission="MigratefromNotes.Execute"
+		 template="notes.pt"
+         /> 
+
+    <browser:resourceDirectory
+        name="notes_kbtic_images"
+        directory="images"
+        />
+
+</configure>
