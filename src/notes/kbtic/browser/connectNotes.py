@@ -10,8 +10,8 @@ import re
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
-NOTES_USER = "******"
-NOTES_PASS = "******"
+NOTES_USER = "********"
+NOTES_PASS = "********"
 
 
 class NotesSync():
@@ -78,7 +78,7 @@ class NotesSync():
             final_object = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
             originNotesObjectUrl = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID
             html = session.get(final_object, headers=cookie)
-            htmlContent = str(html.content).decode('ISO-8859-1')
+            htmlContent = str(html.content)#.encode('iso-8859-1').decode('utf-8')
             logging.info("Migrating object %s , Notes URL: %s", index, originNotesObjectUrl)
             # Check the kind of document
             try:
@@ -91,13 +91,12 @@ class NotesSync():
 
                 #dateCreated = re.search(r'name="Date"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
                 #timeCreated = "Time of Creation not present in RIN docs"
-                #import ipdb; ipdb.set_trace( )
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
                 Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
                 # ERROR en rins a veces no tiene key subject -> Title = re.search(r'name="Subject"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
 
-                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*?/table>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\9', htmlContent, re.DOTALL | re.MULTILINE)
-                tinyContent = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<hr.*?<table.*?/table>.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\9', htmlContent, re.DOTALL | re.MULTILINE)
+                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*?/table>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\9', htmlContent,  re.DOTALL|re.MULTILINE)
+                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<hr.*?<table.*?/table>.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL|re.MULTILINE).groups()[8]
 
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 object.setTitle(Title)
@@ -120,7 +119,7 @@ class NotesSync():
             else:
                 ## Normal document doesn't has table in footer, but has 2 tables inside another table
 
-                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\7', html.content, re.DOTALL | re.MULTILINE)
+                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\7', html.content, re.DOTALL|re.MULTILINE)
                 #dateCreated = re.search(r'name="Date"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
                 #timeCreated = re.search(r'name="TimeCreated"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
@@ -129,7 +128,7 @@ class NotesSync():
 
                 #catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
                 #catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                tinyContent = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*<table.*/table>.*<table.*/table>.*/table>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\10', htmlContent, re.DOTALL | re.MULTILINE)
+                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*<table.*/table>.*<table.*/table>.*/table>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL|re.MULTILINE).groups()[9]
 
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 object.setTitle(Title)
@@ -146,7 +145,6 @@ class NotesSync():
     def createNotesObject(self, type, folder, title):
         """
         """
-        #import ipdb; ipdb.set_trace( )
         id = self.generateUnusedId(title)
         _createObjectByType(type, folder, id)
         obj = folder[id]
