@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#
 # From Notes KBTIC to Plone
 #
 # Principal URL: All documents by cateogry:
@@ -7,11 +8,12 @@
 import requests
 import logging
 import re
+import time
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
-NOTES_USER = "********"
-NOTES_PASS = "********"
+NOTES_USER = "******"
+NOTES_PASS = "******"
 
 
 class NotesSync():
@@ -46,7 +48,6 @@ class NotesSync():
         }
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
-
         cookie = {'Cookie': 'HabCookie=1; Desti=https://liszt.upc.es/C1256E520031DA66/BF25AB0F47BA5DD785256499006B15A4; RetornTancar=1; NomUsuari=usuari.elena6; LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
 
@@ -60,83 +61,102 @@ class NotesSync():
 
         # url to obtain total entries to import
         toplevelentries = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '?ReadViewEntries&start=1&count=1'
+        startLimit = 1
         xmlLimit = session.get(toplevelentries, headers=cookie)
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
         logging.info('Starting Notes Migration process...')
         logging.info('Total objects to import: %s', limit)
-        limit = 20
-        for index  in range(1, int(limit)):
+        # Manual import
+        #startLimit = 1
+        #limit = 10
+        logging.info('Total objects importing: %s to %s', startLimit, limit)
+        for index  in range(startLimit, int(limit) + 1):
+            if index % 50 == 0:  # Wait every 100 imports...
+                time.sleep(5)
+                logging.info(' -> 5 seconds pause...')
 
             path_notes = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
             response3 = session.get(path_notes, headers=cookie)
 
             # No devuelve los mismos resultados, depende de permisos de usuario.
             # La diferencia está en los docs encriptados de contraseñas
-
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
             # TODO : Check docs with multiple sections (check if values in 3.1 and 3.2 are well imported)
             final_object = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
             originNotesObjectUrl = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID
             html = session.get(final_object, headers=cookie)
-            htmlContent = str(html.content)#.encode('iso-8859-1').decode('utf-8')
-            logging.info("Migrating object %s , Notes URL: %s", index, originNotesObjectUrl)
-            # Check the kind of document
-            try:
-                tipusDocument = re.search(r'name="TipusDoc"\s+type="hidden"\s+value="(\w+)"', htmlContent).groups()[0]
-            except:
-                tipusDocument = "Not_RIN"
-
-            if tipusDocument == "RIN":
-                ## RIN document has a table in the footer of the html
-
-                #dateCreated = re.search(r'name="Date"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                #timeCreated = "Time of Creation not present in RIN docs"
-                creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
-                # ERROR en rins a veces no tiene key subject -> Title = re.search(r'name="Subject"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-
-                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*?/table>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\9', htmlContent,  re.DOTALL|re.MULTILINE)
-                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<hr.*?<table.*?/table>.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL|re.MULTILINE).groups()[8]
-
-                object = self.createNotesObject('notesDocument', self.context, Title)
-                object.setTitle(Title)
-                object.setBody(tinyContent)
-                object.setCreators(creator)
-                object.setExcludeFromNav(True)
-                try:
-                    catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    object.setCategory1(catServei)
-                except:
-                    None
-                try:
-                    catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    object.setCategory2(catServeiPPS)
-                except:
-                    None
-
-                object.reindexObject()
-
+            htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
+            if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
+                logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
             else:
-                ## Normal document doesn't has table in footer, but has 2 tables inside another table
+                # htmlContent = str(html.content)#.encode('iso-8859-1').decode('utf-8') # PRODUCCIO
+                # htmlContent = str(html.content).encode('iso-8859-1').decode('utf-8') # DEVELOP ERROR
+                htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # CAPRICORNIUS
 
-                # 1st version = re.sub(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', r'\7', html.content, re.DOTALL|re.MULTILINE)
-                #dateCreated = re.search(r'name="Date"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                #timeCreated = re.search(r'name="TimeCreated"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
-                # ERROR -> Title = re.search(r'name="Subject"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                logging.info("Migrating object %s , Notes URL: %s", index, originNotesObjectUrl)
 
-                #catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                #catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*<table.*/table>.*<table.*/table>.*/table>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL|re.MULTILINE).groups()[9]
+                # Check the type of document
+                try:
+                    tipusDocument = re.search(r'name="TipusDoc"\s+type="hidden"\s+value="(\w+)"', htmlContent).groups()[0]
+                except:
+                    tipusDocument = "Not_RIN"
 
-                object = self.createNotesObject('notesDocument', self.context, Title)
+                if tipusDocument == "RIN":
+                    ## RIN document has a table in the footer of the html
+                    creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                    Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
+                    tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<hr.*?<table.*?/table>.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[8]
+                    object = self.createNotesObject('notesDocument', self.context, Title)
+                    try:
+                        catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                        object.setCategory1(catServei)
+                    except:
+                        None
+                    try:
+                        catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                        object.setCategory2(catServeiPPS)
+                    except:
+                        None
+
+                else:
+                    ## Normal document doesn't has table in footer, but has 2 tables inside another table
+                    creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                    Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
+                    #catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
+                    #catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
+                    tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*<table.*/table>.*<table.*/table>.*/table>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[9]
+                    object = self.createNotesObject('notesDocument', self.context, Title)
+
                 object.setTitle(Title)
-                object.setBody(tinyContent)
                 object.setCreators(creator)
                 object.setExcludeFromNav(True)
-                #object.setCategory1(catServei)
-                #object.setCategory2(catServeiPPS)
+                # Import Images of the object
+                imatgeSrc = re.findall(r'<img[^>]+src=\"([^\"]+)\"', htmlContent)
+                imatgeSrc = [a for a in imatgeSrc if '/Upcnet' in a]
+                numimage = 1
+                for obj in imatgeSrc:
+                    imatge = session.get(URL + obj, headers=cookie)
+                    imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
+                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/image' + str(numimage))
+                    numimage = numimage + 1
+                    imageObject.setImage(imatge.content)
+                    if '.nsf' in obj:
+                        logging.info('Image NSF: %s', object.absolute_url() + '/image' + str(numimage))
+
+                # Import Files of the object
+                attachSrc = re.findall(r'<a[^>]+href=\"([^\"]+)\"', htmlContent)
+                attachSrc = [a for a in attachSrc if '$FILE' in a]
+                numfile = 1
+                for obj in attachSrc:
+                    file = session.get(URL + obj, headers=cookie)
+                    fileObject = self.createNotesObject('File', object, 'file' + str(numfile))
+                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/file' + str(numfile))
+                    numfile = numfile + 1
+                    fileObject.setFile(file.content)
+                    if '.nsf' in obj:
+                        logging.info('File NSF: %s', object.absolute_url() + '/file' + str(numfile))
+                # Create modified HTML content with new image/file paths
+                object.setBody(tinyContent)
                 object.reindexObject()
 
         logging.info('Done! End of Notes Migration process.')
@@ -164,29 +184,4 @@ class NotesSync():
         return id
 
 
-# object.setBody,
-# object.setExcludeFromNav,
-# object.setCreationDate,
-# object.setLocation,
-# object.setCategory1,
-# object.setExpirationDate,
-# object.setCreators,
-# object.setModificationDate,
-# object.setCategory2,
-# object.setFilename,
-# object.setDefaultPage,
-# object.setRelatedItems,
-# object.setCategory3,
-# object.setFormat,
-# object.setDefaults,
-# object.setRights,
-# object.setCategory4,
-# object.setId,
-# object.setDescription,
-# object.setSubject,
-# object.setContentType,
-# object.setLanguage,
-# object.setEffectiveDate,
-# object.setTitle,
-# object.setContributors,
-# object.setLayout
+### EOF ###

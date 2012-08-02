@@ -2,13 +2,13 @@
 """
 from zope.interface import implements
 from Products.Archetypes import atapi
-from Products.ATContentTypes.content import base
+from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 from notes.kbtic.interfaces import INotesDocument
 from notes.kbtic.config import PROJECTNAME
 from Products.ATVocabularyManager import NamedVocabulary
 
-NotesDocumentSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
      atapi.TextField(name='body',
             searchable=1,
@@ -97,10 +97,10 @@ NotesDocumentSchema['language'].widget.visible = {'view': 'invisible', 'edit': '
 NotesDocumentSchema['relatedItems'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['location'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 
-schemata.finalizeATCTSchema(NotesDocumentSchema, moveDiscussion=False)
+schemata.finalizeATCTSchema(NotesDocumentSchema, folderish=True, moveDiscussion=False)
 
 
-class NotesDocument(base.ATCTContent):
+class NotesDocument(folder.ATFolder):
     """Description of the Example Type"""
     implements(INotesDocument)
 
