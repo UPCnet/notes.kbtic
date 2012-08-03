@@ -10,17 +10,30 @@ from Products.ATVocabularyManager import NamedVocabulary
 
 NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
-     atapi.TextField(name='body',
-            searchable=1,
-            required=1,
-            allowable_content_types=('text/plain',
-                                       'text/structured',
-                                       'text/html',),
-            default_output_type='text/x-html-safe',
-            widget=atapi.RichWidget(label_msgid='label_missatge',
-                                      i18n_domain='ajuntament.core',
-                                      rows=20,),
-           ),
+            atapi.TextField(
+                name='body',
+                allowable_content_types=('text/plain',
+                                               'text/structured',
+                                               'text/html',),
+                 default_output_type='text/x-html-safe',
+                 widget=atapi.RichWidget(
+                     label='Body',
+                     label_msgid='label_body',
+                     i18n_domain='notes.kbtic',
+                     rows=40,
+                 ),
+             required=False,
+             searchable=True,
+             ),
+
+            # atapi.FileField(
+            #     name="fileAttach",
+            #     widget=atapi.FileWidget(
+            #         label=("A file"),
+            #         description=("Some file"),
+            #     ),
+            #     required=False,
+            # ),
 
             #CATEGORIES
             atapi.LinesField(

@@ -67,11 +67,11 @@ class NotesSync():
         logging.info('Starting Notes Migration process...')
         logging.info('Total objects to import: %s', limit)
         # Manual import
-        #startLimit = 1
-        #limit = 10
+        startLimit = 1
+        limit = 10
         logging.info('Total objects importing: %s to %s', startLimit, limit)
         for index  in range(startLimit, int(limit) + 1):
-            if index % 50 == 0:  # Wait every 100 imports...
+            if index % 40 == 0:  # Wait every 40 imports...
                 time.sleep(5)
                 logging.info(' -> 5 seconds pause...')
 
@@ -93,40 +93,22 @@ class NotesSync():
                 # htmlContent = str(html.content).encode('iso-8859-1').decode('utf-8') # DEVELOP ERROR
                 htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # CAPRICORNIUS
 
-                logging.info("Migrating object %s , Notes URL: %s", index, originNotesObjectUrl)
+                logging.info("Migrating object %s, URL: %s", index, originNotesObjectUrl)
 
-                # Check the type of document
+                creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
+                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
+                object = self.createNotesObject('notesDocument', self.context, Title)
                 try:
-                    tipusDocument = re.search(r'name="TipusDoc"\s+type="hidden"\s+value="(\w+)"', htmlContent).groups()[0]
+                    catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                    object.setCategory1(catServei)
                 except:
-                    tipusDocument = "Not_RIN"
-
-                if tipusDocument == "RIN":
-                    ## RIN document has a table in the footer of the html
-                    creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
-                    tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<hr.*?<table.*?/table>.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[8]
-                    object = self.createNotesObject('notesDocument', self.context, Title)
-                    try:
-                        catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                        object.setCategory1(catServei)
-                    except:
-                        None
-                    try:
-                        catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                        object.setCategory2(catServeiPPS)
-                    except:
-                        None
-
-                else:
-                    ## Normal document doesn't has table in footer, but has 2 tables inside another table
-                    creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
-                    #catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                    #catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="(\w+.*)"', htmlContent).groups()[0]
-                    tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<table.*<table.*/table>.*<table.*/table>.*/table>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[9]
-                    object = self.createNotesObject('notesDocument', self.context, Title)
-
+                    None
+                try:
+                    catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                    object.setCategory2(catServeiPPS)
+                except:
+                    None
                 object.setTitle(Title)
                 object.setCreators(creator)
                 object.setExcludeFromNav(True)
@@ -138,10 +120,9 @@ class NotesSync():
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
                     tinyContent = tinyContent.replace(obj, object.absolute_url() + '/image' + str(numimage))
+                    logging.info('Image NSF: %s', object.absolute_url() + '/image' + str(numimage))
                     numimage = numimage + 1
                     imageObject.setImage(imatge.content)
-                    if '.nsf' in obj:
-                        logging.info('Image NSF: %s', object.absolute_url() + '/image' + str(numimage))
 
                 # Import Files of the object
                 attachSrc = re.findall(r'<a[^>]+href=\"([^\"]+)\"', htmlContent)
@@ -151,10 +132,14 @@ class NotesSync():
                     file = session.get(URL + obj, headers=cookie)
                     fileObject = self.createNotesObject('File', object, 'file' + str(numfile))
                     tinyContent = tinyContent.replace(obj, object.absolute_url() + '/file' + str(numfile))
+                    logging.info('File NSF: %s', object.absolute_url() + '/file' + str(numfile))
                     numfile = numfile + 1
                     fileObject.setFile(file.content)
-                    if '.nsf' in obj:
-                        logging.info('File NSF: %s', object.absolute_url() + '/file' + str(numfile))
+                # remove section links...
+                removeSections = re.findall(r'(<a[^>]+target="_self">.*?</a>)', tinyContent)
+                for obj in removeSections:
+                    tinyContent = tinyContent.replace(obj, "")
+
                 # Create modified HTML content with new image/file paths
                 object.setBody(tinyContent)
                 object.reindexObject()
