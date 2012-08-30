@@ -1,0 +1,52 @@
+<tal:portletCategorias
+        tal:define="portal_url context/@@plone_portal_state/portal_url;"
+        i18n:domain="notes.kbtic">
+<ul id="menu">
+
+	<li tal:define="res view/mostrarEtiquetesCategory1" tal:condition="res">
+		<a href="#" i18n:translate="label_category1"> Label Category1 </a>
+		<ul>
+ 			<li tal:repeat="res view/mostrarEtiquetesCategory1">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>
+		</ul>
+	</li>
+	<br/>
+	<li tal:define="res view/mostrarEtiquetesCategory2" tal:condition="res">
+		<a href="#" i18n:translate="label_category2"> Label Category2 </a>
+		<ul>
+			<li tal:repeat="res view/mostrarEtiquetesCategory2">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>		
+		</ul>
+	</li>
+	<br/>	
+	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res">
+		<a href="#" i18n:translate="label_category3"> Label Category3 </a>
+		<ul>
+			<li tal:repeat="res view/mostrarEtiquetesCategory3">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>		
+		</ul>
+	</li>
+	<br/>			
+	<li tal:define="res view/mostrarEtiquetesCategory4" tal:condition="res">
+		<a href="#" i18n:translate="label_category4"> Label Category4 </a>
+		<ul>
+			<li tal:repeat="res view/mostrarEtiquetesCategory4">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>		
+		</ul>
+	</li>	
+</ul>
+<br/>
+</tal:portletCategorias>
+

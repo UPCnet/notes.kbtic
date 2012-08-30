@@ -5,19 +5,30 @@
 
   <include package="plone.app.contentmenu" />
 
-  <!-- -*- extra stuff goes here -*- -->
+     <browser:page
+        name="MigratefromNotesKBTIC"
+        for="*"
+        class=".migrateKBTIC.NotesSyncKBTIC"
+		permission="MigratefromNotes.Execute"
+        /> 
 
      <browser:page
-         name="MigratefromNotes_view"
-         for="*"
-         class=".connectNotes.NotesSync"
-		 permission="MigratefromNotes.Execute"
-		 template="notes.pt"
-         /> 
+        name="MigratefromNotesADS"
+        for="*"
+        class=".migrateADS.NotesSyncADS"
+        permission="MigratefromNotes.Execute"
+        /> 
 
     <browser:resourceDirectory
         name="notes_kbtic_images"
         directory="images"
         />
+
+    <browser:page
+        for="*"
+        name="keywordsListing"
+        class=".keywords_listing.KeywordsView"
+        permission="zope2.View"
+      />
 
 </configure>

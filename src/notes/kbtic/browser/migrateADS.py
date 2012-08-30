@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 #
-# From Notes KBTIC to Plone
+# From Notes ADS-SPO to Plone
+# Remember to customize lines 18,19, 32, 33, 35 and 102
 #
 # Principal URL: All documents by cateogry:
-#    https://liszt.upc.es/upcnet/backoffice/manualexp.nsf/BF25AB0F47BA5DD785256499006B15A4
+#    https://liszt.upc.es/upcnet/backoffice/docADS.nsf/BF25AB0F47BA5DD785256499006B15A4
+#    Notes://Liszt/C1256E7E00339EE3/BF25AB0F47BA5DD785256499006B15A4
 #
+
 import requests
 import logging
 import re
@@ -16,22 +19,25 @@ NOTES_USER = "******"
 NOTES_PASS = "******"
 
 
-class NotesSync():
+class NotesSyncADS():
 
     def __call__(self):
         ###
         ###
 
         session = requests.session()
-        PATH = 'C1256E520031DA66/BF25AB0F47BA5DD785256499006B15A4'
+        
+        PATH1 = 'BF25AB0F47BA5DD785256499006B15A4'
+        PATH = 'C1256E7E00339EE3/' + PATH1
         URL = 'https://liszt.upc.es'
+        TRAVERSE_PATH = '/upcnet/backoffice/docADS.nsf/'
         LOGIN_URL = 'https://liszt.upc.es/names.nsf?Login'
         BASE_URL = 'https://liszt.upc.es/%s' % PATH
-        MAIN_URL = 'https://liszt.upc.es/Upcnet/Backoffice/manualexp.nsf/BF25AB0F47BA5DD785256499006B15A4?ReadViewEntries&PreFormat&Start=1&Navigate=16&Count=1000000064&SkipNavigate=32783&EndView=1'
+        MAIN_URL = 'https://liszt.upc.es' + TRAVERSE_PATH + PATH1 + '?ReadViewEntries&PreFormat&Start=1&Navigate=16&Count=1000000064&SkipNavigate=32783&EndView=1'
 
         logging.basicConfig(format='%(asctime)s %(message)s',
                             datefmt='%m/%d/%Y %I:%M:%S %p',
-                            filename='example.log',
+                            filename='import-ADS.log',
                             level=logging.DEBUG)
 
         params = {
@@ -48,26 +54,22 @@ class NotesSync():
         }
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
-        cookie = {'Cookie': 'HabCookie=1; Desti=https://liszt.upc.es/C1256E520031DA66/BF25AB0F47BA5DD785256499006B15A4; RetornTancar=1; NomUsuari=usuari.elena6; LtpaToken=' + session.cookies['LtpaToken']}
+        cookie = {'Cookie': 'HabCookie=1; Desti=https://liszt.upc.es/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
 
-        response2 = requests.get(URL + '/Upcnet/Backoffice/manualexp.nsf/($All)?OpenView', headers=cookie)
+        response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
         # Ens quedem ID de la vista
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
 
-        # XML All documents (limited to 1040):
-        # https://liszt.upc.es/Upcnet/Backoffice/manualexp.nsf/626E6035EADBB4CD85256499006B15A6?ReadViewEntries&start=1&count=1000
-        #/Upcnet/Backoffice/manualexp.nsf/626E6035EADBB4CD85256499006B15A6?ReadDesign&start=1&count=100000
-
         # url to obtain total entries to import
-        toplevelentries = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '?ReadViewEntries&start=1&count=1'
+        toplevelentries = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=1&count=1'
         startLimit = 1
         xmlLimit = session.get(toplevelentries, headers=cookie)
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
         logging.info('Starting Notes Migration process...')
         logging.info('Total objects to import: %s', limit)
         # Manual import
-        startLimit = 1
+        startLimit = 5
         limit = 10
         logging.info('Total objects importing: %s to %s', startLimit, limit)
         for index  in range(startLimit, int(limit) + 1):
@@ -75,15 +77,15 @@ class NotesSync():
                 time.sleep(5)
                 logging.info(' -> 5 seconds pause...')
 
-            path_notes = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
+            path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
             response3 = session.get(path_notes, headers=cookie)
 
             # No devuelve los mismos resultados, depende de permisos de usuario.
             # La diferencia está en los docs encriptados de contraseñas
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
             # TODO : Check docs with multiple sections (check if values in 3.1 and 3.2 are well imported)
-            final_object = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
-            originNotesObjectUrl = URL + '/Upcnet/Backoffice/manualexp.nsf/' + value + '/' + UID
+            final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
+            originNotesObjectUrl = URL + TRAVERSE_PATH + value + '/' + UID
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
@@ -97,7 +99,7 @@ class NotesSync():
 
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
                 Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
-                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
+                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/docADS\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 try:
                     catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]

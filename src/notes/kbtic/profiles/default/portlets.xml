@@ -7,4 +7,18 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
   <!-- -*- extra stuff goes here -*- -->
+
+    <portlet 
+    	addview="navegacioEtiquetes"
+    	title="Portlet Etiquetes"
+    	description="Replace Navigation to etiquetes" />
+
+    <assignment 
+    	name="portlet-etiquetes" 
+    	category="context" 
+    	key="/"
+    	manager="plone.leftcolumn" 
+    	type="navegacioEtiquetes" 
+    	visible="True"/>
+
 </portlets>

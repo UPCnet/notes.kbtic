@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+  <metal:block fill-slot="top_slot" tal:define="dummy python:request.set('disable_border',1)" />
+    
+    <div metal:fill-slot="main">
+      <div>
+        <h1>
+          <tal:omit-tag tal:content="view/keyword">Keyword Title</tal:omit-tag>
+        </h1>
+      </div>
+      <metal:listingmacro define-macro="listing">
+        <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
+                            limit_display limit_display|request/limit_display|nothing;
+                            more_url more_url|request/more_url|string:folder_contents;
+                            folderContents python:here.portal_type=='Topic' and here.queryCatalog(contentFilter, batch=True) or here.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
+                            use_view_action site_properties/typesUseViewActionInListings|python:();
+                            over_limit python: limit_display and len(folderContents) > limit_display;
+                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
+                            batch folderContents;
+                            ">
+
+        <tal:listing condition="folderContents">
+          <div metal:use-macro="here/batch_macros/macros/navigation" />
+            <table class="listing" id="sortable">
+            <thead>
+              <tr>
+                <th>Titol</th>
+                <th>Creador</th>
+                <th>Data de creació</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tal:items repeat="item view/objectsByKey">
+                <tr metal:define-macro="listitem"
+                    tal:define="oddrow repeat/item/odd;">
+                    <tal:defs define="item_url item/url;
+                                      item_id item/id;
+                                      item_title item/title;
+                                      item_creator item/creator;
+                                      item_creation_date item/creation_date">
+                        <td>
+                          <a tal:attributes="title item_url; alt item_url; href item_url;"
+                             tal:content="item_title">Project title</a>
+                        </td>
+                        <td>
+                            <tal:name tal:condition="item_creator">
+                              <tal:omit-tag tal:content="item_creator">
+                                Bob Dobalina
+                              </tal:omit-tag>
+                            </tal:name>
+                        </td>
+                         <td style="text-align: center;">
+                          
+                          <tal:omit-tag 
+                              tal:condition="item_creation_date" tal:content="item_creation_date">Creation Date</tal:omit-tag>
+                        </td>
+                    </tal:defs>
+                </tr>
+              </tal:items>
+              
+            </tbody>
+          </table>
+          <div metal:use-macro="here/batch_macros/macros/navigation" />
+        </tal:listing>
+
+
+        <metal:empty metal:define-slot="no_items_in_listing">
+            <p class="discreet"
+               tal:condition="not: folderContents"
+               i18n:translate="description_no_items_in_folder">
+                There are currently no items in this folder.
+            </p>
+        </metal:empty>
+
+        </tal:foldercontents>
+        </metal:listingmacro>
+
+    </div>
+
+</body>
+</html>
