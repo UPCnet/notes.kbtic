@@ -7,7 +7,6 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-
   <body>
     <metal:fill fill-slot="content-core">
              
@@ -19,7 +18,8 @@
            id="category"
            class="documentByLine"
            tal:define="categories view/Categories|nothing;
-                       url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;">
+                       url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
+           tal:condition="categories">
         <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>
         <span tal:repeat="category categories">
           <a href=""

@@ -1,11 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"    
     i18n_domain="notes.kbtic">
-
-  <!-- configure your content components here -->
-  
-  <!-- -*- extra stuff goes here -*- -->
 
   <class class=".notesDocument.NotesDocument">
     <require
@@ -13,5 +10,12 @@
         interface="..interfaces.INotesDocument"
         />
   </class>
+
+  <browser:page
+        for="*"
+        name="notes_view"
+        class=".notesView.notesView"
+        permission="zope2.Public"
+  />
 
 </configure>
