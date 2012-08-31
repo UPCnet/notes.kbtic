@@ -1,0 +1,119 @@
+gSMS - Gestió d'enviament d'SMS
+10100-00 Atenció a  l'usuari
+10101-00 Correcció exàmens ICE
+10200-00 Resolució de consultes ofimàtiques
+10300-00 Correu electrònic
+10301-00 Correu electrònic DN
+10302-00 Correu electrònic K2
+10303-00 Relay i gestió de dominis de correu
+10304-00 Llistes de distribució de correu
+10312-00 Agenda K2
+10350-00 Missatgeria instantània
+10400-00 Impressió en xarxa
+10500-00 Repositori de fitxers
+10501-00 Repositori de fitxers personals
+10502-00 Repositori de fitxers de grup
+10600-00 Gestió d'estacions de treball personals
+10610-00 Configuració mantinguda de software
+10611-00 Configuració mantinguda de software - entorn Windows
+10612-00 Configuració mantinguda de software - entorn Linux
+10612-01 Configuració PUB-Linux (SBD)
+10620-00 Instal·lació de software
+10800-00 Xarxa sense fils (XSF)
+10900-00 Dispositius mòbils
+10910-00 Blackberry DN
+11000-00 Bases de dades bibliogràfiques en CD-ROM
+11100-00 Hosting de pàgines web personals
+12100-00 Suport tècnic especialitzat
+12110-00 Assessorament a PAS TIC de la UPC
+12110-00 Suport de 2n nivell
+14000-00 Portal de serveis a l'usuari
+20100-00 Subministraments
+20104-00 Subministrament d'equips de telefonia fixa
+20108-00 Adquisició de llicències de software
+20200-00 Manteniment
+20201-00 Manteniment de llicències de software base de servidors
+20206-00 Manteniment hardware d'equips ofimàtics
+20207-00 Manteniment hardware d'equips electrònics de comunicacions de dades
+20208-00 Manteniment hardware de servidors
+20300-00 Telefonia mòbil
+20304-00 gSMS - Gestió d'enviament d'SMS
+20400-00 Distribució de software
+20401-00 Distribució de llicències de software i control de llicències flotants
+20500-00 Gestió de garanties
+20600-00 KATA: portal de compres TIC
+30100-00 Directori / Intranet
+30101-00 Directori
+30102-00 Identificació a la Intranet
+30103-00 Autenticació Directori LDAP
+30104-00 gAUSS - gestió de l'Autenticació d'USuaris i Serveis
+30104-00 gAUSS - gestió de la Autenticació d'USuaris i Serveis
+30110-00
+30110-00 Certificació Carnet UPC
+30200-00 Campus Digitals i col·laboratoris per a la docència
+30300-00 Gestió econòmica
+30400-00 Gestió de personal
+30500-00 Petits ERP
+30501-00 gRED - Gestió del registre d'entrada i sortida de documents
+30503-00 Gestió de relacions institucionals i internacionals
+30504-00 gCOT - Gestió de Consums de Telefonia
+30600-00 Gestió de la docència
+30600-00 Gestió de la docència i la recerca
+30610-00 Gestió de la matriculació de primer i segon cicle
+30612-00 Gestió de titulacions
+30613-00 Gestió del doctorat
+30640-00 Gestió de l'Associació d'Amics de la UPC
+30800-00 Gestió de biblioteques
+39000-00 Gestió de les enquestes de professors
+40100-00 Sistemes d'Informació d'UPCnet
+40102-00 Gestió de l'atenció a l'usuari (ATIC)
+40102-00 Gestor de Serveis
+40104-00 Intranet d'UPCnet
+40200-00 Allotjament de webs i col·laboratoris
+40200-00 Hosting de col·laboratoris
+40201-00 Allotjament de webs i col·laboratoris sobre Linux
+40202-00 Allotjament de webs i col·laboratoris sobre Lotus Domino
+40202-01 Allotjament de Web i Col·laboratoris en tecnologia Lotus Domino - Família
+40204-00 Allotjament de Web i Col·laboratoris al domini www.upc.edu
+40204-00 Web corporativa de la UPC
+40300-00 Sistemes de gestió de continguts web
+40301-00 Eines de gestió de Web i Col·laboratoris basats en Plone
+40301-00 GenWeb UPC
+50102-00 Instal·lació de software base de servidors
+50111-00 Hosting de servidors
+50111-00 Hosting dedicat de servidors
+50113-00 Hosting d'aplicacions
+50121-00 Hosting compartit i  webs
+50121-00 Hosting de webs
+50122-00 Allotjament i administració de webs
+50123-00 Hosting compartit de BBDD
+50124-00 Hosting Prisma
+50201-00 Monitorització de servidors
+50202-00 Còpies de seguretat de dades de servidors no gestionats per UPCnet
+50301-00 Gestió de dominis d'Internet (DNS)
+50403-00 Telefonia fixa
+50404-00 Telefonia fixa IP
+50501-00 Instal·lació d'equips electrònics de comunicacions de dades
+50502-00 Instal·lació de punts de xarxa
+50503-00 Manteniment del cablat de xarxa
+50504-00 Administració de xarxes locals
+50504-00 Administració i connexió de xarxes locals
+50505-00 Reparacions i petites ampliacions de cablat
+50551-00 Administració de la xarxa troncal i la connexió a Internet
+50601-00 Accés remot als recursos informàtics de la UPC i a Internet
+50602-00 Accés remot a Internet
+50602-00 Accés remot a Internet (accés "UPCnet")
+50604-00 Accés remot a Internet (antic accés UPCnet)
+50801-00 Tallafocs de Campus gestionats
+50802-00 Tallafocs Externs gestionats
+50900-00 Xarxa Sense Fils (XSF)
+60101-00 Adaptació ergonòmica i de la usabilitat d’aplicatius
+60102-00 Assessoria i consultoria en disseny
+60105-00 Creació de Programes d’imatge corporativa
+60200-00 reus eduCAT
+70000-00 Assessorament general sobre les TIC
+80000-00 Altres productes
+80100-00 Genèric (global a varis productes)
+90000-00 Sense Servei
+Directiva organizativa: %s|(No se ha asignado ninguna directiva explícita)|(No  se
+(Not Categorized)

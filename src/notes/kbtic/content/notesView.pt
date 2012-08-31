@@ -17,7 +17,7 @@
       <div i18n:domain="plone"
            id="category"
            class="documentByLine"
-           tal:define="categories view/Categories|nothing;
+           tal:define="categories view/Categories;
                        url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
            tal:condition="categories">
         <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>

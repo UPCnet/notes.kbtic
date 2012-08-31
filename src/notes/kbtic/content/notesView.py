@@ -31,11 +31,15 @@ class notesView(BrowserView):
         objects = cat1 + cat2 + cat3 + cat4
 
         for value in objects:
-            obj = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', id=value)[0]
+            try:
+                obj = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', id=value)[0]
 
-            results.append({'title': obj.Title,
+                results.append({'title': obj.Title,
                             'key': value,
                             'href': path + 'keywordsListing?' + value,
                             })
+            except:
+                # When an object is migrated, can come with keywords, but perhaps, doesn't exists still in Plone
+                None
 
         return results
