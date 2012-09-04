@@ -1,0 +1,8 @@
+select#category1,  
+select#category1_options, 
+select#category2,
+select#category2_options,
+select#category3,
+select#category3_options,
+select#category4,  
+select#category4_options {width: 360px !important; height: 300px !important;}
