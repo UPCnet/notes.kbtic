@@ -11,6 +11,7 @@
 import requests
 import logging
 import re
+import transaction
 import time
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
@@ -70,11 +71,11 @@ class NotesSyncKBTIC():
         logging.info('Total objects to import: %s', limit)
         # Uncomment for manual imports...
         startLimit = 1
-        limit = 50
+        limit = 100
         logging.info('Total objects importing: %s to %s', startLimit, limit)
         for index  in range(startLimit, int(limit) + 1):
-            if index % 40 == 0:  # Wait every 40 imports...
-                time.sleep(5)
+            if index % 40 == 0:  # Wait every pack of imports...
+                time.sleep(10)
                 logging.info(' -> 5 seconds pause...')
 
             path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
@@ -91,9 +92,9 @@ class NotesSyncKBTIC():
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
                 logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
             else:
-                # htmlContent = str(html.content)#.encode('iso-8859-1').decode('utf-8') # PRODUCTION
+                htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8') # PRODUCTION
                 # htmlContent = str(html.content).encode('iso-8859-1').decode('utf-8')  # DEVELOP ERROR?
-                htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')    # CAPRICORNIUS
+                #htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')    # CAPRICORNIUS
 
                 logging.info("Migrating object %s, URL: %s", index, originNotesObjectUrl)
 
@@ -101,16 +102,26 @@ class NotesSyncKBTIC():
                 Title = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1]
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
                 object = self.createNotesObject('notesDocument', self.context, Title)
+
                 try:
-                    catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    object.setCategory1(catServei)
+                    catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
+                    for obj in catServei:
+                        object.setCategory1(obj)
                 except:
                     None
                 try:
-                    catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                    object.setCategory2(catServeiPPS)
+                    catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
+                    for obj in catServeiPPS:
+                        object.setCategory2(obj)
                 except:
                     None
+                # try:
+                #     import ipdb; ipdb.set_trace( )
+                #     values = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
+                #     for obj in values:
+                #         object.setCategory1(obj)
+                # except:
+                #     None
                 object.setTitle(Title)
                 object.setCreators(creator)
                 object.setExcludeFromNav(True)
@@ -132,11 +143,24 @@ class NotesSyncKBTIC():
                 numfile = 1
                 for obj in attachSrc:
                     file = session.get(URL + obj, headers=cookie)
-                    fileObject = self.createNotesObject('File', object, 'file' + str(numfile))
-                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/file' + str(numfile))
-                    logging.info('File NSF: %s', object.absolute_url() + '/file' + str(numfile))
+                    filename = obj.split('/')[-1].replace('%20', '_')
+                    normalizedName = getToolByName(self.context, 'plone_utils').normalizeString(filename)
+                    fileObject = self.createNotesObject('File', object, normalizedName)
+                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/' + normalizedName)
+                    logging.info('File NSF: %s', object.absolute_url() + '/' + normalizedName)
                     numfile = numfile + 1
                     fileObject.setFile(file.content)
+                    # OpenOffice files internally are saved as ZIP files, we must force metadata...
+                    extension = obj.split('.')[-1:][0]
+                    if extension == 'odt':
+                        fileObject.setFormat('application/vnd.oasis.opendocument.text')
+                    if extension == 'ods':
+                        fileObject.setFormat('application/vnd.oasis.opendocument.spreadsheet')
+                    if extension == 'odp':
+                        fileObject.setFormat('application/vnd.oasis.opendocument.presentation')
+                    if extension == 'odg':
+                        fileObject.setFormat('application/vnd.oasis.opendocument.graphics')
+
                 # remove section links...
                 removeSections = re.findall(r'(<a[^>]+target="_self">.*?</a>)', tinyContent)
                 for obj in removeSections:
@@ -144,7 +168,8 @@ class NotesSyncKBTIC():
 
                 # Create modified HTML content with new image/file paths
                 object.setBody(tinyContent)
-                object.reindexObject()
+                # object.reindexObject()
+                transaction.commit()
 
         logging.info('Done! End of Notes Migration process.')
         return 'OK, imported'

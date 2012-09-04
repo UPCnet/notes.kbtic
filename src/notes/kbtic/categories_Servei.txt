@@ -1,154 +1,154 @@
-Actualització de continguts en el Web UPC
-ACUP - Doc6
-Address Book - PAB
-Adminpack
-Adquira
-Alumni UPC
-Antivirus
-ARI
-Atenció Immediata
-Atenció Usuaris
-Backups
-Bases de dades bibliogràfiques
-Bibliotècnica
-Blackberry Enterprise Server
-Campus Digital
-Campus Digital - Atenea Mobil
-Campus Digital - Atenea1x1
-Campus Digital - AteneaSaurus
-Campus Digital - Externs
-Campus Digital - Moodle
-Canal UPC TV
-Canvis de contrasenya
-Carnet UPC
-CAS - Central authentication service
-Catàleg de les biblioteques de la UPC
-CCE
-Cerca d'adreces de correu en webs vulnerables a l'spam
-Cercador UPC
-Certificats
-Clients Externs UPCnet
-Cloud privat upc
-CMSW
-Col·laboratoris
-Connexió Remota VNC
-Correu Electrònic
-Correu Electrònic - Domino
-Correu Electrònic - Nous Relays
-Correu Electrònic - PL
-Correu Electrònic - Relays
-CSPT
-Directori UPC
-Distribucio de Software
-DNS
-DOCUMENTUM
-Domini UPCXXI
-Domino
-Drac
-e-Desk Conferències web
-e-enquestes
-eAdministració
-Entitat de Registre
-Envío de mensajes vía SMS
-EPI
-etpl
-Evalwin
-FACIL
-FAMA
-FENIX
-Firewalls
-Gartner
-gAUSS
-gCFG
-gCON
-gCOT
-Generació de certificats especials
-GenGrups
-GenWeb
-Gestió d'eleccions
-Gestió de garanties
-Gestionados
-Gestor de serveis
-GRED
-GRED-UNED
-gSMS
-Hosting
-Hosting Web
-HR-Access
-Identitat Digital
-IdP UPC
-Intranet
-Intranet UPCnet
-K2 estudiants
-K2 externs
-K2 UPCnet
-KATA
-LDAP
-LDAP UPC
-LDAP: OpenLdap
-Liceu
-Linux
-Majordomo
-Manteniment
-Matricula
-MATUPC
-monCCD
-Monitorització
-Monitorización
-Mysql
-Navision
-Notes
-OBSOLET
-Pàgines web personals
-Pidgin
-PLONE
-Practicum
-Presencia
-Prisma
-Prisma Renove
-Progeny
-Projecte Davyd - Sala Juntes Master's
-Proxy
-Redes administradas por UPCnet
-Reparacions i Petites Ampliacions de Cablat
-Repositori PL UPCnet
-Resolució d'incidències
-Reus Educat
-Revisat
-Revisions Mèdiques
-SAI: Servei d'Accés a Internet
-SAP
-Seguretat
-Servei de Correcció Òptica d'Exàmens de l'ICE
-Servidor TV per a la UPC
-Servidors
-SIGMA
-SIrena
-Spa
-SQLserver
-SSL
-Suport de 2n nivell
-Suport Tecnic Especialitzat
-Sympa
-Tarifes-Costos Directes
-Tarifes-Simulador de costos
-Telefonia
-Teletreball
-Televot
-TOF
-TOTQ
-Traveler
-Ts
-Ubuntu
-UPCconnect
-UPClink
-videoconferencia
-Web UPC
-Web UPCnet
-webDAV - Accés a repositoris de fitxers (UPC/UPCnet) via web
-Web_Edicions
-Xarxa
-Xarxa Troncal
-XSF
-XSF DIBA
-Z - Informació obsoleta
+(u"catServei-01", u"Actualització de continguts en el Web UPC"),
+(u"catServei-02", u"ACUP - Doc6"),
+(u"catServei-03", u"Address Book - PAB"),
+(u"catServei-04", u"Adminpack"),
+(u"catServei-05", u"Adquira"),
+(u"catServei-06", u"Alumni UPC"),
+(u"catServei-07", u"Antivirus"),
+(u"catServei-08", u"ARI"),
+(u"catServei-09", u"Atenció Immediata"),
+(u"catServei-10", u"Atenció Usuaris"),
+(u"catServei-11", u"Backups"),
+(u"catServei-12", u"Bases de dades bibliogràfiques"),
+(u"catServei-13", u"Bibliotècnica"),
+(u"catServei-14", u"Blackberry Enterprise Server"),
+(u"catServei-15", u"Campus Digital"),
+(u"catServei-16", u"Campus Digital - Atenea Mobil"),
+(u"catServei-17", u"Campus Digital - Atenea1x1"),
+(u"catServei-18", u"Campus Digital - AteneaSaurus"),
+(u"catServei-19", u"Campus Digital - Externs"),
+(u"catServei-20", u"Campus Digital - Moodle"),
+(u"catServei-21", u"Canal UPC TV"),
+(u"catServei-22", u"Canvis de contrasenya"),
+(u"catServei-23", u"Carnet UPC"),
+(u"catServei-24", u"CAS - Central authentication service"),
+(u"catServei-25", u"Catàleg de les biblioteques de la UPC"),
+(u"catServei-26", u"CCE"),
+(u"catServei-27", u"Cerca d'adreces de correu en webs vulnerables a l'spam"),
+(u"catServei-28", u"Cercador UPC"),
+(u"catServei-29", u"Certificats"),
+(u"catServei-30", u"Clients Externs UPCnet"),
+(u"catServei-31", u"Cloud privat upc"),
+(u"catServei-32", u"CMSW"),
+(u"catServei-33", u"Col·laboratoris"),
+(u"catServei-34", u"Connexió Remota VNC"),
+(u"catServei-35", u"Correu Electrònic"),
+(u"catServei-36", u"Correu Electrònic - Domino"),
+(u"catServei-37", u"Correu Electrònic - Nous Relays"),
+(u"catServei-38", u"Correu Electrònic - PL"),
+(u"catServei-39", u"Correu Electrònic - Relays"),
+(u"catServei-40", u"CSPT"),
+(u"catServei-41", u"Directori UPC"),
+(u"catServei-42", u"Distribucio de Software"),
+(u"catServei-43", u"DNS"),
+(u"catServei-44", u"DOCUMENTUM"),
+(u"catServei-45", u"Domini UPCXXI"),
+(u"catServei-46", u"Domino"),
+(u"catServei-47", u"Drac"),
+(u"catServei-48", u"e-Desk Conferències web"),
+(u"catServei-49", u"e-enquestes"),
+(u"catServei-50", u"eAdministració"),
+(u"catServei-51", u"Entitat de Registre"),
+(u"catServei-52", u"Envío de mensajes vía SMS"),
+(u"catServei-53", u"EPI"),
+(u"catServei-54", u"etpl"),
+(u"catServei-55", u"Evalwin"),
+(u"catServei-56", u"FACIL"),
+(u"catServei-57", u"FAMA"),
+(u"catServei-58", u"FENIX"),
+(u"catServei-59", u"Firewalls"),
+(u"catServei-60", u"Gartner"),
+(u"catServei-61", u"gAUSS"),
+(u"catServei-62", u"gCFG"),
+(u"catServei-63", u"gCON"),
+(u"catServei-64", u"gCOT"),
+(u"catServei-65", u"Generació de certificats especials"),
+(u"catServei-66", u"GenGrups"),
+(u"catServei-67", u"GenWeb"),
+(u"catServei-68", u"Gestió d'eleccions"),
+(u"catServei-69", u"Gestió de garanties"),
+(u"catServei-70", u"Gestionados"),
+(u"catServei-71", u"Gestor de serveis"),
+(u"catServei-72", u"GRED"),
+(u"catServei-73", u"GRED-UNED"),
+(u"catServei-74", u"gSMS"),
+(u"catServei-75", u"Hosting"),
+(u"catServei-76", u"Hosting Web"),
+(u"catServei-77", u"HR-Access"),
+(u"catServei-78", u"Identitat Digital"),
+(u"catServei-79", u"IdP UPC"),
+(u"catServei-80", u"Intranet"),
+(u"catServei-81", u"Intranet UPCnet"),
+(u"catServei-82", u"K2 estudiants"),
+(u"catServei-83", u"K2 externs"),
+(u"catServei-84", u"K2 UPCnet"),
+(u"catServei-85", u"KATA"),
+(u"catServei-86", u"LDAP"),
+(u"catServei-87", u"LDAP UPC"),
+(u"catServei-88", u"LDAP: OpenLdap"),
+(u"catServei-89", u"Liceu"),
+(u"catServei-90", u"Linux"),
+(u"catServei-91", u"Majordomo"),
+(u"catServei-92", u"Manteniment"),
+(u"catServei-93", u"Matricula"),
+(u"catServei-94", u"MATUPC"),
+(u"catServei-95", u"monCCD"),
+(u"catServei-96", u"Monitorització"),
+(u"catServei-97", u"Monitorización"),
+(u"catServei-98", u"Mysql"),
+(u"catServei-99", u"Navision"),
+(u"catServei-100", u"Notes"),
+(u"catServei-101", u"OBSOLET"),
+(u"catServei-102", u"Pàgines web personals"),
+(u"catServei-103", u"Pidgin"),
+(u"catServei-104", u"PLONE"),
+(u"catServei-105", u"Practicum"),
+(u"catServei-106", u"Presencia"),
+(u"catServei-107", u"Prisma"),
+(u"catServei-108", u"Prisma Renove"),
+(u"catServei-109", u"Progeny"),
+(u"catServei-110", u"Projecte Davyd - Sala Juntes Master's"),
+(u"catServei-111", u"Proxy"),
+(u"catServei-112", u"Redes administradas por UPCnet"),
+(u"catServei-113", u"Reparacions i Petites Ampliacions de Cablat"),
+(u"catServei-114", u"Repositori PL UPCnet"),
+(u"catServei-115", u"Resolució d'incidències"),
+(u"catServei-116", u"Reus Educat"),
+(u"catServei-117", u"Revisat"),
+(u"catServei-118", u"Revisions Mèdiques"),
+(u"catServei-119", u"SAI: Servei d'Accés a Internet"),
+(u"catServei-120", u"SAP"),
+(u"catServei-121", u"Seguretat"),
+(u"catServei-122", u"Servei de Correcció Òptica d'Exàmens de l'ICE"),
+(u"catServei-123", u"Servidor TV per a la UPC"),
+(u"catServei-124", u"Servidors"),
+(u"catServei-125", u"SIGMA"),
+(u"catServei-126", u"SIrena"),
+(u"catServei-127", u"Spa"),
+(u"catServei-128", u"SQLserver"),
+(u"catServei-129", u"SSL"),
+(u"catServei-130", u"Suport de 2n nivell"),
+(u"catServei-131", u"Suport Tecnic Especialitzat"),
+(u"catServei-132", u"Sympa"),
+(u"catServei-133", u"Tarifes-Costos Directes"),
+(u"catServei-134", u"Tarifes-Simulador de costos"),
+(u"catServei-135", u"Telefonia"),
+(u"catServei-136", u"Teletreball"),
+(u"catServei-137", u"Televot"),
+(u"catServei-138", u"TOF"),
+(u"catServei-139", u"TOTQ"),
+(u"catServei-140", u"Traveler"),
+(u"catServei-141", u"Ts"),
+(u"catServei-142", u"Ubuntu"),
+(u"catServei-143", u"UPCconnect"),
+(u"catServei-144", u"UPClink"),
+(u"catServei-145", u"videoconferencia"),
+(u"catServei-146", u"Web UPC"),
+(u"catServei-147", u"Web UPCnet"),
+(u"catServei-148", u"webDAV - Accés a repositoris de fitxers (UPC/UPCnet) via web"),
+(u"catServei-149", u"Web_Edicions"),
+(u"catServei-150", u"Xarxa"),
+(u"catServei-151", u"Xarxa Troncal"),
+(u"catServei-152", u"XSF"),
+(u"catServei-153", u"XSF DIBA"),
+(u"catServei-154", u"Z - Informació obsoleta")

@@ -24,7 +24,7 @@
 			</li>		
 		</ul>
 	</li>
-	<br/>	
+	<!-- <br/>	
 	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res">
 		<a href="#" i18n:translate="label_category3"> Label Category3 </a>
 		<ul>
@@ -45,7 +45,7 @@
 				</a>
 			</li>		
 		</ul>
-	</li>	
+	</li>	 -->
 </ul>
 <br/>
 </tal:portletCategorias>

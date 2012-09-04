@@ -24,6 +24,16 @@
         directory="images"
         />
 
+    <browser:resourceDirectory
+        name="notes_kbtic_styles"
+        directory="styles"
+        />        
+
+    <browser:resourceDirectory
+        name="notes_kbtic_scripts"
+        directory="scripts"
+        />    
+
     <browser:page
         for="*"
         name="keywordsListing"

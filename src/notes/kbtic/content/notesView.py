@@ -22,11 +22,23 @@ class notesView(BrowserView):
         path = '/'.join(urltool.absolute_url().split('/')[:-1]) + '/'
 
         results = []
-
-        cat1 = self.context.category1
-        cat2 = self.context.category2
-        cat3 = self.context.category3
-        cat4 = self.context.category4
+        #import ipdb; ipdb.set_trace( )
+        try:
+            cat1 = self.context.category1
+        except:
+            cat1 = ()
+        try:
+            cat2 = self.context.category2
+        except:
+            cat2 = ()
+        try:
+            cat3 = self.context.category3
+        except:
+            cat3 = ()
+        try:
+            cat4 = self.context.category4
+        except:
+            cat4 = ()
 
         objects = cat1 + cat2 + cat3 + cat4
 

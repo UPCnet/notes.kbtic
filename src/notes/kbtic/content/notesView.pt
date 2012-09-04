@@ -13,7 +13,7 @@
       <metal:field use-macro="python:context.widget('body', mode='view')">
           Body text
       </metal:field>
-        
+
       <div i18n:domain="plone"
            id="category"
            class="documentByLine"

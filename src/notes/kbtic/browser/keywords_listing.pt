@@ -10,6 +10,7 @@
   <metal:block fill-slot="top_slot" tal:define="dummy python:request.set('disable_border',1)" />
     
     <div metal:fill-slot="main">
+      <tal:content condition="view/objectsByKey">
       <div>
         <h1>
           <tal:omit-tag tal:content="view/keyword">Keyword Title</tal:omit-tag>
@@ -23,8 +24,7 @@
                             use_view_action site_properties/typesUseViewActionInListings|python:();
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
-                            batch folderContents;
-                            ">
+                            batch folderContents;">
 
         <tal:listing condition="folderContents">
           <div metal:use-macro="here/batch_macros/macros/navigation" />
@@ -70,17 +70,17 @@
           <div metal:use-macro="here/batch_macros/macros/navigation" />
         </tal:listing>
 
-        <metal:empty metal:define-slot="no_items_in_listing">
-            <p class="discreet"
-               tal:condition="not: folderContents"
-               i18n:translate="description_no_items_in_folder">
-                There are currently no items in this folder.
-            </p>
-        </metal:empty>
+
 
         </tal:foldercontents>
         </metal:listingmacro>
-
+    </tal:content>
+    <tal:content condition="not:view/objectsByKey">
+        <h1>
+          <tal:omit-tag tal:content="view/keyword">Keyword Title</tal:omit-tag>
+        </h1>
+        No hi ha cap element amb aquesta categoria.
+    </tal:content>
     </div>
 
 </body>

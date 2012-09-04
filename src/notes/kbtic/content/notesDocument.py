@@ -42,7 +42,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     format="select",
                     label_msgid='category1_label',
                     description_msgid='category1_help',
-                    i18n_domain='ajuntament.core',
+                    i18n_domain='notes.kbtic',
                 ),
                 languageIndependent=True,
                 required=False,
@@ -57,7 +57,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     format="select",
                     label_msgid='category2_label',
                     description_msgid='category2_help',
-                    i18n_domain='ajuntament.core',
+                    i18n_domain='notes.kbtic',
                 ),
                 languageIndependent=True,
                 multiValued=False,
@@ -66,35 +66,35 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 enforceVocabulary=True,
             ),
 
-            atapi.LinesField(
-                name='category3',
-                widget=atapi.InAndOutWidget(
-                    format="select",
-                    label_msgid='category3_label',
-                    description_msgid='category3_help',
-                    i18n_domain='ajuntament.core',
-                ),
-                languageIndependent=True,
-                multiValued=False,
-                schemata="categorization",
-                vocabulary=NamedVocabulary('category3_keywords'),
-                enforceVocabulary=True,
-            ),
+            # atapi.LinesField(
+            #     name='category3',
+            #     widget=atapi.InAndOutWidget(
+            #         format="select",
+            #         label_msgid='category3_label',
+            #         description_msgid='category3_help',
+            #         i18n_domain='notes.kbtic',
+            #     ),
+            #     languageIndependent=True,
+            #     multiValued=False,
+            #     schemata="categorization",
+            #     vocabulary=NamedVocabulary('category3_keywords'),
+            #     enforceVocabulary=True,
+            # ),
 
-            atapi.LinesField(
-                name='category4',
-                widget=atapi.InAndOutWidget(
-                    format="select",
-                    label_msgid='category4_label',
-                    description_msgid='category4_help',
-                    i18n_domain='ajuntament.core',
-                ),
-                languageIndependent=True,
-                multiValued=False,
-                schemata="categorization",
-                vocabulary=NamedVocabulary('category4_keywords'),
-                enforceVocabulary=True,
-            ),
+            # atapi.LinesField(
+            #     name='category4',
+            #     widget=atapi.InAndOutWidget(
+            #         format="select",
+            #         label_msgid='category4_label',
+            #         description_msgid='category4_help',
+            #         i18n_domain='notes.kbtic',
+            #     ),
+            #     languageIndependent=True,
+            #     multiValued=False,
+            #     schemata="categorization",
+            #     vocabulary=NamedVocabulary('category4_keywords'),
+            #     enforceVocabulary=True,
+            # ),
 
 
 ))
