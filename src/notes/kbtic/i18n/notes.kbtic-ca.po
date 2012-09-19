@@ -32,3 +32,5 @@ msgstr "Servei PPS"
 msgid "category2_help"
 msgstr "Seleccionar les categories de tipus Servei PPS de l'element"
 
+msgid "notesDocument"
+msgstr "Document ASTIC"

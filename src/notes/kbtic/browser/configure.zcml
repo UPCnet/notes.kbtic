@@ -19,6 +19,13 @@
         permission="MigratefromNotes.Execute"
         /> 
 
+     <browser:page
+        name="MigratefromATIC"
+        for="*"
+        class=".migrateATIC.NotesSyncATIC"
+        permission="MigratefromNotes.Execute"
+        />         
+
     <browser:resourceDirectory
         name="notes_kbtic_images"
         directory="images"

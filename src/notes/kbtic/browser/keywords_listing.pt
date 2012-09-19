@@ -33,7 +33,9 @@
               <tr>
                 <th>Titol</th>
                 <th>Creador</th>
+                <th>Estat</th>                
                 <th>Data de creació</th>
+                <th>Data de modificació</th>                
               </tr>
             </thead>
             <tbody>
@@ -44,7 +46,9 @@
                                       item_id item/id;
                                       item_title item/title;
                                       item_creator item/creator;
-                                      item_creation_date item/creation_date">
+                                      item_state item/review_state;
+                                      item_creation_date item/creation_date;
+                                      item_modification_date item/modification_date">
                         <td>
                           <a tal:attributes="title item_title; alt item_title; href item_url;"
                              tal:content="item_title">Project title</a>
@@ -56,11 +60,23 @@
                               </tal:omit-tag>
                             </tal:name>
                         </td>
+                        <td>
+                            <tal:name tal:condition="item_state">
+                              <tal:omit-tag tal:content="item_state">
+                                Pending
+                              </tal:omit-tag>
+                            </tal:name>
+                        </td>                        
                         <td style="text-align: center;">
                           <tal:omit-tag 
                               tal:condition="item_creation_date" tal:content="item_creation_date">Creation Date
                           </tal:omit-tag>
                         </td>
+                        <td style="text-align: center;">
+                          <tal:omit-tag 
+                              tal:condition="item_modification_date" tal:content="item_modification_date">Modification Date
+                          </tal:omit-tag>
+                        </td>                        
                     </tal:defs>
                 </tr>
               </tal:items>
@@ -69,8 +85,6 @@
           </table>
           <div metal:use-macro="here/batch_macros/macros/navigation" />
         </tal:listing>
-
-
 
         </tal:foldercontents>
         </metal:listingmacro>

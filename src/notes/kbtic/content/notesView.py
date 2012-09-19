@@ -22,7 +22,6 @@ class notesView(BrowserView):
         path = '/'.join(urltool.absolute_url().split('/')[:-1]) + '/'
 
         results = []
-        #import ipdb; ipdb.set_trace( )
         try:
             cat1 = self.context.category1
         except:

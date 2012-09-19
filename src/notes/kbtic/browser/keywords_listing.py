@@ -16,6 +16,7 @@ class KeywordsView(BrowserView):
         """ locate objects assigned to queried keyword
         """
         results = []
+
         keyword = self.request.environ['QUERY_STRING']
         objects1 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                              sort_on='getObjPositionInParent',
@@ -39,7 +40,9 @@ class KeywordsView(BrowserView):
                             'title': value.Title,
                             'url': value.getURL(),
                             'creator': value.Creator,
-                            'creation_date': self.context.toLocalizedTime(value.CreationDate)})
+                            'review_state': value.review_state,
+                            'creation_date': self.context.toLocalizedTime(value.CreationDate),
+                            'modification_date': self.context.toLocalizedTime(value.ModificationDate)})
 
         return results
 
@@ -48,6 +51,10 @@ class KeywordsView(BrowserView):
         """
         keyword = self.request.environ['QUERY_STRING']
 
-        obj = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', id=keyword)[0]
+        try:
+            obj = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', id=keyword)[0]
+            value = obj.Title
+        except:
+            value = "Paraula clau no trobada"
 
-        return obj.Title
+        return value
