@@ -53,14 +53,15 @@ class recreateLinks():
                 HTML = requests.get(match.string.split(' ')[5].replace('\n', ''), auth=('admin', 'admin')).content
                 obj = self.context.portal_catalog.searchResults(portal_type='documentCSPT', id=match.string.split(' ')[5].replace('\n', '').split('/')[-1:])[0]
                 newHTML = re.search(r'parent-fieldname-body">(.*?)div>(.*?)<div[^>]+id="category[^>]+class="documentByLine">(.*?)</div>(.*?)<div[^>]+id="portal-column-one"[^>]+class="cell width-1:4 position-0">(.*?)</html>', HTML, re.DOTALL | re.MULTILINE).groups()[1][:-20]
-                import ipdb; ipdb.set_trace( )
-                NotesUID = match.string.split(' ')[4].split('/')[-1:][0].replace('?OpenDocument','')
-                replacedContent = re.sub('OpenDocument', 'ROBERTO', newHTML)
+                #import ipdb; ipdb.set_trace( )
+                NotesUID = match.string.split(' ')[4].split('/')[-1:][0].replace('?OpenDocument', '').upper()
+                #print NotesUID
+                replacedContent = re.sub('OpenDocument', 'CHANGED', newHTML)
                 objecte = obj.getObject()
                 objecte.setBody(replacedContent)
                 objecte.reindexObject()
                 lista = lista + objecte.absolute_url() + '\n'
-        
+
         return lista
 
 # 2012-10-09 11:58:11 #6# Title: Actualizar el cliente de iPrint
