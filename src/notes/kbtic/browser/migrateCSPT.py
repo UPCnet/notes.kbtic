@@ -15,8 +15,8 @@ import transaction
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
-NOTES_USER = "******"
-NOTES_PASS = "******"
+NOTES_USER = ""
+NOTES_PASS = ""
 
 
 class NotesSyncCSPT():
@@ -103,15 +103,19 @@ class NotesSyncCSPT():
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
 
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                #titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
             except:
-                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')
+                #titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"')  # PROD
             if titleObject.lower() == "view":
-                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'
+                #titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'  # GOLLUM
+                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'  # PROD
             if titleObject.lower() == "keys":
-                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'
-            #htmlContent = str(html.content)  # PRODUCTION
-            htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # GOLLUM
+                #titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'  # GOLLUM
+                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')' # PROD
+            htmlContent = str(html.content)  # PRODUCTION
+            #htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # GOLLUM
 
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
             logging.info('#%s# %s', index, titleObject)
@@ -192,7 +196,8 @@ class NotesSyncCSPT():
 
             # Fix creation Date
             try:
-                Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                #Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                 if Date == 'Yesterday':
                     import datetime
                     today = datetime.date.today()
@@ -204,7 +209,8 @@ class NotesSyncCSPT():
             except:
                 pass
             try:
-                Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                #Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                 dateCreatedInNotes = '2012/' + Date.split('/')[0] + '/' + Date.split('/')[1]
                 object.setCreationDate(dateCreatedInNotes)
             except:
