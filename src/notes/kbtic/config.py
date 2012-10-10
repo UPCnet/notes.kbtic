@@ -5,5 +5,6 @@ PROJECTNAME = 'notes.kbtic'
 
 ADD_PERMISSIONS = {
     # -*- extra stuff goes here -*-
-    'NotesDocument': 'notes.kbtic: Add NotesDocument',
+    'NotesDocument': 'Add portal content',
+    'DocumentCSPT': 'Add portal content',
 }

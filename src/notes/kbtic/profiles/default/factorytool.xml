@@ -3,6 +3,7 @@
   <factorytypes>
 
       <type portal_type="notesDocument" />    
-      
+      <type portal_type="documentCSPT" />      
+
   </factorytypes>
 </object>

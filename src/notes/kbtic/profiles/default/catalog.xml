@@ -17,9 +17,9 @@
   </index>
   <column value="category3"/>
   
-  <index name="category4" meta_type="KeywordIndex">
-    <indexed_attr value="category4"/>
+  <index name="categoryCSPT" meta_type="KeywordIndex">
+    <indexed_attr value="categoryCSPT"/>
   </index>
-  <column value="category4"/>
+  <column value="categoryCSPT"/>
 
 </object>

@@ -26,6 +26,22 @@
         permission="MigratefromNotes.Execute"
         />         
 
+     <browser:page
+        name="MigratefromNotesCSPT"
+        for="*"
+        class=".migrateCSPT.NotesSyncCSPT"
+        permission="MigratefromNotes.Execute"
+        /> 
+
+     <browser:page
+        name="recreateLinks"
+        for="*"
+        class=".recreateLinks.recreateLinks"
+        permission="MigratefromNotes.Execute"
+        />    
+
+
+
     <browser:resourceDirectory
         name="notes_kbtic_images"
         directory="images"

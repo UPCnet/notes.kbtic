@@ -1,2 +1,2 @@
-# -*- extra stuff goes here -*-
 from notesDocument import INotesDocument
+from documentCSPT import IDocumentCSPT

@@ -11,6 +11,13 @@
         />
   </class>
 
+  <class class=".documentCSPT.DocumentCSPT">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IDocumentCSPT"
+        />
+  </class>  
+
   <browser:page
         for="*"
         name="notes_view"

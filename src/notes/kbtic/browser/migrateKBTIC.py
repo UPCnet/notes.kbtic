@@ -69,8 +69,8 @@ class NotesSyncKBTIC():
         logging.info('Starting Notes Migration process...')
         logging.info('Total objects to import: %s', limit)
         # Uncomment for manual imports...
-        startLimit = 32
-        limit = 34
+        startLimit = 2334
+        limit = 3500
         logging.info('Total objects importing: %s to %s', startLimit, limit)
         for index in range(startLimit, int(limit) + 1):
             # if index % 40 == 0:  # Wait every pack of imports...
@@ -161,8 +161,9 @@ class NotesSyncKBTIC():
                 for obj in imatgeSrc:
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/image' + str(numimage))
-                    logging.info('#%s# Creating image: %s', index, object.absolute_url() + '/image' + str(numimage))
+                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                    tinyContent = tinyContent.replace(obj, replacedName)
+                    logging.info('#%s# Creating image: %s', index, replacedName)
                     numimage = numimage + 1
                     imageObject.setImage(imatge.content)
 
@@ -178,8 +179,9 @@ class NotesSyncKBTIC():
                         contents = object.contentIds()
                         normalizedName = self.calculaNom(contents, normalizedName)
                         fileObject = self.createNotesObject('File', object, normalizedName)
-                        tinyContent = tinyContent.replace(obj, object.absolute_url() + '/' + normalizedName)
-                        logging.info('#%s# Creating file: %s', index, object.absolute_url() + '/' + normalizedName)
+                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                        tinyContent = tinyContent.replace(obj, replacedName)
+                        logging.info('#%s# Creating file: %s', index, replacedName)
                         fileObject.setFile(file.content)
                         # OpenOffice files internally are saved as ZIP files, we must force metadata...
                         extension = obj.split('.')[-1:][0]
@@ -222,16 +224,23 @@ class NotesSyncKBTIC():
                     object.setCreationDate(dateCreatedInNotes)
                 except:
                     pass
-
                 # Guardar links a BBDD Notes
-                links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', htmlContent)
+                links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
+                f = open('NotesLinksKBTIC.txt', 'a')
                 linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
                 for obj in linksNotes:
                     try:
-                        logging.info('#%s# Original: %s Referer: %s', index, originNotesObjectUrl, obj)
+                        information = '#' + str(index) + '# URL Plone: ' + object.absolute_url() + '\n'
+                        f.write(information)
+                        information = '#' + str(index) + '## Title Plone: ' + titleObject + '\n'
+                        f.write(information)
+                        information = '#' + str(index) + '### DocNotes: ' + str(originNotesObjectUrl) + '\n'
+                        f.write(information)
+                        information = '#' + str(index) + '#### Con links a: ' + str(URL) + str(obj) + '\n'
+                        f.write(information)
                     except:
                         pass
-
+                f.close()
                 transaction.commit()
                 logging.info('#%s# Object migrated correctly.', index)
 

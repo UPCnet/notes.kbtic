@@ -35,7 +35,7 @@ class notesView(BrowserView):
         except:
             cat3 = ()
         try:
-            cat4 = self.context.category4
+            cat4 = self.context.categoryCSPT
         except:
             cat4 = ()
 

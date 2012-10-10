@@ -24,7 +24,7 @@
 			</li>		
 		</ul>
 	</li>
-	<!-- <br/>	
+	<br/>	
 	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res">
 		<a href="#" i18n:translate="label_category3"> Label Category3 </a>
 		<ul>
@@ -35,7 +35,7 @@
 			</li>		
 		</ul>
 	</li>
-	<br/>			
+<!-- 	<br/>			
 	<li tal:define="res view/mostrarEtiquetesCategory4" tal:condition="res">
 		<a href="#" i18n:translate="label_category4"> Label Category4 </a>
 		<ul>
@@ -46,6 +46,17 @@
 			</li>		
 		</ul>
 	</li>	 -->
+	<br/>			
+	<li tal:define="res view/mostrarEtiquetesCategoryCSPT" tal:condition="res">
+		<a href="#" i18n:translate="label_categoryCSPT"> Label CategoryCSPT </a>
+		<ul>
+			<li tal:repeat="res view/mostrarEtiquetesCategoryCSPT">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>		
+		</ul>
+	</li>		
 </ul>
 <br/>
 </tal:portletCategorias>

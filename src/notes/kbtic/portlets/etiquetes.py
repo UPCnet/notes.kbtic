@@ -91,6 +91,22 @@ class Renderer(base.Renderer):
 
         return results
 
+    def mostrarEtiquetesCategoryCSPT(self):
+        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+        """
+        urltool = getToolByName(self.context, 'portal_url')
+        path = urltool.getPortalPath()
+
+        results = []
+        path = path + '/portal_vocabularies/categoryCSPT_keywords'
+        keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
+                                                             path={'query': path, 'depth': 1, },
+                                                             sort_on='getObjPositionInParent')
+        for value in keys:
+            results.append({'id': value.id, 'title': value.Title})
+
+        return results
+
 
 class AddForm(base.NullAddForm):
 

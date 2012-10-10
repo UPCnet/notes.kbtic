@@ -598,6 +598,34 @@ def setupVarious(context):
     except:
         pass
 
+    #paraules clau CSPT
+    try:
+        categoryCSPT_keywords = _createObjectByType('SortedSimpleVocabulary', voctool, 'categoryCSPT_keywords')
+        keywords = [
+                    (u"cspt-01", u"0 - Operativa comuna i informació genèrica"),
+                    (u"cspt-02", u"1 - Telecomunicacions"),
+                    (u"cspt-03", u"2 - Repositori de fitxers i impressores"),
+                    (u"cspt-04", u"3 - Correu electrònic"),
+                    (u"cspt-05", u"4 - Administració de Sistemes centrals"),
+                    (u"cspt-06", u"Aturar i engegar equips"),
+                    (u"cspt-07", u"Dades i persones de contacte CSPT i altres centres"),
+                    (u"cspt-08", u"Indicadors"),
+                    (u"cspt-09", u"Informació proveïdors"),
+                    (u"cspt-10", u"Manuals"),
+                    (u"cspt-11", u"Reunions"),
+                    (u"cspt-12", u"RRHH"),
+                    (u"cspt-13", u"Seguiment UPCnet"),
+                    (u"cspt-14", u"Software i utilitats"),
+                    (u"cspt-15", u"Startup"),
+                    (u"cspt-16", u"Tasques en curs"),
+                       ]
+        for keyword in keywords:
+            object = _createObjectByType('SimpleVocabularyTerm', categoryCSPT_keywords, keyword[0])
+            object.setTitle(keyword[1])
+            object.reindexObject()
+    except:
+        pass
+
     portal.setTitle("Portal Notes")
 
     langtool = getToolByName(portal, 'portal_languages')

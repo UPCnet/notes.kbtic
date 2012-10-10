@@ -5,4 +5,6 @@ select#category2_options,
 select#category3,
 select#category3_options,
 select#category4,  
-select#category4_options {width: 360px !important; height: 300px !important;}
+select#category4_options,
+select#categoryCSPT,  
+select#categoryCSPT_options {width: 325px !important; height: 300px !important;}

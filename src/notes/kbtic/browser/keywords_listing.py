@@ -30,9 +30,9 @@ class KeywordsView(BrowserView):
                                                              sort_on='getObjPositionInParent',
                                                              category3=keyword)
 
-        objects4 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
+        objects4 = self.context.portal_catalog.searchResults(portal_type='documentCSPT',
                                                              sort_on='getObjPositionInParent',
-                                                             category4=keyword)
+                                                             categoryCSPT=keyword)
         objects = objects1 + objects2 + objects3 + objects4
 
         for value in objects:
