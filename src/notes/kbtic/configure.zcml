@@ -28,5 +28,6 @@
       />
   
   <!-- -*- extra stuff goes here -*- -->
+  <cmf:registerDirectory name="notes_kbtic_templates" />
 
 </configure>

@@ -8,3 +8,20 @@ select#category4,
 select#category4_options,
 select#categoryCSPT,  
 select#categoryCSPT_options {width: 325px !important; height: 300px !important;}
+
+.contenttype-documentcspt {
+
+    background-repeat: no-repeat !important;
+	background-image: url(++resource++notes_kbtic_images/documentNotes.png) !important;
+	padding-left:25px !important;
+    background-position: 3px 3px !important;	
+}
+
+.contenttype-notesdocument {
+
+    background-repeat: no-repeat !important;
+	background-image: url(++resource++notes_kbtic_images/documentNotes.png) !important;
+	padding-left:25px !important;
+    background-position: 3px 3px !important;	
+    
+}

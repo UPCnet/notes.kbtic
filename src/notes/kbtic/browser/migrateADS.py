@@ -84,10 +84,12 @@ class NotesSyncADS():
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                #titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
             except:
                 try:
-                    titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')
+                    titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                    #titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"')  # PROD
                 except:
                     titleObject = 'ERROR: Title not found... Check IT!'
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
@@ -159,8 +161,9 @@ class NotesSyncADS():
                 for obj in imatgeSrc:
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    tinyContent = tinyContent.replace(obj, object.absolute_url() + '/image' + str(numimage))
-                    logging.info('#%s# Creating image: %s', index, object.absolute_url() + '/image' + str(numimage))
+                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                    tinyContent = tinyContent.replace(obj, replacedName)
+                    logging.info('#%s# Creating image: %s', index, replacedName)
                     numimage = numimage + 1
                     imageObject.setImage(imatge.content)
 
@@ -176,8 +179,9 @@ class NotesSyncADS():
                         contents = object.contentIds()
                         normalizedName = self.calculaNom(contents, normalizedName)
                         fileObject = self.createNotesObject('File', object, normalizedName)
-                        tinyContent = tinyContent.replace(obj, object.absolute_url() + '/' + normalizedName)
-                        logging.info('#%s# Creating file: %s', index, object.absolute_url() + '/' + normalizedName)
+                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                        tinyContent = tinyContent.replace(obj, replacedName)
+                        logging.info('#%s# Creating file: %s', index, replacedName)
                         fileObject.setFile(file.content)
                         # OpenOffice files internally are saved as ZIP files, we must force metadata...
                         extension = obj.split('.')[-1:][0]
@@ -202,7 +206,8 @@ class NotesSyncADS():
                 transaction.commit()
                 # Fix creation Date
                 try:
-                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                    #Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                     if Date == 'Yesterday':
                         import datetime
                         today = datetime.date.today()
@@ -214,12 +219,14 @@ class NotesSyncADS():
                 except:
                     pass
                 try:
-                    Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                    Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
+                    #Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                     dateCreatedInNotes = '2012/' + Date.split('/')[1] + '/' + Date.split('/')[0]
                     object.setCreationDate(dateCreatedInNotes)
                 except:
                     pass
                 transaction.commit()
+                object.reindexObject()
                 logging.info('#%s# Object migrated', index)
 
         logging.info('Done! End of Notes Migration process.')

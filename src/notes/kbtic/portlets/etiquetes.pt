@@ -35,17 +35,7 @@
 			</li>		
 		</ul>
 	</li>
-	<br/>			
-	<li tal:define="res view/mostrarEtiquetesCategoryCSPT" tal:condition="res">
-		<a href="#" i18n:translate="label_categoryCSPT"> Categories CSPT </a>
-		<ul>
-			<li tal:repeat="res view/mostrarEtiquetesCategoryCSPT">
-				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
-					tal:content="res/title">
-				</a>
-			</li>		
-		</ul>
-	</li>		
+
 </ul>
 <br/>
 </tal:portletCategorias>

@@ -3,8 +3,8 @@ import requests
 import logging
 import re
 
-NOTES_USER = "******"
-NOTES_PASS = "******"
+NOTES_USER = "usuari.elena6"
+NOTES_PASS = "NotesNotes6"
 
 
 class recreateLinks():
@@ -50,25 +50,28 @@ class recreateLinks():
         for line in linksFile.readlines():
             match = re.search('#Link', line)
             if match is not None:
-                HTML = requests.get(match.string.split(' ')[5].replace('\n', ''), auth=('admin', 'admin')).content
-                obj = self.context.portal_catalog.searchResults(portal_type='documentCSPT', id=match.string.split(' ')[5].replace('\n', '').split('/')[-1:])[0]
-                newHTML = re.search(r'parent-fieldname-body">(.*?)div>(.*?)<div[^>]+id="category[^>]+class="documentByLine">(.*?)</div>(.*?)<div[^>]+id="portal-column-one"[^>]+class="cell width-1:4 position-0">(.*?)</html>', HTML, re.DOTALL | re.MULTILINE).groups()[1][:-20]
-                #import ipdb; ipdb.set_trace( )
-                NotesUID = match.string.split(' ')[4].split('/')[-1:][0].replace('?OpenDocument', '').upper()
-                #print NotesUID
-                replacedContent = re.sub('OpenDocument', 'CHANGED', newHTML)
-                objecte = obj.getObject()
-                objecte.setBody(replacedContent)
-                objecte.reindexObject()
-                lista = lista + objecte.absolute_url() + '\n'
-
+                try:
+                    HTML = requests.get(match.string.split(' ')[5].replace('\n', ''), auth=('admin', 'admin')).content
+                    obj = self.context.portal_catalog.searchResults(portal_type='documentCSPT', id=match.string.split(' ')[5].replace('\n', '').split('/')[-1:])[0]
+                    newHTML = re.search(r'parent-fieldname-body">(.*?)div>(.*?)<div[^>]+id="category[^>]+class="documentByLine">(.*?)</div>(.*?)<div[^>]+id="portal-column-one"[^>]+class="cell width-1:4 position-0">(.*?)</html>', HTML, re.DOTALL | re.MULTILINE).groups()[1][:-20]
+                    NotesUID = match.string.split(' ')[4].split('/')[-1:][0].replace('?OpenDocument', '').lower()
+                    nouLink = self.searchNotesDoc(NotesUID)
+                    url2search = '/' + '/'.join(match.string.split(' ')[4].split('/')[3:]).replace('?O', '\?\O')
+                    newHTML = re.sub(r'<img\s+src="/icons/doclink.gif"\s+border="0"\s+alt="([\w\(\)]+.*?) />', nouLink, newHTML)
+                    replacedContent = re.sub(url2search, nouLink, newHTML)
+                    objecte = obj.getObject()
+                    objecte.setBody(replacedContent)
+                    objecte.reindexObject()
+                    lista = lista + objecte.absolute_url() + '\n'
+                except:
+                    pass
         return lista
 
-# 2012-10-09 11:58:11 #6# Title: Actualizar el cliente de iPrint
-# 2012-10-09 11:58:11 $6$ Notes: https://liszt.upc.es/C1256DA9004D37E9/2F2F551EB18D68B9852566D700413812/18ACDF538A0E2419C125799C00352390 Plone: http://gollum:8080/kbtic/import/actualizar-el-cliente-de-iprint-8
-# 2012-10-09 11:58:12 #6# #Link: https://liszt.upc.es/Upcnet/Operacions/uses/CPST/Manualexplotacio.nsf/867962c7d68029f085256603006add59/5f00d25b1a244198c12573de003c7204?OpenDocument http://gollum:8080/kbtic/import/actualizar-el-cliente-de-iprint-8
-# 2012-10-09 11:58:12 #6# Object migrated
-
-
-# search Link
-# replace "url other"
+    def searchNotesDoc(self, uid):
+        """ Search Plone Ids by Notes Ids
+        """
+        linksFile = open('migrateCSPT.log', 'r')
+        for line in linksFile.readlines():
+            match = re.search(uid.lower(), line.lower())
+            if match is not None:
+                return match.string.split(' ')[6].replace('\n', '')

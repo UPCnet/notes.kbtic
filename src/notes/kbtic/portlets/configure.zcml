@@ -16,4 +16,14 @@
          addview=".etiquetes.AddForm"
          />
 
+     <plone:portlet
+         name="navegacioEtiquetesCSPT"
+         interface=".etiquetesCSPT.IEtiquetesCSPTPortlet"
+         assignment=".etiquetesCSPT.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".etiquetesCSPT.Renderer"
+         addview=".etiquetesCSPT.AddForm"
+         />         
+
 </configure>

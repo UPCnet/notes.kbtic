@@ -34,13 +34,18 @@
         /> 
 
      <browser:page
+        name="MigratefromNotesRRHH"
+        for="*"
+        class=".migrateRRHH.NotesSyncRRHH"
+        permission="MigratefromNotes.Execute"
+        /> 
+
+     <browser:page
         name="recreateLinks"
         for="*"
         class=".recreateLinks.recreateLinks"
         permission="MigratefromNotes.Execute"
         />    
-
-
 
     <browser:resourceDirectory
         name="notes_kbtic_images"

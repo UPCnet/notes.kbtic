@@ -15,11 +15,11 @@ import transaction
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
-NOTES_USER = "usuari.elena6"
-NOTES_PASS = "NotesNotes6"
+NOTES_USER = ""
+NOTES_PASS = ""
 
 
-class NotesSyncCSPT():
+class NotesSyncRRHH():
 
     def __call__(self):
         ###
