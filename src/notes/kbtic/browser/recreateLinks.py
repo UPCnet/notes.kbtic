@@ -3,8 +3,8 @@ import requests
 import logging
 import re
 
-NOTES_USER = "usuari.elena6"
-NOTES_PASS = "NotesNotes6"
+NOTES_USER = ""
+NOTES_PASS = ""
 
 
 class recreateLinks():
