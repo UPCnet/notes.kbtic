@@ -2,6 +2,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from plone.app.controlpanel.mail import IMailSchema
+from Products.CMFPlone.utils import normalizeString
 
 
 def setupVarious(context):
@@ -626,6 +627,51 @@ def setupVarious(context):
     except:
         pass
 
+    #paraules clau RRHH
+    try:
+        categoryRRHH_keywords = _createObjectByType('SortedSimpleVocabulary', voctool, 'categoryRRHH_keywords')
+        keywords = [
+                    (u"rrhh-01", u"AGENDA"),
+                    (u"rrhh-02", u"ASSEGURANÇA"),
+                    (u"rrhh-03", u"ASSESSORAMENT"),
+                    (u"rrhh-04", u"CALENDARI LABORAL"),
+                    (u"rrhh-05", u"CERTIFICATS"),
+                    (u"rrhh-06", u"COMPTABILITAT"),
+                    (u"rrhh-07", u"CONCILIACIÓ"),
+                    (u"rrhh-08", u"CONTRACTES"),
+                    (u"rrhh-09", u"COSTOS"),
+                    (u"rrhh-10", u"DESPESES CORPORATIVES"),
+                    (u"rrhh-11", u"ELECCIONS"),
+                    (u"rrhh-12", u"FORCEM"),
+                    (u"rrhh-13", u"FORMACIO"),
+                    (u"rrhh-14", u"FORUM TI"),
+                    (u"rrhh-15", u"FOTOGRAFIES"),
+                    (u"rrhh-16", u"GESTORIA"),
+                    (u"rrhh-17", u"INDICADORS"),
+                    (u"rrhh-18", u"LLISTATS"),
+                    (u"rrhh-19", u"NOMINA"),
+                    (u"rrhh-20", u"PERFILS I ORGANIGRAMES"),
+                    (u"rrhh-21", u"PERMISOS RETRIBUITS"),
+                    (u"rrhh-22", u"PRESENTACIONS"),
+                    (u"rrhh-23", u"PRL"),
+                    (u"rrhh-24", u"PROJECTES EXTERNS"),
+                    (u"rrhh-25", u"RETRIBUCIÓ"),
+                    (u"rrhh-26", u"RSC"),
+                    (u"rrhh-27", u"SELECCIO"),
+                    (u"rrhh-28", u"SOTSCONTRACTATS"),
+                    (u"rrhh-29", u"SUBVENCIONS"),
+                    (u"rrhh-30", u"TEMES LABORALS"),
+                    (u"rrhh-31", u"VACANCES"),
+                    (u"rrhh-32", u"VARIS"),
+                    (u"rrhh-33", u"(Not Categorized)"),
+                       ]
+        for keyword in keywords:
+            object = _createObjectByType('SimpleVocabularyTerm', categoryRRHH_keywords, keyword[0])
+            object.setTitle(keyword[1])
+            object.reindexObject()
+    except:
+        pass
+
     portal.setTitle("Portal Notes")
 
     langtool = getToolByName(portal, 'portal_languages')
@@ -639,3 +685,77 @@ def setupVarious(context):
                                         setRequestN=0,
                                         startNeutral=1,
                                         displayFlags=False)
+
+    plantilles = []
+    titol = u"Plantilla KBTIC-RIN"
+    resum = u"Per definir un índex amb enllaços al contingut de la mateixa pàgina. Enllaços definits amb àncores."
+    cos = u"""<h2>INFORMACIÓ D'ENTRADA (AUS/ADS)</h2>
+<h3>Entrades necessàries per a la resolució (i com obtenir-les)</h3>
+<p>Morbi dictum. Vestibulum adipiscing pulvinar quam.  In aliquam rhoncus sem. In mi erat, sodales eget, pretium interdum, malesuada  ac, augue. Aliquam sollicitudin, massa ut vestibulum posuere, massa arcu  elementum purus, eget vehicula lorem metus vel libero. Sed in dui id lectus  commodo elementum. Etiam rhoncus tortor. Proin a lorem. Ut nec velit. Quisque  varius. Proin nonummy justo dictum sapien tincidunt iaculis. Duis lobortis  pellentesque risus.</p>
+<h3>Requeriments i/o comprovacions prèvies</h3>
+<p>Morbi dictum. Vestibulum adipiscing pulvinar quam.  In aliquam  rhoncus sem. In mi erat, sodales eget, pretium interdum, malesuada  ac,  augue. Aliquam sollicitudin, massa ut vestibulum posuere,</p>
+<h3>Autoritzacions</h3>
+<p>Morbi dictum. Vestibulum adipiscing pulvinar quam.</p>
+<h3>Equip a qui assignar el tiquet</h3>
+<p>Morbi dictum. Vestibulum adipiscing pulvinar quam.</p>
+<p> </p>
+<h2>Procediment</h2>
+<h4>Sortides (i interpretació i/o tractament)</h4>
+<div class="textDestacat">
+<p>In aliquam rhoncus sem. Morbi dictum. Vestibulum adipiscing pulvinar quam.  In aliquam rhoncus sem. In mi erat, sodales eget, pretium interdum, malesuada  ac, augue. Aliquam sollicitudin, massa ut vestibulum posuere, massa arcu  elementum purus, eget vehicula lorem metus vel libero. Sed in dui id lectus  commodo elementum. Etiam rhoncus tortor. Proin a lorem. Ut nec velit. Quisque  varius. Proin nonummy justo dictum sapien tincidunt iaculis. Duis lobortis  pellentesque risus.</p>
+</div>
+<h4>Instruccions de tancament</h4>
+<div class="textDestacat">
+<p>In aliquam rhoncus sem. Morbi dictum. Vestibulum adipiscing pulvinar  quam.  In aliquam rhoncus sem. In mi erat, sodales eget, pretium  interdum, malesuada  ac, augue. Aliquam sollicitudin, massa ut  vestibulum posuere, massa arcu  elementum purus, eget vehicula lorem  metus vel libero. Sed in dui id lectus  commodo elementum. Etiam rhoncus  tortor. Proin a lorem. Ut nec velit. Quisque  varius. Proin nonummy  justo dictum sapien tincidunt iaculis. Duis lobortis  pellentesque  risus.</p>
+</div>
+<br />
+<div class="llistatIndex">
+<h2>Notes d'interés</h2>
+<ul>
+<li><a href="#">JDuis tellus</a></li>
+<li><a href="#">Maecenas elit orci</a></li>
+<li><a href="#">At ipsum vitae est lacinia tincidunt</a></li>
+</ul>
+</div>
+<br />"""
+    # Prepend to list
+    plantilles.insert(0, ({'titol': titol, 'resum': resum, 'cos': cos}))
+    # Afegir template KBTIC al TinyMCE
+    for plt in plantilles:
+        plantilla = crearObjecte(portal["plantilles"], '', normalizeString(plt['titol']), 'Document', plt['titol'], plt['resum'], '')
+        plantilla.setText(plt['cos'], mimetype="text/html")
+
+
+def crearObjecte(context, self, id, type_name, title, description, exclude=True, constrains=None):
+    pt = getToolByName(context, 'portal_types')
+    if not getattr(context, id, False) and type_name in pt.listTypeTitles().keys():
+        #creem l'objecte i el publiquem
+        _createObjectByType(type_name, context, id)
+    #populem l'objecte
+    created = context[id]
+    doWorkflowAction(context, created)
+    created.setTitle(title)
+    created.setDescription(description)
+    created._at_creation_flag = False
+    created.setExcludeFromNav(exclude)
+    if constrains:
+        created.setConstrainTypesMode(1)
+        if len(constrains) > 1:
+            created.setLocallyAllowedTypes(tuple(constrains[0] + constrains[1]))
+        else:
+            created.setLocallyAllowedTypes(tuple(constrains[0]))
+        created.setImmediatelyAddableTypes(tuple(constrains[0]))
+
+    created.reindexObject()
+    return created
+
+
+def doWorkflowAction(self, context):
+    pw = getToolByName(context, "portal_workflow")
+    object_workflow = pw.getWorkflowsFor(context)[0].id
+    object_status = pw.getStatusOf(object_workflow, context)
+    if object_status:
+        try:
+            pw.doActionFor(context, {'genweb_simple': 'publish', 'genweb_review': 'publicaalaintranet'}[object_workflow])
+        except:
+            pass

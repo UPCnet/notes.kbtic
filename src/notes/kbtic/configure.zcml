@@ -5,6 +5,9 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:cmf="http://namespaces.zope.org/cmf"
     i18n_domain="notes.kbtic">
+
+  <!-- Productss -->
+  <include package="Products.ATVocabularyManager" />
     
   <five:registerPackage package="." initialize=".initialize" />
 
@@ -21,7 +24,7 @@
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"
-      title="Notes KBTIC package"
+      title="Notes DB migrator (KBTIC and more)"
       directory="profiles/default"
       description=""
       provides="Products.GenericSetup.interfaces.EXTENSION"

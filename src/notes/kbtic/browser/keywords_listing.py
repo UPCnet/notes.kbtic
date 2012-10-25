@@ -33,7 +33,12 @@ class KeywordsView(BrowserView):
         objects4 = self.context.portal_catalog.searchResults(portal_type='documentCSPT',
                                                              sort_on='getObjPositionInParent',
                                                              categoryCSPT=keyword)
-        objects = objects1 + objects2 + objects3 + objects4
+
+        objects5 = self.context.portal_catalog.searchResults(portal_type='documentRRHH',
+                                                             sort_on='getObjPositionInParent',
+                                                             categoryRRHH=keyword)
+
+        objects = objects1 + objects2 + objects3 + objects4 + objects5
 
         for value in objects:
             results.append({'id': value.id,

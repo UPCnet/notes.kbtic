@@ -24,6 +24,16 @@
          edit_permission="cmf.ManagePortal"
          renderer=".etiquetesCSPT.Renderer"
          addview=".etiquetesCSPT.AddForm"
-         />         
+         />
+
+     <plone:portlet
+         name="navegacioEtiquetesRRHH"
+         interface=".etiquetesRRHH.IEtiquetesRRHHPortlet"
+         assignment=".etiquetesRRHH.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".etiquetesRRHH.Renderer"
+         addview=".etiquetesRRHH.AddForm"
+         />                  
 
 </configure>

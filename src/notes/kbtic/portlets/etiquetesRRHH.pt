@@ -1,0 +1,18 @@
+<tal:portletCategorias
+        tal:define="portal_url context/@@plone_portal_state/portal_url;"
+        i18n:domain="notes.kbtic">
+<ul id="menu">
+	<li tal:define="res view/mostrarEtiquetesCategoryRRHH" tal:condition="res">
+		<a href="#" i18n:translate="label_categoryCSPT"> Categories RRHH </a>
+		<ul>
+			<li tal:repeat="res view/mostrarEtiquetesCategoryRRHH">
+				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>		
+		</ul>
+	</li>		
+</ul>
+<br/>
+</tal:portletCategorias>
+

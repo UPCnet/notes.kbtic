@@ -38,8 +38,12 @@ class notesView(BrowserView):
             cat4 = self.context.categoryCSPT
         except:
             cat4 = ()
+        try:
+            cat5 = self.context.categoryRRHH
+        except:
+            cat5 = ()
 
-        objects = cat1 + cat2 + cat3 + cat4
+        objects = cat1 + cat2 + cat3 + cat4 + cat5
 
         for value in objects:
             try:

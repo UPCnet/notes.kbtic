@@ -17,6 +17,11 @@
       title="Portlet Etiquetes CSPT"
       description="Replace Navigation to etiquetes CSPT" />      
 
+  <portlet 
+      addview="navegacioEtiquetesRRHH"
+      title="Portlet Etiquetes RRHH"
+      description="Replace Navigation to etiquetes RRHH" />
+
     <assignment 
     	name="portlet-etiquetes" 
     	category="context" 

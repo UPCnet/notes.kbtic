@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<object name="documentCSPT"
+<object name="documentRRHH"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="notes.kbtic" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="notesDocument">documentCSPT</property>
+ <property name="title" i18n:translate="notesDocument">documentRRHH</property>
  <property name="description"
-    i18n:translate="notesDocDescription">Notes CSPT Document</property>
+    i18n:translate="notesDocDescription">Notes RRHH Document</property>
  <property name="icon_expr">string:${portal_url}/++resource++notes_kbtic_images/notesDocument.png</property>
- <property name="content_meta_type">documentCSPT</property>
+ <property name="content_meta_type">documentRRHH</property>
  <property name="product">notes.kbtic</property>
- <property name="factory">addDocumentCSPT</property>
+ <property name="factory">addDocumentRRHH</property>
  <property name="add_view_expr"></property>
  <property name="link_target"></property>
  <property name="immediate_view">atct_edit</property>

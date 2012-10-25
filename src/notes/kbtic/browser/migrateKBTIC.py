@@ -15,8 +15,8 @@ import transaction
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
-NOTES_USER = "******"
-NOTES_PASS = "******"
+NOTES_USER = ""
+NOTES_PASS = ""
 
 
 class NotesSyncKBTIC():
