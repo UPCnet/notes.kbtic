@@ -22,7 +22,7 @@ NOTES_PASS = ""
 class NotesSyncRRHH():
 
     def __call__(self):
-        ###
+        ### Ara mateix amb user roberto.diaz (LtpaToken)
         ###
 
         session = requests.session()
@@ -33,7 +33,7 @@ class NotesSyncRRHH():
         PATH = 'C12578160036BF11/' + PATH1
         BASE_URL = 'https://liszt.upc.es/%s' % PATH
         TRAVERSE_PATH = '/Upcnet/RRHH/RecursosHumans.nsf/'
-        MAIN_URL = 'https://liszt.upc.es' + TRAVERSE_PATH 
+        MAIN_URL = 'https://liszt.upc.es' + TRAVERSE_PATH
 
         logging.basicConfig(format='%(asctime)s %(message)s',
                             datefmt='%m/%d/%Y %I:%M:%S %p',
@@ -48,16 +48,17 @@ class NotesSyncRRHH():
                  }
 
         extra_cookies = {
-        'HabCookie': '1',
-        'Desti': BASE_URL,
-        'NomUsuari': '%s' % NOTES_USER
+                    'HabCookie': '1',
+                    'Desti': BASE_URL,
+                    'NomUsuari': '%s' % NOTES_USER,
+                    'LtpaToken': ''
         }
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL + PATH1, headers=cookie)
         from datetime import datetime
-        data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S") 
+        data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         #f = open('migrateRRHH-' + data + '.log', 'a')  # PROD
         f = open('migrateRRHH.log', 'a')  # GOLLUM
         startLimit = 0
@@ -82,27 +83,25 @@ class NotesSyncRRHH():
         #startLimit = 0
         #limit = 10
         # Comment!!!
-        objectestotals = objectestotals[0:1]
+        #objectestotals = objectestotals[603:]
         index = 1
         for obj in objectestotals:
             final_object = BASE_URL + '/' + obj + '/' + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
+
             originNotesObjectUrl = BASE_URL + '/' + obj
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                #titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
             except:
-                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                #titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"')  # PROD
+                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"')
+            if titleObject.lower() == "":
+                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'
             if titleObject.lower() == "view":
-                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'  # GOLLUM
-                #titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'  # PROD
+                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'
             if titleObject.lower() == "keys":
-                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"') + ')'  # GOLLUM
-                #titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'  # PROD
-            #htmlContent = str(html.content)  # PRODUCTION
-            htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # GOLLUM
+                titleObject = titleObject + ' (RE: ' + re.search(r'name="ParentSubject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"') + ')'
+            htmlContent = str(html.content)
 
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
             logging.info('#%s# %s', index, titleObject)
@@ -183,8 +182,7 @@ class NotesSyncRRHH():
 
             # Fix creation Date
             try:
-                Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                #Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
                 if Date == 'Yesterday':
                     import datetime
                     today = datetime.date.today()
@@ -196,8 +194,7 @@ class NotesSyncRRHH():
             except:
                 pass
             try:
-                Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                #Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
                 dateCreatedInNotes = '2012/' + Date.split('/')[0] + '/' + Date.split('/')[1]
                 object.setCreationDate(dateCreatedInNotes)
             except:
@@ -215,7 +212,6 @@ class NotesSyncRRHH():
             transaction.commit()
             object.reindexObject()
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
-            #logging.info('#%s# Object migrated', index)
             index = index + 1
 
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Done! End of Notes Migration process.' + '\n')
