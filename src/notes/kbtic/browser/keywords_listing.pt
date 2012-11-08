@@ -8,7 +8,7 @@
 
 <body>
   <metal:block fill-slot="top_slot" tal:define="dummy python:request.set('disable_border',1)" />
-    
+
     <div metal:fill-slot="main">
       <tal:content condition="view/objectsByKey">
       <div>
@@ -33,9 +33,9 @@
               <tr>
                 <th>Titol</th>
                 <th>Creador</th>
-                <th>Estat</th>                
+                <th>Estat</th>
                 <th>Data de creació</th>
-                <th>Data de modificació</th>                
+                <th>Data de modificació</th>
               </tr>
             </thead>
             <tbody>
@@ -66,21 +66,21 @@
                                 Pending
                               </tal:omit-tag>
                             </tal:name>
-                        </td>                        
+                        </td>
                         <td style="text-align: center;">
-                          <tal:omit-tag 
+                          <tal:omit-tag
                               tal:condition="item_creation_date" tal:content="item_creation_date">Creation Date
                           </tal:omit-tag>
                         </td>
                         <td style="text-align: center;">
-                          <tal:omit-tag 
+                          <tal:omit-tag
                               tal:condition="item_modification_date" tal:content="item_modification_date">Modification Date
                           </tal:omit-tag>
-                        </td>                        
+                        </td>
                     </tal:defs>
                 </tr>
               </tal:items>
-              
+
             </tbody>
           </table>
           <div metal:use-macro="here/batch_macros/macros/navigation" />

@@ -10,42 +10,42 @@
         for="*"
         class=".migrateKBTIC.NotesSyncKBTIC"
 		permission="MigratefromNotes.Execute"
-        /> 
+        />
 
      <browser:page
         name="MigratefromNotesADS"
         for="*"
         class=".migrateADS.NotesSyncADS"
         permission="MigratefromNotes.Execute"
-        /> 
+        />
 
      <browser:page
         name="MigratefromATIC"
         for="*"
         class=".migrateATIC.NotesSyncATIC"
         permission="MigratefromNotes.Execute"
-        />         
+        />
 
      <browser:page
         name="MigratefromNotesCSPT"
         for="*"
         class=".migrateCSPT.NotesSyncCSPT"
         permission="MigratefromNotes.Execute"
-        /> 
+        />
 
      <browser:page
         name="MigratefromNotesRRHH"
         for="*"
         class=".migrateRRHH.NotesSyncRRHH"
         permission="MigratefromNotes.Execute"
-        /> 
+        />
 
      <browser:page
         name="recreateLinks"
         for="*"
         class=".recreateLinks.recreateLinks"
         permission="MigratefromNotes.Execute"
-        />    
+        />
 
     <browser:resourceDirectory
         name="notes_kbtic_images"
@@ -55,12 +55,12 @@
     <browser:resourceDirectory
         name="notes_kbtic_styles"
         directory="styles"
-        />        
+        />
 
     <browser:resourceDirectory
         name="notes_kbtic_scripts"
         directory="scripts"
-        />    
+        />
 
     <browser:page
         for="*"

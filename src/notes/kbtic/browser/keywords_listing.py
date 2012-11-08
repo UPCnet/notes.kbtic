@@ -63,3 +63,4 @@ class KeywordsView(BrowserView):
             value = "Paraula clau no trobada"
 
         return value
+

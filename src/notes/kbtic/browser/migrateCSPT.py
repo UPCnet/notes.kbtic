@@ -26,7 +26,6 @@ class NotesSyncCSPT():
         ###
 
         session = requests.session()
-
         URL = 'https://liszt.upc.es'
         LOGIN_URL = 'https://liszt.upc.es/names.nsf?Login'
         PATH1 = '2F2F551EB18D68B9852566D700413812'
@@ -48,10 +47,11 @@ class NotesSyncCSPT():
                  }
 
         extra_cookies = {
-        'HabCookie': '1',
-        'Desti': BASE_URL,
-        'NomUsuari': '%s' % NOTES_USER
+                    'HabCookie': '1',
+                    'Desti': BASE_URL,
+                    'NomUsuari': '%s' % NOTES_USER,
         }
+        #'LtpaToken': 'AAECAzUwOUEzRTlFNTA5QTUzQjZDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0IHlNFyIzb+9kezwNop58kpzP8RM='        
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}

@@ -22,7 +22,7 @@ NOTES_PASS = ""
 class NotesSyncRRHH():
 
     def __call__(self):
-        ### Ara mateix amb user roberto.diaz (LtpaToken)
+        ### LtpaToken)
         ###
 
         session = requests.session()
@@ -51,8 +51,8 @@ class NotesSyncRRHH():
                     'HabCookie': '1',
                     'Desti': BASE_URL,
                     'NomUsuari': '%s' % NOTES_USER,
-                    'LtpaToken': ''
         }
+        #'LtpaToken': 'AAECAzUwOUE4OEU2NTA5QTlERkVDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXSGtJW/Vw0dtSoxUPqm907yNONwwg=='        
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
@@ -83,7 +83,7 @@ class NotesSyncRRHH():
         #startLimit = 0
         #limit = 10
         # Comment!!!
-        #objectestotals = objectestotals[603:]
+        objectestotals = objectestotals[603:]
         index = 1
         for obj in objectestotals:
             final_object = BASE_URL + '/' + obj + '/' + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'

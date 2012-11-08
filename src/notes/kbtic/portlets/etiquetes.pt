@@ -1,13 +1,11 @@
-<tal:portletCategorias
-        tal:define="portal_url context/@@plone_portal_state/portal_url;"
-        i18n:domain="notes.kbtic">
+<tal:portletCategorias i18n:domain="notes.kbtic">
 <ul id="menu">
 
 	<li tal:define="res view/mostrarEtiquetesCategory1" tal:condition="res">
 		<a href="#"> Categories Servei </a>
 		<ul>
  			<li tal:repeat="res view/mostrarEtiquetesCategory1">
-				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
 			</li>
@@ -15,24 +13,24 @@
 	</li>
 	<br/>
 	<li tal:define="res view/mostrarEtiquetesCategory2" tal:condition="res">
-		<a href="#"> Categories Servei PPs </a>
+		<a href="#"> Categories Servei PPS </a>
 		<ul>
 			<li tal:repeat="res view/mostrarEtiquetesCategory2">
-				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
-			</li>		
+			</li>
 		</ul>
 	</li>
-	<br/>	
+	<br/>
 	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res">
 		<a href="#" i18n:translate="label_category3"> Paraules clau </a>
 		<ul>
 			<li tal:repeat="res view/mostrarEtiquetesCategory3">
-				<a  href="" tal:attributes="href string:${portal_url}/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
-			</li>		
+			</li>
 		</ul>
 	</li>
 
