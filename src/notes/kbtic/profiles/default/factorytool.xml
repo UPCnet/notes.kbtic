@@ -2,8 +2,9 @@
 <object name="portal_factory" meta_type="Plone Factory Tool">
   <factorytypes>
 
-      <type portal_type="notesDocument" />    
-      <type portal_type="documentCSPT" />      
+      <type portal_type="notesDocument" />
+      <type portal_type="documentCSPT" />
+      <type portal_type="documentRRHH" />
 
   </factorytypes>
 </object>

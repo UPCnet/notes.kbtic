@@ -69,4 +69,12 @@
         permission="zope2.View"
       />
 
+     <browser:page
+        name="createRRHHfolders"
+        for="*"
+        class=".createRRHHfolders.createRRHHfolders"
+        permission="MigratefromNotes.Execute"
+        />
+
+
 </configure>

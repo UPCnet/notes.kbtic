@@ -1,14 +1,14 @@
-select#category1,  
-select#category1_options, 
+select#category1,
+select#category1_options,
 select#category2,
 select#category2_options,
 select#category3,
 select#category3_options,
-select#category4,  
+select#category4,
 select#category4_options,
-select#categoryCSPT,  
+select#categoryCSPT,
 select#categoryCSPT_options,
-select#categoryRRHH,  
+select#categoryRRHH,
 select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
 
 .contenttype-documentcspt {
@@ -16,7 +16,7 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
     background-repeat: no-repeat !important;
 	background-image: url(++resource++notes_kbtic_images/documentNotes.png) !important;
 	padding-left:25px !important;
-    background-position: 3px 3px !important;	
+    background-position: 3px 3px !important;
 }
 
 .contenttype-documentrrhh {
@@ -24,13 +24,75 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
     background-repeat: no-repeat !important;
 	background-image: url(++resource++notes_kbtic_images/documentNotes.png) !important;
 	padding-left:25px !important;
-    background-position: 3px 3px !important;	
+    background-position: 3px 3px !important;
 }
 .contenttype-notesdocument {
 
     background-repeat: no-repeat !important;
 	background-image: url(++resource++notes_kbtic_images/documentNotes.png) !important;
 	padding-left:25px !important;
-    background-position: 3px 3px !important;	
-    
+    background-position: 3px 3px !important;
 }
+
+#content a[href^="http:"], #content a.link-external { padding-left: 20px !important; padding-top: 4px !important;}
+
+#portal-column-one .portletWrapper .portletSearch {
+	background: #f5f5f5;
+	padding: 10px 8px 10px 8px;
+    border-top: 0 none;
+    color: #4D4D4D;
+    font-weight: bold;
+    margin-left: 0;
+    margin-top: 12px;
+    padding-bottom: 0;
+    border-radius: 0 0 8px 8px;
+}
+
+
+#portal-column-one .portletWrapper .portletSearch .portletHeader {
+	padding-left: 5px;
+	margin-bottom:10px;
+}
+
+#portal-column-one .portletWrapper .portletSearch .portletItem {
+	border: 0px;
+}
+
+dd.portletFooter { display: none;}
+
+#portal-column-one .LSBox, #portal-column-one .NoLSBox {
+    float: left;
+    margin: -2px 3px 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+input.password, input.text, input.searchField, #searchGadget {
+    border: 1px solid #007DCC;
+    padding: 2px;
+}
+
+li.llistats {
+    border-bottom: 1px dashed #EEEEEE;
+    border-left: 3px solid #DDDDDD;
+    list-style: none outside none;
+    margin-bottom: 0.5em;
+    margin-left: 2px;
+    margin-top: 3px;
+    padding-bottom: 4px;
+    padding-left: 7px;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.categories {
+	font-weight: bold;
+	font-size:  12px;
+	margin-bottom: 10px;
+}
+
+.caixa_llistats {
+    margin-top:  10px;
+    margin-bottom:  10px;
+}
+
+#menu { margin-left: 10px;}
