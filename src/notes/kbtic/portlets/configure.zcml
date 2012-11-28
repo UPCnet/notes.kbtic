@@ -26,7 +26,7 @@
          addview=".etiquetesCSPT.AddForm"
          />
 
-     <plone:portlet
+<!--     <plone:portlet
          name="navegacioEtiquetesRRHH"
          interface=".etiquetesRRHH.IEtiquetesRRHHPortlet"
          assignment=".etiquetesRRHH.Assignment"
@@ -35,5 +35,5 @@
          renderer=".etiquetesRRHH.Renderer"
          addview=".etiquetesRRHH.AddForm"
          />                  
-
+-->
 </configure>

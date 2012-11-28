@@ -33,25 +33,6 @@
           Body text
       </metal:field>
 
-      <div i18n:domain="plone"
-           id="category"
-           class="documentByLine"
-           tal:define="categories view/Categories;
-                       url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
-           tal:condition="categories">
-        <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>
-        <span tal:repeat="category categories">
-          <a href=""
-             class="link-category"
-             rel="tag"
-             tal:content="category/title"
-             tal:define="item_href category/href"
-             tal:attributes="href item_href">
-            Category
-            </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
-        </span>
-      </div>
-
     </metal:fill>
 
   </body>

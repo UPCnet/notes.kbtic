@@ -34,7 +34,7 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
     background-position: 3px 3px !important;
 }
 
-#content a[href^="http:"], #content a.link-external { padding-left: 20px !important; padding-top: 4px !important;}
+/* #content a[href^="http:"], #content a.link-external { padding-left: 20px !important; padding-top: 4px !important;}*/
 
 #portal-column-one .portletWrapper .portletSearch {
 	background: #f5f5f5;

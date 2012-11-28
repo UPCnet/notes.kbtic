@@ -17,9 +17,9 @@ DocumentRRHHSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                                                'text/html',),
                  default_output_type='text/x-html-safe',
                  widget=atapi.RichWidget(
-                     label='Body',
+                     label='Contingut',
                      label_msgid='label_body',
-                     i18n_domain='notes.kbtic',
+                     i18n_domain='plone',
                      rows=40,
                  ),
              required=False,
@@ -31,6 +31,7 @@ DocumentRRHHSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 name='categoryRRHH',
                 widget=atapi.InAndOutWidget(
                     format="select",
+                    label ='Categories',
                     label_msgid='categoryRRHH_label',
                     description_msgid='categoryRRHH_help',
                     i18n_domain='notes.kbtic',
@@ -48,7 +49,7 @@ DocumentRRHHSchema['title'].storage = atapi.AnnotationStorage()
 DocumentRRHHSchema['description'].storage = atapi.AnnotationStorage()
 
 # Hide default category option
-DocumentRRHHSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+#DocumentRRHHSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentRRHHSchema['description'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentRRHHSchema['language'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentRRHHSchema['relatedItems'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
