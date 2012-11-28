@@ -722,8 +722,11 @@ def setupVarious(context):
     plantilles.insert(0, ({'titol': titol, 'resum': resum, 'cos': cos}))
     # Afegir template KBTIC al TinyMCE
     for plt in plantilles:
-        plantilla = crearObjecte(portal["plantilles"], '', normalizeString(plt['titol']), 'Document', plt['titol'], plt['resum'], '')
-        plantilla.setText(plt['cos'], mimetype="text/html")
+        try:
+            plantilla = crearObjecte(portal["plantilles"], '', normalizeString(plt['titol']), 'Document', plt['titol'], plt['resum'], '')
+            plantilla.setText(plt['cos'], mimetype="text/html")
+        except:
+            None
 
 
 def crearObjecte(context, self, id, type_name, title, description, exclude=True, constrains=None):

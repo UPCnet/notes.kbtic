@@ -37,7 +37,7 @@ DocumentRRHHSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     i18n_domain='notes.kbtic',
                 ),
                 languageIndependent=True,
-                required=True,
+                required=False,
                 schemata="categorization",
                 vocabulary=NamedVocabulary('categoryRRHH_keywords'),
                 enforceVocabulary=True,

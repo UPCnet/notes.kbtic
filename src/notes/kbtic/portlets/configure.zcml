@@ -4,8 +4,8 @@
     i18n_domain="notes.kbtic">
 
   <include package="plone.app.portlets" />
-  <include package="Products.CMFCore" file="permissions.zcml" />  
-	 
+  <include package="Products.CMFCore" file="permissions.zcml" />
+
 	 <plone:portlet
          name="navegacioEtiquetes"
          interface=".etiquetes.IEtiquetesPortlet"
@@ -34,6 +34,6 @@
          edit_permission="cmf.ManagePortal"
          renderer=".etiquetesRRHH.Renderer"
          addview=".etiquetesRRHH.AddForm"
-         />                  
+         />
 -->
 </configure>

@@ -6,29 +6,29 @@
 <portlets
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-  
-    <portlet 
+
+    <portlet
     	addview="navegacioEtiquetes"
     	title="Portlet Etiquetes"
     	description="Replace Navigation to etiquetes" />
 
-  <portlet 
+  <portlet
       addview="navegacioEtiquetesCSPT"
       title="Portlet Etiquetes CSPT"
-      description="Replace Navigation to etiquetes CSPT" />      
+      description="Replace Navigation to etiquetes CSPT" />
 
-  <portlet 
+  <portlet
       addview="navegacioEtiquetesRRHH"
       title="Portlet Etiquetes RRHH"
       description="Replace Navigation to etiquetes RRHH" />
 
-    <assignment 
-    	name="portlet-etiquetes" 
-    	category="context" 
+    <assignment
+    	name="portlet-etiquetes"
+    	category="context"
     	key="/"
-    	manager="plone.leftcolumn" 
-    	type="navegacioEtiquetes" 
+    	manager="plone.leftcolumn"
+    	type="navegacioEtiquetes"
     	visible="True"/>
- 
+
 
 </portlets>
