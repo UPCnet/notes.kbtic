@@ -43,7 +43,7 @@
      <browser:page
         name="recreateLinksCSPT"
         for="*"
-        class=".recreateLinks.recreateLinksCSPT"
+        class=".recreateLinksCSPT.recreateLinks"
         permission="MigratefromNotes.Execute"
         />
 

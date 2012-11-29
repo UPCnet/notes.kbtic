@@ -45,13 +45,14 @@ class NotesSyncKBTIC():
                     'Servidor': 'schubert.upc.es/helpaute.nsf/',
                     'Username': '%s' % NOTES_USER,
                     'Password': '%s' % NOTES_PASS,
+                    'LtpaToken': ''
                  }
 
         extra_cookies = {
-        'HabCookie': '1',
-        'Desti': BASE_URL,
-        'NomUsuari': '%s' % NOTES_USER,
-        'LtpaToken': ''
+            'HabCookie': '1',
+            'Desti': BASE_URL,
+            'NomUsuari': '%s' % NOTES_USER,
+            'LtpaToken': 'AAECAzUwQjc4RUZGNTBCN0E0MTdDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0vDU+wLTat62/AYjhjMfgeevAh1E='
         }
 
         # Creating default tree sctructure
@@ -343,32 +344,30 @@ class NotesSyncKBTIC():
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
-        #import ipdb;ipdb.set_trace()
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
+        from datetime import datetime
+        data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        f = open('migrateKBTIC.log', 'a')  # GOLLUM
         # Ens quedem ID de la vista
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
-
         # url to obtain total entries to import
         toplevelentries = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=1&count=1'
         startLimit = 1
         xmlLimit = session.get(toplevelentries, headers=cookie)
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
-        logging.info('Starting Notes Migration process...')
-        logging.info('Total objects to import: %s', limit)
+        f.write('-----------------------------------------------------------------------------' + '\n')
+        logging.info('------------------------------------------------------')
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting Notes KBTIC Migration process...' + '\n')
+        logging.info('Starting Notes KBTIC Migration process...')
         # Uncomment for manual imports...
-        startLimit = 2334
-        limit = 3500
-        logging.info('Total objects importing: %s to %s', startLimit, limit)
+        #startLimit = 1
+        #limit = 10
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects to import: ' + str(limit) + '\n')
+        logging.info('Total objects to import: %s', limit)
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects importing: ' + str(startLimit) + ' to ' + str(limit) + '\n')
         for index in range(startLimit, int(limit) + 1):
-            # if index % 40 == 0:  # Wait every pack of imports...
-            #     time.sleep(2)
-            #     logging.info(' -> 5 seconds pause...')
-
             path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
             response3 = session.get(path_notes, headers=cookie)
-
-            # No devuelve los mismos resultados, depende de permisos de usuario.
-            # La diferencia está en los docs encriptados de contraseñas
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
             # TODO : Check docs with multiple sections (check if values in 3.1 and 3.2 are well imported)
             final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
@@ -376,19 +375,15 @@ class NotesSyncKBTIC():
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
-                #titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
             except:
                 titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
                 logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
             else:
-                #htmlContent = str(html.content)  # PRODUCTION
-                htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # GOLLUM
-
-                logging.info("#%s# Migrating: %s", index, originNotesObjectUrl)
-                logging.info("#%s# Title: %s", index, titleObject)
-
+                htmlContent = str(html.content)
+                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
+                logging.info('#%s# %s', index, titleObject)
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
                 Title = titleObject
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
@@ -449,7 +444,7 @@ class NotesSyncKBTIC():
                 for obj in imatgeSrc:
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
                     tinyContent = tinyContent.replace(obj, replacedName)
                     logging.info('#%s# Creating image: %s', index, replacedName)
                     numimage = numimage + 1
@@ -467,7 +462,7 @@ class NotesSyncKBTIC():
                         contents = object.contentIds()
                         normalizedName = self.calculaNom(contents, normalizedName)
                         fileObject = self.createNotesObject('File', object, normalizedName)
-                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('colomers:11001', 'kbtic.upcnet.es')
                         tinyContent = tinyContent.replace(obj, replacedName)
                         logging.info('#%s# Creating file: %s', index, replacedName)
                         fileObject.setFile(file.content)
@@ -492,7 +487,7 @@ class NotesSyncKBTIC():
                         if extension == 'ppt':
                             fileObject.setFormat('application/vnd.ms-powerpoint')
                         if extension == 'pptx':
-                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')                            
+                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
                     except:
                         logging.info('#%s# ERROR IMPORTING OBJECT! CHECK IT!', index)
                         pass
@@ -507,8 +502,7 @@ class NotesSyncKBTIC():
                 transaction.commit()
                 # Fix creation Date
                 try:
-                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                    #Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                     if Date == 'Yesterday':
                         import datetime
                         today = datetime.date.today()
@@ -525,27 +519,26 @@ class NotesSyncKBTIC():
                     object.setCreationDate(dateCreatedInNotes)
                 except:
                     pass
+
                 # Guardar links a BBDD Notes
                 links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
-                f = open('NotesLinksKBTIC.txt', 'a')
                 linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
                 for obj in linksNotes:
                     try:
-                        information = '#' + str(index) + '# URL Plone: ' + object.absolute_url() + '\n'
-                        f.write(information)
-                        information = '#' + str(index) + '## Title Plone: ' + titleObject + '\n'
-                        f.write(information)
-                        information = '#' + str(index) + '### DocNotes: ' + str(originNotesObjectUrl) + '\n'
-                        f.write(information)
-                        information = '#' + str(index) + '#### Con links a: ' + str(URL) + str(obj) + '\n'
-                        f.write(information)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
                     except:
                         pass
-                f.close()
-                transaction.commit()
-                logging.info('#%s# Object migrated correctly.', index)
 
+                transaction.commit()
+                object.reindexObject()
+                #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
+                index = index + 1
+
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Done! End of Notes Migration process.' + '\n')
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '--------------------------------------------------' + '\n')
+        f.close()
         logging.info('Done! End of Notes Migration process.')
+        logging.info('------------------------------------------------------')
         return 'OK, imported'
 
     def calculaNom(self, ids, nom_normalitzat, i=0):
