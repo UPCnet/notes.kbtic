@@ -193,6 +193,18 @@ class NotesSyncADS():
                             fileObject.setFormat('application/vnd.oasis.opendocument.presentation')
                         if extension == 'odg':
                             fileObject.setFormat('application/vnd.oasis.opendocument.graphics')
+                        if extension == 'doc':
+                            fileObject.setFormat('application/msword')
+                        if extension == 'docx':
+                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                        if extension == 'xls':
+                            fileObject.setFormat('application/vnd.ms-excel')
+                        if extension == 'xlsx':
+                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                        if extension == 'ppt':
+                            fileObject.setFormat('application/vnd.ms-powerpoint')
+                        if extension == 'pptx':
+                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
                     except:
                         logging.info('#%s# ERROR IMPORTING OBJECT! CHECK IT!', index)
                         pass

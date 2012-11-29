@@ -51,7 +51,7 @@ class NotesSyncCSPT():
                     'Desti': BASE_URL,
                     'NomUsuari': '%s' % NOTES_USER,
         }
-        #'LtpaToken': 'AAECAzUwOUEzRTlFNTA5QTUzQjZDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0IHlNFyIzb+9kezwNop58kpzP8RM='        
+        #'LtpaToken': 'AAECAzUwOUEzRTlFNTA5QTUzQjZDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0IHlNFyIzb+9kezwNop58kpzP8RM='
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
@@ -184,6 +184,18 @@ class NotesSyncCSPT():
                         fileObject.setFormat('application/vnd.oasis.opendocument.presentation')
                     if extension == 'odg':
                         fileObject.setFormat('application/vnd.oasis.opendocument.graphics')
+                    if extension == 'doc':
+                        fileObject.setFormat('application/msword')
+                    if extension == 'docx':
+                        fileObject.setFormat('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                    if extension == 'xls':
+                        fileObject.setFormat('application/vnd.ms-excel')
+                    if extension == 'xlsx':
+                        fileObject.setFormat('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                    if extension == 'ppt':
+                        fileObject.setFormat('application/vnd.ms-powerpoint')
+                    if extension == 'pptx':
+                        fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
                 except:
                     f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# ERROR IMPORTING OBJECT! CHECK IT!' + '\n')
                     pass
