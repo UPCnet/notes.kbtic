@@ -41,9 +41,9 @@
         />
 -->
      <browser:page
-        name="recreateLinks"
+        name="recreateLinksCSPT"
         for="*"
-        class=".recreateLinks.recreateLinks"
+        class=".recreateLinks.recreateLinksCSPT"
         permission="MigratefromNotes.Execute"
         />
 

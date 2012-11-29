@@ -152,7 +152,7 @@ class NotesSyncCSPT():
             for obj in imatgeSrc:
                 imatge = session.get(URL + obj, headers=cookie)
                 imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
                 tinyContent = tinyContent.replace(obj, replacedName)
                 f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Creating image: ' + replacedName + '\n')
                 numimage = numimage + 1
@@ -170,7 +170,7 @@ class NotesSyncCSPT():
                     contents = object.contentIds()
                     normalizedName = self.calculaNom(contents, normalizedName)
                     fileObject = self.createNotesObject('File', object, normalizedName)
-                    replacedName = (object.absolute_url() + '/' + normalizedName).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                    replacedName = (object.absolute_url() + '/' + normalizedName).replace('colomers:11001', 'kbtic.upcnet.es')
                     tinyContent = tinyContent.replace(obj, replacedName)
                     f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Creating file: ' + replacedName + '\n')
                     fileObject.setFile(file.content)

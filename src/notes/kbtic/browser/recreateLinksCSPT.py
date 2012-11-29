@@ -36,9 +36,9 @@ class recreateLinks():
                  }
 
         extra_cookies = {
-        'HabCookie': '1',
-        'Desti': BASE_URL,
-        'NomUsuari': '%s' % NOTES_USER
+                    'HabCookie': '1',
+                    'Desti': BASE_URL,
+                    'NomUsuari': '%s' % NOTES_USER
         }
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
