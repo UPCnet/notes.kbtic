@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwQjc4RUZGNTBCN0E0MTdDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0vDU+wLTat62/AYjhjMfgeevAh1E='
+            'LtpaToken': 'AAECAzUwQjg2Nzc4NTBCODdDOTBDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0VvqzroQ4kv+h3xRTHy6/m/3yTg8='
         }
 
         # Creating default tree sctructure
@@ -357,13 +357,16 @@ class NotesSyncKBTIC():
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
         f.write('-----------------------------------------------------------------------------' + '\n')
         logging.info('------------------------------------------------------')
+        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting Notes KBTIC Migration process...' + '\n')
         logging.info('Starting Notes KBTIC Migration process...')
         # Uncomment for manual imports...
-        #startLimit = 1
-        #limit = 10
+        #startLimit = 3
+        #limit = 5
+        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects to import: ' + str(limit) + '\n')
         logging.info('Total objects to import: %s', limit)
+        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects importing: ' + str(startLimit) + ' to ' + str(limit) + '\n')
         for index in range(startLimit, int(limit) + 1):
             path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
@@ -375,13 +378,14 @@ class NotesSyncKBTIC():
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
             except:
-                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')
+                titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
                 logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
             else:
                 htmlContent = str(html.content)
+                from datetime import datetime
                 f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
                 logging.info('#%s# %s', index, titleObject)
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
@@ -525,7 +529,10 @@ class NotesSyncKBTIC():
                 linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
                 for obj in linksNotes:
                     try:
-                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
+                        #import ipdb;ipdb.set_trace()
+                        from datetime import datetime
+                        #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ORIGINAL_NOTES_PATH: ' + originNotesObjectUrl + ' ORIGINAL_PLONE_URL: ' + object.absolute_url() + ' LINK_TO: ' + str(URL) + str(obj) + '\n')
                     except:
                         pass
 
@@ -533,7 +540,7 @@ class NotesSyncKBTIC():
                 object.reindexObject()
                 #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
                 index = index + 1
-
+        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Done! End of Notes Migration process.' + '\n')
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '--------------------------------------------------' + '\n')
         f.close()
