@@ -346,7 +346,8 @@ class NotesSyncKBTIC():
         response = requests.get(MAIN_URL, headers=cookie)
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
         from datetime import datetime
-        data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        #data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        #f = open('migrateKBTIC-' + data + '.log', 'a')  # PROD
         f = open('migrateKBTIC.log', 'a')  # GOLLUM
         # Ens quedem ID de la vista
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
@@ -431,10 +432,8 @@ class NotesSyncKBTIC():
                     for obj in categories:
                         #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
                         id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-
                         lista = lista + [id_cat]
                         object.setCategory3(lista)
-
                 except:
                     None
                 object.setTitle(Title)
@@ -499,7 +498,6 @@ class NotesSyncKBTIC():
                 removeSections = re.findall(r'(<a[^>]+target="_self">.*?</a>)', tinyContent)
                 for obj in removeSections:
                     tinyContent = tinyContent.replace(obj, "")
-
                 # Create modified HTML content with new image/file paths
                 object.setBody(tinyContent)
                 object.reindexObject()
@@ -523,13 +521,11 @@ class NotesSyncKBTIC():
                     object.setCreationDate(dateCreatedInNotes)
                 except:
                     pass
-
                 # Guardar links a BBDD Notes
                 links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
                 linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
                 for obj in linksNotes:
                     try:
-                        #import ipdb;ipdb.set_trace()
                         from datetime import datetime
                         #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
                         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ORIGINAL_NOTES_PATH: ' + originNotesObjectUrl + ' ORIGINAL_PLONE_URL: ' + object.absolute_url() + ' LINK_TO: ' + str(URL) + str(obj) + '\n')
@@ -551,7 +547,6 @@ class NotesSyncKBTIC():
     def calculaNom(self, ids, nom_normalitzat, i=0):
         """
         """
-
         if i != 0:
             nom = nom_normalitzat + str(i)
         else:

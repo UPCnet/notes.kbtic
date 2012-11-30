@@ -47,6 +47,20 @@
         permission="MigratefromNotes.Execute"
         />
 
+     <browser:page
+        name="recreateLinksADS"
+        for="*"
+        class=".recreateLinksADS.recreateLinks"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
+        name="recreateLinksKBTIC"
+        for="*"
+        class=".recreateLinksKBTIC.recreateLinks"
+        permission="MigratefromNotes.Execute"
+        />
+
     <browser:resourceDirectory
         name="notes_kbtic_images"
         directory="images"

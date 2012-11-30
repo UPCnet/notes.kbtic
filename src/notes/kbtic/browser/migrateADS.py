@@ -48,30 +48,41 @@ class NotesSyncADS():
                  }
 
         extra_cookies = {
-        'HabCookie': '1',
-        'Desti': BASE_URL,
-        'NomUsuari': '%s' % NOTES_USER
+            'HabCookie': '1',
+            'Desti': BASE_URL,
+            'NomUsuari': '%s' % NOTES_USER,
+            'LtpaToken': 'AAECAzUwQjg2Nzc4NTBCODdDOTBDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0VvqzroQ4kv+h3xRTHy6/m/3yTg8='
         }
+
         session.cookies.update(extra_cookies)
         response = session.post(LOGIN_URL, params, allow_redirects=True)
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
-
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
+        from datetime import datetime
+        #data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        #f = open('migrateADS-' + data + '.log', 'a')  # PROD
+        f = open('migrateADS.log', 'a')
         # Ens quedem ID de la vista
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
-
         # url to obtain total entries to import
         toplevelentries = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=1&count=1'
         startLimit = 1
         xmlLimit = session.get(toplevelentries, headers=cookie)
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
-        logging.info('Starting Notes Migration process...')
-        logging.info('Total objects to import: %s', limit)
+        f.write('-----------------------------------------------------------------------------' + '\n')
+        logging.info('------------------------------------------------------')
+        from datetime import datetime
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting Notes ADS Migration process...' + '\n')
+        logging.info('Starting Notes ADS Migration process...')
         # Uncomment for manual imports...
-        startLimit = 1
-        limit = 10
-        logging.info('Total objects importing: %s to %s', startLimit, limit)
+        #startLimit = 1
+        #limit = 10
+        from datetime import datetime
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects to import: ' + str(limit) + '\n')
+        logging.info('Total objects to import: %s', limit)
+        from datetime import datetime
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects importing: ' + str(startLimit) + ' to ' + str(limit) + '\n')
         for index in range(startLimit, int(limit) + 1):
             path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
             response3 = session.get(path_notes, headers=cookie)
@@ -84,23 +95,19 @@ class NotesSyncADS():
             html = session.get(final_object, headers=cookie)
             htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
             try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                #titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
             except:
                 try:
-                    titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                    #titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"')  # PROD
+                    titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
                 except:
                     titleObject = 'ERROR: Title not found... Check IT!'
             if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
                 logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
             else:
-                #htmlContent = str(html.content)                                      # PRODUCTION
-                htmlContent = str(html.content).decode('iso-8859-1').encode('utf-8')  # GOLLUM
-
-                logging.info("#%s# Migrating: %s", index, originNotesObjectUrl)
-                logging.info("#%s# Title: %s", index, titleObject)
-
+                htmlContent = str(html.content)
+                from datetime import datetime
+                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
+                logging.info('#%s# %s', index, titleObject)
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
                 Title = titleObject
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<a\s*href="\/upcnet\/backoffice\/docADS\.nsf\/\(\$All\)\?OpenView">)(.*?)', htmlContent, re.DOTALL | re.MULTILINE).groups()[6]
@@ -144,10 +151,8 @@ class NotesSyncADS():
                     for obj in categories:
                         #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
                         id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-
                         lista = lista + [id_cat]
                         object.setCategory3(lista)
-
                 except:
                     None
                 object.setTitle(Title)
@@ -161,7 +166,7 @@ class NotesSyncADS():
                 for obj in imatgeSrc:
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('mohinder:8080', 'gw4.beta.upcnet.es')
+                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
                     tinyContent = tinyContent.replace(obj, replacedName)
                     logging.info('#%s# Creating image: %s', index, replacedName)
                     numimage = numimage + 1
@@ -218,8 +223,7 @@ class NotesSyncADS():
                 transaction.commit()
                 # Fix creation Date
                 try:
-                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                    #Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
                     if Date == 'Yesterday':
                         import datetime
                         today = datetime.date.today()
@@ -231,17 +235,32 @@ class NotesSyncADS():
                 except:
                     pass
                 try:
-                    Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')  # GOLLUM
-                    #Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                    Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
                     dateCreatedInNotes = '2012/' + Date.split('/')[1] + '/' + Date.split('/')[0]
                     object.setCreationDate(dateCreatedInNotes)
                 except:
                     pass
+                # Guardar links a BBDD Notes
+                links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
+                linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
+                for obj in linksNotes:
+                    try:
+                        from datetime import datetime
+                        #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ORIGINAL_NOTES_PATH: ' + originNotesObjectUrl + ' ORIGINAL_PLONE_URL: ' + object.absolute_url() + ' LINK_TO: ' + str(URL) + str(obj) + '\n')
+                    except:
+                        pass
+
                 transaction.commit()
                 object.reindexObject()
-                logging.info('#%s# Object migrated', index)
-
+                #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
+                index = index + 1
+        from datetime import datetime
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Done! End of Notes Migration process.' + '\n')
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '--------------------------------------------------' + '\n')
+        f.close()
         logging.info('Done! End of Notes Migration process.')
+        logging.info('------------------------------------------------------')
         return 'OK, imported'
 
     def calculaNom(self, ids, nom_normalitzat, i=0):
@@ -251,6 +270,7 @@ class NotesSyncADS():
             nom = nom_normalitzat + str(i)
         else:
             nom = nom_normalitzat
+
         if nom not in ids:
             return nom
         else:
@@ -277,5 +297,13 @@ class NotesSyncADS():
             id = '%s-%i' % (id, number)
         return id
 
+    def createObject(self, type, folder, title):
+        """
+        """
+        id = self.generateUnusedId(title)
+        _createObjectByType(type, folder, id=id, title=title)
+        obj = folder[id]
+
+        return obj
 
 ### EOF ###
