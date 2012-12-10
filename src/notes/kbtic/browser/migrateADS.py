@@ -37,7 +37,7 @@ class NotesSyncADS():
 
         logging.basicConfig(format='%(asctime)s %(message)s',
                             datefmt='%m/%d/%Y %I:%M:%S %p',
-                            filename='import-KBTIC.log',
+                            filename='import-ADS.log',
                             level=logging.DEBUG)
 
         params = {
@@ -51,7 +51,7 @@ class NotesSyncADS():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwQjg2Nzc4NTBCODdDOTBDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0VvqzroQ4kv+h3xRTHy6/m/3yTg8='
+            'LtpaToken': 'AAECAzUwQzVCQzU1NTBDNUQxNkRDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXQqSJhs0TbEcZ+eLR6lbjG+9dAjLg=='
         }
 
         session.cookies.update(extra_cookies)
