@@ -1,7 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:browser="http://namespaces.zope.org/browser"    
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="notes.kbtic">
 
   <class class=".notesDocument.NotesDocument">
@@ -16,14 +16,14 @@
         permission="zope2.View"
         interface="..interfaces.IDocumentCSPT"
         />
-  </class>  
+  </class>
 
   <class class=".documentRRHH.DocumentRRHH">
     <require
         permission="zope2.View"
         interface="..interfaces.IDocumentRRHH"
         />
-  </class>    
+  </class>
 
   <browser:page
         for="*"

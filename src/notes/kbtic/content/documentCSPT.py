@@ -48,7 +48,7 @@ DocumentCSPTSchema['title'].storage = atapi.AnnotationStorage()
 DocumentCSPTSchema['description'].storage = atapi.AnnotationStorage()
 
 # Hide default category option
-DocumentCSPTSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+# DocumentCSPTSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentCSPTSchema['description'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentCSPTSchema['language'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 DocumentCSPTSchema['relatedItems'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}

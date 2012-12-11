@@ -587,5 +587,4 @@ class NotesSyncKBTIC():
 
         return obj
 
-
 ### EOF ###

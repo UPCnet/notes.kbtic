@@ -45,7 +45,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     i18n_domain='notes.kbtic',
                 ),
                 languageIndependent=True,
-                required=True,
+                required=False,
                 schemata="categorization",
                 vocabulary=NamedVocabulary('category1_keywords'),
                 enforceVocabulary=True,
@@ -60,7 +60,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                     i18n_domain='notes.kbtic',
                 ),
                 languageIndependent=True,
-                required=True,
+                required=False,
                 schemata="categorization",
                 vocabulary=NamedVocabulary('category2_keywords'),
                 enforceVocabulary=True,
@@ -104,7 +104,7 @@ NotesDocumentSchema['title'].storage = atapi.AnnotationStorage()
 NotesDocumentSchema['description'].storage = atapi.AnnotationStorage()
 
 # Hide default category option
-NotesDocumentSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+# NotesDocumentSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['description'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['language'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['relatedItems'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
