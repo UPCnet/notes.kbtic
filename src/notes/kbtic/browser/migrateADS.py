@@ -113,6 +113,8 @@ class NotesSyncADS():
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<a\s*href="\/upcnet\/backoffice\/docADS\.nsf\/\(\$All\)\?OpenView">)(.*?)', htmlContent, re.DOTALL | re.MULTILINE).groups()[6]
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 logging.info("#%s# URL: %s", index, object.absolute_url())
+                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
+                f.write('Plone: ' + object.absolute_url() + ' \n')
                 try:
                     lista = []
                     catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')

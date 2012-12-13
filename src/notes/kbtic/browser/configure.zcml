@@ -61,6 +61,13 @@
         permission="MigratefromNotes.Execute"
         />
 
+     <browser:page
+        name="fakeKBTIC"
+        for="*"
+        class=".fakeKBTIC.fakeKBTIC"
+        permission="MigratefromNotes.Execute"
+        />        
+
     <browser:resourceDirectory
         name="notes_kbtic_images"
         directory="images"

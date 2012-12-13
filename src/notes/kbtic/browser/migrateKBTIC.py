@@ -394,6 +394,8 @@ class NotesSyncKBTIC():
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 logging.info("#%s# URL: %s", index, object.absolute_url())
+                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
+                f.write('Plone: ' + object.absolute_url() + ' \n')
                 try:
                     lista = []
                     catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
@@ -401,7 +403,7 @@ class NotesSyncKBTIC():
                         #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
                         id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
                         lista = lista + [id_cat]
-                        object.setCategory1(lista)
+                    object.setCategory1(lista)
                 except:
                     None
                 try:
