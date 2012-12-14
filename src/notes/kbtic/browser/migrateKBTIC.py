@@ -15,6 +15,7 @@ import transaction
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
+
 NOTES_USER = ""
 NOTES_PASS = ""
 
@@ -24,7 +25,7 @@ class NotesSyncKBTIC():
     def __call__(self):
         ###
         ###
-
+        from datetime import datetime
         session = requests.session()
 
         URL = 'https://liszt.upc.es'
@@ -52,7 +53,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwQjg2Nzc4NTBCODdDOTBDTj1Vc3VhcmkgRWxlbmE2L089VXBjbmV0VvqzroQ4kv+h3xRTHy6/m/3yTg8='
+            'LtpaToken': 'AAECAzUwQ0IwNUE3NTBDQjFBQkZDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXSzE29+sdVE5w7HaUxlBO4I4I6P+A=='
         }
 
         # Creating default tree sctructure
@@ -345,7 +346,6 @@ class NotesSyncKBTIC():
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
-        from datetime import datetime
         #data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         #f = open('migrateKBTIC-' + data + '.log', 'a')  # PROD
         f = open('migrateKBTIC.log', 'a')  # GOLLUM
@@ -358,13 +358,11 @@ class NotesSyncKBTIC():
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
         f.write('-----------------------------------------------------------------------------' + '\n')
         logging.info('------------------------------------------------------')
-        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting Notes KBTIC Migration process...' + '\n')
         logging.info('Starting Notes KBTIC Migration process...')
         # Uncomment for manual imports...
-        #startLimit = 3
-        #limit = 5
-        from datetime import datetime
+        startLimit = 1
+        limit = 10
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects to import: ' + str(limit) + '\n')
         logging.info('Total objects to import: %s', limit)
         from datetime import datetime
@@ -390,18 +388,23 @@ class NotesSyncKBTIC():
                 f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
                 logging.info('#%s# %s', index, titleObject)
                 creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                creator = creator.split('/')[0].replace(' ', '.').lower()  # intentem ficar el creator amb id LDAP
                 Title = titleObject
                 tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(.*?)<a\s*href="\/Upcnet\/Backoffice\/manualexp\.nsf\/\(\$All\)\?OpenView">.*$', htmlContent, re.DOTALL | re.MULTILINE).groups()[7]
                 object = self.createNotesObject('notesDocument', self.context, Title)
                 logging.info("#%s# URL: %s", index, object.absolute_url())
                 f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
                 f.write('Plone: ' + object.absolute_url() + ' \n')
+                # CATEGORIES
                 try:
                     lista = []
                     catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
                     for obj in catServei:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
+                        id_cat = [result for result in
+                            self.context.portal_catalog.searchResults(
+                                portal_type='SimpleVocabularyTerm',
+                                Title=obj,
+                                path='/kbtic/portal_vocabularies/category1_keywords/') if result.Title == obj][0].id
                         lista = lista + [id_cat]
                     object.setCategory1(lista)
                 except:
@@ -410,8 +413,11 @@ class NotesSyncKBTIC():
                     lista = []
                     catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
                     for obj in catServeiPPS:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
+                        id_cat = [result for result in
+                            self.context.portal_catalog.searchResults(
+                                portal_type='SimpleVocabularyTerm',
+                                Title=obj,
+                                path='/kbtic/portal_vocabularies/category2_keywords/') if result.Title == obj][0].id
                         lista = lista + [id_cat]
                         object.setCategory2(lista)
                 except:
@@ -421,23 +427,15 @@ class NotesSyncKBTIC():
                     lista = []
                     categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
                     for obj in categories:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
+                        id_cat = [result for result in self.context.portal_catalog.searchResults(
+                                    portal_type='SimpleVocabularyTerm',
+                                    Title=obj,
+                                    path='/kbtic/portal_vocabularies/category3_keywords/') if result.Title == obj][0].id
                         lista = lista + [id_cat]
                         object.setCategory3(lista)
                 except:
                     None
-                try:
-                    # sometimes people write with \ separator, we must force check two options...
-                    lista = []
-                    categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
-                    for obj in categories:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-                        lista = lista + [id_cat]
-                        object.setCategory3(lista)
-                except:
-                    None
+
                 object.setTitle(Title)
                 object.setCreators(creator)
                 object.setExcludeFromNav(True)
@@ -449,7 +447,9 @@ class NotesSyncKBTIC():
                 for obj in imatgeSrc:
                     imatge = session.get(URL + obj, headers=cookie)
                     imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
+                    #import ipdb;ipdb.set_trace()
+                    #replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
+                    replacedName = '/' + '/'.join((object.absolute_url() + '/image' + str(numimage)).split('/')[4:])
                     tinyContent = tinyContent.replace(obj, replacedName)
                     logging.info('#%s# Creating image: %s', index, replacedName)
                     numimage = numimage + 1
@@ -467,7 +467,8 @@ class NotesSyncKBTIC():
                         contents = object.contentIds()
                         normalizedName = self.calculaNom(contents, normalizedName)
                         fileObject = self.createNotesObject('File', object, normalizedName)
-                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('colomers:11001', 'kbtic.upcnet.es')
+                        #replacedName = (object.absolute_url() + '/' + normalizedName).replace('colomers:11001', 'kbtic.upcnet.es')
+                        replacedName = '/' + '/'.join((object.absolute_url() + '/image' + str(numimage)).split('/')[4:])
                         tinyContent = tinyContent.replace(obj, replacedName)
                         logging.info('#%s# Creating file: %s', index, replacedName)
                         fileObject.setFile(file.content)
@@ -493,6 +494,8 @@ class NotesSyncKBTIC():
                             fileObject.setFormat('application/vnd.ms-powerpoint')
                         if extension == 'pptx':
                             fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
+                        if extension == 'bmp':
+                            fileObject.setFormat('image/bmp')
                     except:
                         logging.info('#%s# ERROR IMPORTING OBJECT! CHECK IT!', index)
                         pass
