@@ -54,11 +54,11 @@
                              tal:content="item_title">Project title</a>
                         </td>
                         <td>
-                            <tal:name tal:condition="item_creator">
-                              <tal:omit-tag tal:content="item_creator">
-                                Bob Dobalina
-                              </tal:omit-tag>
-                            </tal:name>
+                            <a tal:condition="item_creator"
+                               tal:attributes="href string:author/${item_creator}"
+                               tal:content="item_creator">
+                                 Bob Dobalina
+                            </a>
                         </td>
                         <td>
                             <tal:name tal:condition="item_state">

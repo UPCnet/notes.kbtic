@@ -44,7 +44,7 @@ class KeywordsView(BrowserView):
             results.append({'id': value.id,
                             'title': value.Title,
                             'url': value.getURL(),
-                            'creator': value.Creator,
+                            'creator': str((value.Creator).lower()).replace('/upcnet', '').replace(' ', '.'),
                             'review_state': value.review_state,
                             'creation_date': self.context.toLocalizedTime(value.CreationDate),
                             'modification_date': self.context.toLocalizedTime(value.ModificationDate)})
