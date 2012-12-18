@@ -30,14 +30,13 @@ class Renderer(base.Renderer):
     def mostrarEtiquetesCategory1(self):
         """ Busca etiquetes dintre del portal_vocabulary segons idioma
         """
-        urltool = getToolByName(self.context, 'portal_url')
-        path = urltool.getPortalPath()
-
+        from zope.component.hooks import getSite
+        portal = getSite()
         results = []
-        path = path + '/portal_vocabularies/category1_keywords'
-        keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
-                                                             path={'query': path, 'depth': 1, },
-                                                             sort_on='getObjPositionInParent')
+
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+              if 'category1' in result.getPath()]
+
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 
@@ -46,14 +45,13 @@ class Renderer(base.Renderer):
     def mostrarEtiquetesCategory2(self):
         """ Busca etiquetes dintre del portal_vocabulary segons idioma
         """
-        urltool = getToolByName(self.context, 'portal_url')
-        path = urltool.getPortalPath()
-
+        from zope.component.hooks import getSite
+        portal = getSite()
         results = []
-        path = path + '/portal_vocabularies/category2_keywords'
-        keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
-                                                             path={'query': path, 'depth': 1, },
-                                                             sort_on='getObjPositionInParent')
+
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+              if 'category2' in result.getPath()]
+
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 
@@ -62,14 +60,12 @@ class Renderer(base.Renderer):
     def mostrarEtiquetesCategory3(self):
         """ Busca etiquetes dintre del portal_vocabulary segons idioma
         """
-        urltool = getToolByName(self.context, 'portal_url')
-        path = urltool.getPortalPath()
-
+        from zope.component.hooks import getSite
+        portal = getSite()
         results = []
-        path = path + '/portal_vocabularies/category3_keywords'
-        keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
-                                                             path={'query': path, 'depth': 1, },
-                                                             sort_on='getObjPositionInParent')
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+              if 'category3' in result.getPath()]
+
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 
@@ -78,14 +74,13 @@ class Renderer(base.Renderer):
     def mostrarEtiquetesCategory4(self):
         """ Busca etiquetes dintre del portal_vocabulary segons idioma
         """
-        urltool = getToolByName(self.context, 'portal_url')
-        path = urltool.getPortalPath()
-
+        from zope.component.hooks import getSite
+        portal = getSite()
         results = []
-        path = path + '/portal_vocabularies/category4_keywords'
-        keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
-                                                             path={'query': path, 'depth': 1, },
-                                                             sort_on='getObjPositionInParent')
+
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+              if 'category4' in result.getPath()]
+
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 

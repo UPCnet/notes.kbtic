@@ -19,6 +19,21 @@
                        url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
            tal:condition="python:(categories1 or categories2 or categories3 or categories4 or categories5)">
 
+        <span tal:omit-tag tal:condition="categories3">
+          <tal:filedunder>By Category:</tal:filedunder>
+          <span tal:repeat="category categories3">
+            <a href=""
+                class="link-category"
+                rel="tag"
+                tal:content="category/title"
+                tal:define="item_href category/href"
+                tal:attributes="href item_href">
+                Category
+            </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
+          </span>
+        <br/>
+        </span>
+
         <span tal:omit-tag tal:condition="categories1">
         <tal:filedunder>Categories Servei:</tal:filedunder>
           <span tal:repeat="category categories1">
@@ -35,23 +50,8 @@
         </span>
 
         <span tal:omit-tag tal:condition="categories2">
-          <tal:filedunder>Categories ServeiPPS:</tal:filedunder>
+          <tal:filedunder>Categories Servei PPS:</tal:filedunder>
           <span tal:repeat="category categories2">
-            <a href=""
-                class="link-category"
-                rel="tag"
-                tal:content="category/title"
-                tal:define="item_href category/href"
-                tal:attributes="href item_href">
-                Category
-            </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
-          </span>
-        <br/>
-        </span>
-
-        <span tal:omit-tag tal:condition="categories3">
-          <tal:filedunder>Paraules Clau:</tal:filedunder>
-          <span tal:repeat="category categories3">
             <a href=""
                 class="link-category"
                 rel="tag"

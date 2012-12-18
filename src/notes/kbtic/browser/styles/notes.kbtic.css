@@ -149,3 +149,36 @@ a[type='application/vnd.ms-powerpoint'] {
 background: url(ppt.png) no-repeat 0 50%;
 padding-left: 20px !important;
 }
+
+.portletItem {
+    border-top: 0 none;
+    color: #4D4D4D;
+    font-weight: bold;
+    margin-left: 0;
+    margin-top: 12px;
+    padding-bottom: 0;
+}
+
+#portal-column-one
+
+.LSBox, .NoLSBox {
+    float: left;
+    margin: -2px 3px 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+input.password, input.text, input.searchField, #searchGadget {
+    border: 1px solid #007DCC;
+    padding: 4px;
+}
+
+li.llistats {
+    border-bottom: 1px solid #EEEEEE;
+    border-left: 3px solid #DDDDDD;
+    list-style: none outside none;
+    margin-bottom: 0.5em;
+    margin-left: 2px;
+    margin-top: 3px;
+    padding-bottom: 4px;
+    padding-left: 7px;
+}

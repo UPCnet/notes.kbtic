@@ -1,17 +1,15 @@
 <tal:portletCategorias i18n:domain="notes.kbtic">
 <ul id="menu">
-
-        <li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res" class="categories">
-                <a href="#" i18n:translate="label_category3"> By Category </a>
-                <ul class="caixa_llistats">
-                        <li tal:repeat="res view/mostrarEtiquetesCategory3" class="llistats">
-                                <a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
-                                        tal:content="res/title">
-                                </a>
-                        </li>
-                </ul>
-        </li>
-
+	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res" class="categories">
+		<a href="#"> By category </a>
+		<ul class="caixa_llistats">
+			<li tal:repeat="res view/mostrarEtiquetesCategory3" class="llistats">
+				<a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
+					tal:content="res/title">
+				</a>
+			</li>
+		</ul>
+	</li>
 	<li tal:define="res view/mostrarEtiquetesCategory1" tal:condition="res" class="categories">
 		<a href="#"> Categories Servei </a>
 		<ul class="caixa_llistats">
