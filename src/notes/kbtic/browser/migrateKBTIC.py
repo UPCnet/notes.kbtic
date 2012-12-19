@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwRDFBMkNGNTBEMUI3RTdDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXToQdQ0dt6Ht0bwdUWgtJ49N+fLEQ=='
+            'LtpaToken': 'AAECAzUwRDFDRjMyNTBEMUU0NEFDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXRv96umNefSBS7SfJjYNDoZhTEQ3A=='
         }
 
         session.cookies.update(extra_cookies)
@@ -75,7 +75,7 @@ class NotesSyncKBTIC():
         from zope.component.hooks import getSite
         portal = getSite()
         # Uncomment for manual imports...
-        startLimit = 1
+        startLimit = 899
         limit = 4444
         index = 1
         uid_list = []
@@ -213,7 +213,8 @@ class NotesSyncKBTIC():
                             normalizedName = self.calculaNom(contents, normalizedName)
                             fileObject = self.createNotesObject('File', object, normalizedName)
                             #replacedName = (object.absolute_url() + '/' + normalizedName).replace('colomers:11001', 'kbtic.upcnet.es')
-                            replacedName = '/'.join((object.absolute_url() + '/image' + str(numimage)).split('/')[5:])
+                            #replacedName = '/'.join((object.absolute_url() + '/image' + str(numimage)).split('/')[5:])
+                            replacedName = normalizedName
                             tinyContent = tinyContent.replace(obj, replacedName)
                             #logging.info('#%s# Creating file: %s', index, replacedName)
                             fileObject.setFile(file.content)
