@@ -154,11 +154,11 @@ class NotesSyncKBTIC():
                                             portal_type='SimpleVocabularyTerm',
                                             Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
                             except:
-                                id_cat=[]
+                                id_cat=''
                             lista1 = lista1 + [id_cat]
 
                         #object.setCategory3(lista1)
-                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3: ' + str(lista1) + ' \n')
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3 comma: ' + str(lista1) + ' \n')
                         logging.info("#%s# ByKeyword con ,: %s", index, lista1)
                     except:
                         None
@@ -173,15 +173,16 @@ class NotesSyncKBTIC():
                                             portal_type='SimpleVocabularyTerm',
                                             Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
                             except:
-                                id_cat=[]  
+                                id_cat=''  
                             lista2 = lista2 + [id_cat]
                            
                         #object.setCategory3(lista)
-                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3: ' + str(lista2) + ' \n')
-                        logging.info("#%s# ByKeyword on \: %s", index, lista2)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3 backslash: ' + str(lista2) + ' \n')
+                        logging.info("#%s# ByKeyword con \: %s", index, lista2)
                     except:
                         None
-                    object.setCategory3(lista1+lista2)
+                    listaCat3 = {}.fromkeys(lista1+lista2).keys()
+                    object.setCategory3(listaCat3)
                     object.setTitle(Title)
                     object.setCreators(creator)
                     object.setExcludeFromNav(True)
