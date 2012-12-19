@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwRDE4QUVDNTBEMUEwMDRDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXR6lnL2+jZeoezjzxfsVZxRKziiVw=='
+            'LtpaToken': 'AAECAzUwRDFBMkNGNTBEMUI3RTdDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXToQdQ0dt6Ht0bwdUWgtJ49N+fLEQ=='
         }
 
         session.cookies.update(extra_cookies)
@@ -76,7 +76,7 @@ class NotesSyncKBTIC():
         portal = getSite()
         # Uncomment for manual imports...
         startLimit = 1
-        limit = 10
+        limit = 4444
         index = 1
         uid_list = []
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Objects to import: ' + str(startLimit) + ' to ' + str(limit) + '\n')
@@ -115,6 +115,8 @@ class NotesSyncKBTIC():
                     f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
                     f.write('Plone: ' + object.absolute_url() + ' \n')
                     # CATEGORIES
+                    htmlContent = htmlContent.decode('iso-8859-1').encode('utf-8')  # PRODUCTION
+                    #htmlContent = htmlContent.decode('iso-8859-1').encode('utf-8')   # GOLLUM
                     try:
                         lista = []
                         catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
@@ -141,22 +143,45 @@ class NotesSyncKBTIC():
                         logging.info("#%s# CAT2: %s", index, lista)
                     except:
                         None
+
                     try:
                         # sometimes people write with \ separator, we must force check two options...
-                        lista = []
-                        categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
-
+                        lista1 = []
+                        categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
                         for obj in categories:
-                            id_cat = [result for result in portal.uid_catalog.searchResults(
-                                        portal_type='SimpleVocabularyTerm',
-                                        Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
-                            lista = lista + [id_cat]
-                        object.setCategory3(lista)
-                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3: ' + str(lista) + ' \n')
-                        logging.info("#%s# CAT3: %s", index, lista)
+                            try:
+                                id_cat = [result for result in portal.uid_catalog.searchResults(
+                                            portal_type='SimpleVocabularyTerm',
+                                            Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
+                            except:
+                                id_cat=[]
+                            lista1 = lista1 + [id_cat]
+
+                        #object.setCategory3(lista1)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3: ' + str(lista1) + ' \n')
+                        logging.info("#%s# ByKeyword con ,: %s", index, lista1)
                     except:
                         None
 
+                    try:
+                        # sometimes people write with \ separator, we must force check two options...
+                        lista2 = []
+                        categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
+                        for obj in categories:
+                            try:
+                                id_cat = [result for result in portal.uid_catalog.searchResults(
+                                            portal_type='SimpleVocabularyTerm',
+                                            Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
+                            except:
+                                id_cat=[]  
+                            lista2 = lista2 + [id_cat]
+                           
+                        #object.setCategory3(lista)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3: ' + str(lista2) + ' \n')
+                        logging.info("#%s# ByKeyword on \: %s", index, lista2)
+                    except:
+                        None
+                    object.setCategory3(lista1+lista2)
                     object.setTitle(Title)
                     object.setCreators(creator)
                     object.setExcludeFromNav(True)

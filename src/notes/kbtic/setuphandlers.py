@@ -24,7 +24,7 @@ def setupVarious(context):
     try:
         category1_keywords = _createObjectByType('SortedSimpleVocabulary', voctool, 'category1_keywords')
         keywords = [
-                    (u"catServei-001", u"﻿﻿Actualització de continguts en el Web UPC"),
+                    (u"catServei-001", u"Actualització de continguts en el Web UPC"),
                     (u"catServei-002", u"ACUP - Doc6"),
                     (u"catServei-003", u"Address Book - PAB"),
                     (u"catServei-004", u"Adminpack"),
@@ -297,7 +297,7 @@ def setupVarious(context):
                     (u"catServeiPPS-102", u"50551-00 Administració de la xarxa troncal i la connexió a Internet"),
                     (u"catServeiPPS-103", u"50601-00 Accés remot als recursos informàtics de la UPC i a Internet"),
                     (u"catServeiPPS-104", u"50602-00 Accés remot a Internet"),
-                    (u"catServeiPPS-105", u"50602-00 Accés remot a Internet (accés "UPCnet")"),
+                    (u"catServeiPPS-105", u"""50602-00 Accés remot a Internet (accés "UPCnet")"""),
                     (u"catServeiPPS-106", u"50604-00 Accés remot a Internet (antic accés UPCnet)"),
                     (u"catServeiPPS-107", u"50801-00 Tallafocs de Campus gestionats"),
                     (u"catServeiPPS-108", u"50802-00 Tallafocs Externs gestionats"),
