@@ -57,8 +57,8 @@ class recreateLinks():
     def searchNotesDoc(self, uid):
         """ Search Plone Ids by Notes Ids
         """
-        linksFile = open('fakeKBTIC.log', 'r')
-        titleFile = open('fakeKBTIC.log', 'r')
+        linksFile = open('migrateKBTIC.log', 'r')
+        titleFile = open('migrateKBTIC.log', 'r')
         value = ''
         title = ''
         for line in linksFile:
