@@ -22,7 +22,7 @@ src/notes/kbtic/browser/migrateATIC.py
 src/notes/kbtic/browser/migrateCSPT.py
 src/notes/kbtic/browser/migrateKBTIC.py
 src/notes/kbtic/browser/migrateRRHH.py
-src/notes/kbtic/browser/recreateLinks.py
+src/notes/kbtic/browser/recreateLinksCSPT.py
 src/notes/kbtic/content/__init__.py
 src/notes/kbtic/content/documentCSPT.py
 src/notes/kbtic/content/documentRRHH.py

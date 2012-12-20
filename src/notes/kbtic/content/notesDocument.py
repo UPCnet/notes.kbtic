@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 """Definition of the NotesDocument contenttype
 """
+
 from zope.interface import implements
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import folder
@@ -41,7 +43,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 widget=atapi.InAndOutWidget(
                     format="select",
                     label='By Category',
-                    description="Indica les categories de la vista Notes/By Category que té l'element",
+                    description="Indica les categories de la vista (Notes - By Category) que té l'element",
                     label_msgid='category3_label',
                     description_msgid='category3_help',
                     i18n_domain='notes.kbtic',
