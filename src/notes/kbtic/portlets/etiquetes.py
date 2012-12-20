@@ -33,7 +33,6 @@ class Renderer(base.Renderer):
         from zope.component.hooks import getSite
         portal = getSite()
         results = []
-
         keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
               if 'category1' in result.getPath()]
 
