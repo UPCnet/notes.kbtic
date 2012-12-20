@@ -16,8 +16,8 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
 
-NOTES_USER = "usuari.elena6"
-NOTES_PASS = "NotesNotes6"
+NOTES_USER = ""
+NOTES_PASS = ""
 
 
 class NotesSyncKBTIC():
@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwRDFDRjMyNTBEMUU0NEFDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXRv96umNefSBS7SfJjYNDoZhTEQ3A=='
+            'LtpaToken': 'AAECAzUwRDJEQTdBNTBEMkVGOTJDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXSfcOCiwGuDGZheopliYU7PiJKUnQ=='
         }
 
         session.cookies.update(extra_cookies)
@@ -75,8 +75,8 @@ class NotesSyncKBTIC():
         from zope.component.hooks import getSite
         portal = getSite()
         # Uncomment for manual imports...
-        startLimit = 899
-        limit = 4444
+        startLimit = 1
+        limit = 2
         index = 1
         uid_list = []
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Objects to import: ' + str(startLimit) + ' to ' + str(limit) + '\n')
