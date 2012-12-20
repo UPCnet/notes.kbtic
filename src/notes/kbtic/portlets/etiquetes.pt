@@ -1,7 +1,7 @@
 <tal:portletCategorias i18n:domain="notes.kbtic">
 <ul id="menu">
 	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res" class="categories">
-		<a href="#"> By category </a>
+		<a href="#"> By Category </a>
 		<ul class="caixa_llistats">
 			<li tal:repeat="res view/mostrarEtiquetesCategory3" class="llistats">
 				<a  href="" tal:attributes="href string:${context/absolute_url}/keywordsListing?${res/id}"
