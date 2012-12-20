@@ -37,9 +37,28 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 
             #CATEGORIES
             atapi.LinesField(
+                name='category3',
+                widget=atapi.InAndOutWidget(
+                    format="select",
+                    label='By Category',
+                    description="Indica les categories de la vista Notes/By Category que té l'element",
+                    label_msgid='category3_label',
+                    description_msgid='category3_help',
+                    i18n_domain='notes.kbtic',
+                ),
+                languageIndependent=True,
+                multiValued=False,
+                schemata="categorization",
+                vocabulary=NamedVocabulary('category3_keywords'),
+                enforceVocabulary=True,
+            ),
+
+            atapi.LinesField(
                 name='category1',
                 widget=atapi.InAndOutWidget(
                     format="select",
+                    label='Categories per Servei',
+                    description="Indicar totes les categories a les que pertany l'element",
                     label_msgid='category1_label',
                     description_msgid='category1_help',
                     i18n_domain='notes.kbtic',
@@ -55,6 +74,8 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 name='category2',
                 widget=atapi.InAndOutWidget(
                     format="select",
+                    label='Categories per Servei PPS',
+                    description="Indicar totes les categories a les que pertany l'element",
                     label_msgid='category2_label',
                     description_msgid='category2_help',
                     i18n_domain='notes.kbtic',
@@ -65,37 +86,6 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 vocabulary=NamedVocabulary('category2_keywords'),
                 enforceVocabulary=True,
             ),
-
-            atapi.LinesField(
-                name='category3',
-                widget=atapi.InAndOutWidget(
-                    format="select",
-                    label_msgid='category3_label',
-                    description_msgid='category3_help',
-                    i18n_domain='notes.kbtic',
-                ),
-                languageIndependent=True,
-                multiValued=False,
-                schemata="categorization",
-                vocabulary=NamedVocabulary('category3_keywords'),
-                enforceVocabulary=True,
-            ),
-
-            # atapi.LinesField(
-            #     name='category4',
-            #     widget=atapi.InAndOutWidget(
-            #         format="select",
-            #         label_msgid='category4_label',
-            #         description_msgid='category4_help',
-            #         i18n_domain='notes.kbtic',
-            #     ),
-            #     languageIndependent=True,
-            #     multiValued=False,
-            #     schemata="categorization",
-            #     vocabulary=NamedVocabulary('category4_keywords'),
-            #     enforceVocabulary=True,
-            # ),
-
 
 ))
 

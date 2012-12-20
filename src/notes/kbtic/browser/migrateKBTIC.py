@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwRDJEQTdBNTBEMkVGOTJDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXSfcOCiwGuDGZheopliYU7PiJKUnQ=='
+            'LtpaToken': ''
         }
 
         session.cookies.update(extra_cookies)
@@ -154,7 +154,7 @@ class NotesSyncKBTIC():
                                             portal_type='SimpleVocabularyTerm',
                                             Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
                             except:
-                                id_cat=''
+                                id_cat = ''
                             lista1 = lista1 + [id_cat]
 
                         #object.setCategory3(lista1)
@@ -173,15 +173,15 @@ class NotesSyncKBTIC():
                                             portal_type='SimpleVocabularyTerm',
                                             Title=obj) if result.Title == obj and 'category3' in result.getPath()][0].id
                             except:
-                                id_cat=''  
+                                id_cat = ''
                             lista2 = lista2 + [id_cat]
-                           
+
                         #object.setCategory3(lista)
                         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CAT3 backslash: ' + str(lista2) + ' \n')
                         logging.info("#%s# ByKeyword con \: %s", index, lista2)
                     except:
                         None
-                    listaCat3 = {}.fromkeys(lista1+lista2).keys()
+                    listaCat3 = {}.fromkeys(lista1 + lista2).keys()
                     object.setCategory3(listaCat3)
                     object.setTitle(Title)
                     object.setCreators(creator)
