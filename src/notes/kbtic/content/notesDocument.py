@@ -28,15 +28,6 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
              searchable=True,
              ),
 
-            # atapi.FileField(
-            #     name="fileAttach",
-            #     widget=atapi.FileWidget(
-            #         label=("A file"),
-            #         description=("Some file"),
-            #     ),
-            #     required=False,
-            # ),
-
             #CATEGORIES
             atapi.LinesField(
                 name='category3',
@@ -86,6 +77,23 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 required=False,
                 schemata="categorization",
                 vocabulary=NamedVocabulary('category2_keywords'),
+                enforceVocabulary=True,
+            ),
+
+            atapi.LinesField(
+                name='categoryADS',
+                widget=atapi.InAndOutWidget(
+                    format="select",
+                    label='Categories By Category (per ADS-SPO)',
+                    description="Indicar totes les categories a les que pertany l'element del tipus ADS-SPO",
+                    label_msgid='category4_label',
+                    description_msgid='category4_help',
+                    i18n_domain='notes.kbtic',
+                ),
+                languageIndependent=True,
+                required=False,
+                schemata="categorization",
+                vocabulary=NamedVocabulary('categoryADS_keywords'),
                 enforceVocabulary=True,
             ),
 
