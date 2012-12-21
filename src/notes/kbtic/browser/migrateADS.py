@@ -15,6 +15,7 @@ import transaction
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFCore.utils import getToolByName
 
+
 NOTES_USER = ""
 NOTES_PASS = ""
 
@@ -24,7 +25,7 @@ class NotesSyncADS():
     def __call__(self):
         ###
         ###
-
+        from datetime import datetime
         session = requests.session()
 
         URL = 'https://liszt.upc.es'
@@ -51,7 +52,7 @@ class NotesSyncADS():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwQzVCQzU1NTBDNUQxNkRDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXQqSJhs0TbEcZ+eLR6lbjG+9dAjLg=='
+            'LtpaToken': 'AAECAzUwRDQ0OTY2NTBENDVFN0VDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXR7b6+M/xF/Tg+FOADoG34O+bdewA=='
         }
 
         session.cookies.update(extra_cookies)
@@ -59,205 +60,204 @@ class NotesSyncADS():
         cookie = {'Cookie': 'HabCookie=1; Desti=' + URL + '/' + PATH + '; RetornTancar=1; NomUsuari=' + NOTES_USER + ' LtpaToken=' + session.cookies['LtpaToken']}
         response = requests.get(MAIN_URL, headers=cookie)
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
-        from datetime import datetime
         #data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         #f = open('migrateADS-' + data + '.log', 'a')  # PROD
         f = open('migrateADS.log', 'a')
-        # Ens quedem ID de la vista
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
-        # url to obtain total entries to import
         toplevelentries = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=1&count=1'
         startLimit = 1
         xmlLimit = session.get(toplevelentries, headers=cookie)
         limit = re.search(r'toplevelentries="(\w+)"', xmlLimit.content).groups()[0]
         f.write('-----------------------------------------------------------------------------' + '\n')
         logging.info('------------------------------------------------------')
-        from datetime import datetime
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting Notes ADS Migration process...' + '\n')
         logging.info('Starting Notes ADS Migration process...')
+        from zope.component.hooks import getSite
+        portal = getSite()
         # Uncomment for manual imports...
-        #startLimit = 1
-        #limit = 10
-        from datetime import datetime
-        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects to import: ' + str(limit) + '\n')
-        logging.info('Total objects to import: %s', limit)
-        from datetime import datetime
-        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Total objects importing: ' + str(startLimit) + ' to ' + str(limit) + '\n')
+        startLimit = 3
+        limit = 5
+        index = 1
+        uid_list = []
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Objects to import: ' + str(startLimit) + ' to ' + str(limit) + '\n')
+        logging.info('Objects to import: %s to %s', startLimit, limit)
         for index in range(startLimit, int(limit) + 1):
             path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
             response3 = session.get(path_notes, headers=cookie)
-            # No devuelve los mismos resultados, depende de permisos de usuario.
-            # La diferencia está en los docs encriptados de contraseñas
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
-            # TODO : Check docs with multiple sections (check if values in 3.1 and 3.2 are well imported)
-            final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
-            originNotesObjectUrl = URL + TRAVERSE_PATH + value + '/' + UID
-            html = session.get(final_object, headers=cookie)
-            htmlContent = str(html.content)  # .encode('iso-8859-1').decode('utf-8')
-            try:
-                titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
-            except:
-                try:
-                    titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
-                except:
-                    titleObject = 'ERROR: Title not found... Check IT!'
-            if 'Incorrect data type for operator or @Function: Text expected<HR>\n<a href="javascript: onClick=history.back()' in html.content:
-                logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
-            else:
+            if UID not in uid_list:
+                uid_list = uid_list + [UID]
+                final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
+                originNotesObjectUrl = URL + TRAVERSE_PATH + value + '/' + UID
+                html = session.get(final_object, headers=cookie)
                 htmlContent = str(html.content)
-                from datetime import datetime
-                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
-                logging.info('#%s# %s', index, titleObject)
-                creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
-                Title = titleObject
-                tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<a\s*href="\/upcnet\/backoffice\/docADS\.nsf\/\(\$All\)\?OpenView">)(.*?)', htmlContent, re.DOTALL | re.MULTILINE).groups()[6]
-                object = self.createNotesObject('notesDocument', self.context, Title)
-                logging.info("#%s# URL: %s", index, object.absolute_url())
-                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
-                f.write('Plone: ' + object.absolute_url() + ' \n')
                 try:
-                    lista = []
-                    catServei = re.search(r'name="Serveis"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
-                    for obj in catServei:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-                        lista = lista + [id_cat]
-                        object.setCategory1(lista)
+                    titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>').replace("&#8217;", "'")
                 except:
-                    None
-                try:
-                    lista = []
-                    catServeiPPS = re.search(r'name="Productes"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
-                    for obj in catServeiPPS:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-                        lista = lista + [id_cat]
-                        object.setCategory2(lista)
-                except:
-                    None
-                try:
-                    # sometimes people write with \ separator, we must force check two options...
-                    lista = []
-                    categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
-                    for obj in categories:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-                        lista = lista + [id_cat]
-                        object.setCategory3(lista)
-                except:
-                    None
-                try:
-                    # sometimes people write with \ separator, we must force check two options...
-                    lista = []
-                    categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
-                    for obj in categories:
-                        #id_cat = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj)[0].id
-                        id_cat = [result for result in self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', Title=obj) if result.Title == obj][0].id
-                        lista = lista + [id_cat]
-                        object.setCategory3(lista)
-                except:
-                    None
-                object.setTitle(Title)
-                object.setCreators(creator)
-                object.setExcludeFromNav(True)
-
-                # Import Images of the object
-                imatgeSrc = re.findall(r'<img[^>]+src=\"([^\"]+)\"', htmlContent)
-                imatgeSrc = [a for a in imatgeSrc if '/upcnet' in a]
-                numimage = 1
-                for obj in imatgeSrc:
-                    imatge = session.get(URL + obj, headers=cookie)
-                    imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
-                    replacedName = (object.absolute_url() + '/image' + str(numimage)).replace('colomers:11001', 'kbtic.upcnet.es')
-                    tinyContent = tinyContent.replace(obj, replacedName)
-                    logging.info('#%s# Creating image: %s', index, replacedName)
-                    numimage = numimage + 1
-                    imageObject.setImage(imatge.content)
-
-                # Import Files of the object
-                attachSrc = re.findall(r'<a[^>]+href=\"([^\"]+)\"', htmlContent)
-                attachSrc = [a for a in attachSrc if '$FILE' in a]
-                for obj in attachSrc:
-                    try:
-                        file = session.get(URL + obj, headers=cookie)
-                        filename = obj.split('/')[-1].replace('%20', '_').replace('_', '')
-                        normalizedName = getToolByName(self.context, 'plone_utils').normalizeString(filename)
-                        # fake the same filename in folder object...
-                        contents = object.contentIds()
-                        normalizedName = self.calculaNom(contents, normalizedName)
-                        fileObject = self.createNotesObject('File', object, normalizedName)
-                        replacedName = (object.absolute_url() + '/' + normalizedName).replace('mohinder:8080', 'gw4.beta.upcnet.es')
-                        tinyContent = tinyContent.replace(obj, replacedName)
-                        logging.info('#%s# Creating file: %s', index, replacedName)
-                        fileObject.setFile(file.content)
-                        # OpenOffice files internally are saved as ZIP files, we must force metadata...
-                        extension = obj.split('.')[-1:][0]
-                        if extension == 'odt':
-                            fileObject.setFormat('application/vnd.oasis.opendocument.text')
-                        if extension == 'ods':
-                            fileObject.setFormat('application/vnd.oasis.opendocument.spreadsheet')
-                        if extension == 'odp':
-                            fileObject.setFormat('application/vnd.oasis.opendocument.presentation')
-                        if extension == 'odg':
-                            fileObject.setFormat('application/vnd.oasis.opendocument.graphics')
-                        if extension == 'doc':
-                            fileObject.setFormat('application/msword')
-                        if extension == 'docx':
-                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                        if extension == 'xls':
-                            fileObject.setFormat('application/vnd.ms-excel')
-                        if extension == 'xlsx':
-                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                        if extension == 'ppt':
-                            fileObject.setFormat('application/vnd.ms-powerpoint')
-                        if extension == 'pptx':
-                            fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
-                    except:
-                        logging.info('#%s# ERROR IMPORTING OBJECT! CHECK IT!', index)
-                        pass
-                # remove section links...
-                removeSections = re.findall(r'(<a[^>]+target="_self">.*?</a>)', tinyContent)
-                for obj in removeSections:
-                    tinyContent = tinyContent.replace(obj, "")
-                # Create modified HTML content with new image/file paths
-                object.setBody(tinyContent)
-                object.reindexObject()
-                transaction.commit()
-                # Fix creation Date
-                try:
-                    Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
-                    if Date == 'Yesterday':
-                        import datetime
-                        today = datetime.date.today()
-                        dateCreatedInNotes = str(today.year) + '-' + str(today.month) + '-' + str(today.day - 1)
-                        object.setCreationDate(dateCreatedInNotes)
+                    if 'Incorrect data type for operator or @Function: ' in html.content:
+                        titleObject = 'ERROR in MigratefomrNOTESKBTIC'
                     else:
-                        dateCreatedInNotes = Date.split('/')[2] + '/' + Date.split('/')[0] + '/' + Date.split('/')[1]
-                        object.setCreationDate(dateCreatedInNotes)
-                except:
-                    pass
-                try:
-                    Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
-                    dateCreatedInNotes = '2012/' + Date.split('/')[1] + '/' + Date.split('/')[0]
-                    object.setCreationDate(dateCreatedInNotes)
-                except:
-                    pass
-                # Guardar links a BBDD Notes
-                links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
-                linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
-                for obj in linksNotes:
+                        titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>').replace("&#8217;", "'")
+                if 'Incorrect data type for operator or @Function: ' in html.content:
+                    logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
+                else:
+                    from datetime import datetime
+                    f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
+                    logging.info('#%s# %s', index, titleObject)
+                    creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
+                    creator = creator.split('/')[0].replace(' ', '.').lower()  # intentem ficar el creator amb id LDAP
+                    Title = titleObject
+                    tinyContent = re.search(r'^(.*?)(<script.*/script>)(.*?)(<applet.*/applet)(.*?)(<HEAD.*/HEAD>)(.*?)(<a\s*href="\/upcnet\/backoffice\/docADS\.nsf\/\(\$All\)\?OpenView">)(.*?)', htmlContent, re.DOTALL | re.MULTILINE).groups()[6]
+                    object = self.createNotesObject('notesDocument', self.context, Title)
+                    logging.info("#%s# %s", index, object.absolute_url())
+                    f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ Notes: ' + str(originNotesObjectUrl) + ' ')
+                    f.write('Plone: ' + object.absolute_url() + ' \n')
+
+                    # CATEGORIES
+                    htmlContent = htmlContent.decode('iso-8859-1').encode('utf-8')  # PRODUCTION
+                    #htmlContent = htmlContent.decode('iso-8859-1').encode('utf-8')   # GOLLUM
+
                     try:
-                        from datetime import datetime
-                        #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
-                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ORIGINAL_NOTES_PATH: ' + originNotesObjectUrl + ' ORIGINAL_PLONE_URL: ' + object.absolute_url() + ' LINK_TO: ' + str(URL) + str(obj) + '\n')
+                        # sometimes people write with \ separator, we must force check two options...
+                        lista1 = []
+                        categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split(', ')
+                        for obj in categories:
+                            try:
+                                id_cat = [result for result in portal.uid_catalog.searchResults(
+                                            portal_type='SimpleVocabularyTerm',
+                                            Title=obj) if result.Title == obj and 'categoryADS' in result.getPath()][0].id
+                            except:
+                                id_cat = ''
+                            lista1 = lista1 + [id_cat]
+
+                        #object.setCategory3(lista1)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CATADS comma: ' + str(lista1) + ' \n')
+                        logging.info("#%s# ByKeyword con ,: %s", index, lista1)
+                    except:
+                        None
+
+                    try:
+                        # sometimes people write with \ separator, we must force check two options...
+                        lista2 = []
+                        categories = re.search(r'name="Categories"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0].split('\\')
+                        for obj in categories:
+                            try:
+                                id_cat = [result for result in portal.uid_catalog.searchResults(
+                                            portal_type='SimpleVocabularyTerm',
+                                            Title=obj) if result.Title == obj and 'categoryADS' in result.getPath()][0].id
+                            except:
+                                id_cat = ''
+                            lista2 = lista2 + [id_cat]
+
+                        #object.setCategory3(lista)
+                        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '$' + str(index) + '$ CATADS backslash: ' + str(lista2) + ' \n')
+                        logging.info("#%s# ByKeyword con \: %s", index, lista2)
+                    except:
+                        None
+                    listaCat3 = {}.fromkeys(lista1 + lista2).keys()
+                    object.setCategory3(listaCat3)
+                    object.setTitle(Title)
+                    object.setCreators(creator)
+                    object.setExcludeFromNav(True)
+
+                    # Import Images of the object
+                    imatgeSrc = re.findall(r'<img[^>]+src=\"([^\"]+)\"', htmlContent)
+                    imatgeSrc = [a for a in imatgeSrc if '/upcnet' in a]
+                    numimage = 1
+                    for obj in imatgeSrc:
+                        imatge = session.get(URL + obj, headers=cookie)
+                        imageObject = self.createNotesObject('Image', object, 'image' + str(numimage))
+                        replacedName = '/'.join((object.absolute_url() + '/image' + str(numimage)).split('/')[5:])
+                        tinyContent = tinyContent.replace(obj, replacedName)
+                        numimage = numimage + 1
+                        imageObject.setImage(imatge.content)
+
+                    # Import Files of the object
+                    attachSrc = re.findall(r'<a[^>]+href=\"([^\"]+)\"', htmlContent)
+                    attachSrc = [a for a in attachSrc if '$FILE' in a]
+                    for obj in attachSrc:
+                        try:
+                            file = session.get(URL + obj, headers=cookie)
+                            filename = obj.split('/')[-1].replace('%20', '_').replace('_', '')
+                            normalizedName = getToolByName(self.context, 'plone_utils').normalizeString(filename)
+                            # fake the same filename in folder object...
+                            contents = object.contentIds()
+                            normalizedName = self.calculaNom(contents, normalizedName)
+                            fileObject = self.createNotesObject('File', object, normalizedName)
+                            replacedName = normalizedName
+                            tinyContent = tinyContent.replace(obj, replacedName)
+                            fileObject.setFile(file.content)
+                            # OpenOffice files internally are saved as ZIP files, we must force metadata...
+                            extension = obj.split('.')[-1:][0]
+                            if extension == 'odt':
+                                fileObject.setFormat('application/vnd.oasis.opendocument.text')
+                            if extension == 'ods':
+                                fileObject.setFormat('application/vnd.oasis.opendocument.spreadsheet')
+                            if extension == 'odp':
+                                fileObject.setFormat('application/vnd.oasis.opendocument.presentation')
+                            if extension == 'odg':
+                                fileObject.setFormat('application/vnd.oasis.opendocument.graphics')
+                            if extension == 'doc':
+                                fileObject.setFormat('application/msword')
+                            if extension == 'docx':
+                                fileObject.setFormat('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                            if extension == 'xls':
+                                fileObject.setFormat('application/vnd.ms-excel')
+                            if extension == 'xlsx':
+                                fileObject.setFormat('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                            if extension == 'ppt':
+                                fileObject.setFormat('application/vnd.ms-powerpoint')
+                            if extension == 'pptx':
+                                fileObject.setFormat('application/vnd.openxmlformats-officedocument.presentationml.presentation')
+                            if extension == 'bmp':
+                                fileObject.setFormat('image/bmp')
+                        except:
+                            logging.info('#%s# ERROR IMPORTING OBJECT! CHECK IT!', index)
+                            pass
+                    # remove section links...
+                    removeSections = re.findall(r'(<a[^>]+target="_self">.*?</a>)', tinyContent)
+                    for obj in removeSections:
+                        tinyContent = tinyContent.replace(obj, "")
+                    # Create modified HTML content with new image/file paths
+                    object.setBody(tinyContent)
+                    object.reindexObject()
+                    transaction.commit()
+                    # Fix creation Date
+                    try:
+                        Date = re.search(r'name="Date"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"')  # PROD
+                        if Date == 'Yesterday':
+                            import datetime
+                            today = datetime.date.today()
+                            dateCreatedInNotes = str(today.year) + '-' + str(today.month) + '-' + str(today.day - 1)
+                            object.setCreationDate(dateCreatedInNotes)
+                        else:
+                            dateCreatedInNotes = Date.split('/')[2] + '/' + Date.split('/')[0] + '/' + Date.split('/')[1]
+                            object.setCreationDate(dateCreatedInNotes)
                     except:
                         pass
+                    try:
+                        Date = re.search(r'name="DateComposed"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"')
+                        dateCreatedInNotes = '2012/' + Date.split('/')[1] + '/' + Date.split('/')[0]
+                        object.setCreationDate(dateCreatedInNotes)
+                    except:
+                        pass
+                    # Guardar links a BBDD Notes
+                    links = re.findall(r'<a[^>]+href=\"([^\"]+)\"', tinyContent)
+                    linksNotes = [a for a in links if '?OpenDocument' in a and not 'Section' in a]
+                    for obj in linksNotes:
+                        try:
+                            #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ' + str(URL) + str(obj) + ' ' + object.absolute_url() + '\n')
+                            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# #Link: ORIGINAL_NOTES_PATH: ' + originNotesObjectUrl + ' ORIGINAL_PLONE_URL: ' + object.absolute_url() + ' LINK_TO: ' + str(URL) + str(obj) + '\n')
+                        except:
+                            pass
 
-                transaction.commit()
-                object.reindexObject()
-                #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
-                index = index + 1
-        from datetime import datetime
+                    transaction.commit()
+                    object.reindexObject()
+                    #f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Object migrated' + '\n')
+                    index = index + 1
+            else:
+                f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# UID exists: ' + UID + ' url: ' + object.absolute_url() + ' \n')
+                logging.info("#%s# UID exists: %s URL: %s", index, UID, object.absolute_url())
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Done! End of Notes Migration process.' + '\n')
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '--------------------------------------------------' + '\n')
         f.close()
