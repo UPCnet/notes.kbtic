@@ -52,7 +52,7 @@ class NotesSyncADS():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': 'AAECAzUwRDQ0OTY2NTBENDVFN0VDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXR7b6+M/xF/Tg+FOADoG34O+bdewA=='
+            'LtpaToken': ''
         }
 
         session.cookies.update(extra_cookies)
@@ -75,8 +75,8 @@ class NotesSyncADS():
         from zope.component.hooks import getSite
         portal = getSite()
         # Uncomment for manual imports...
-        startLimit = 3
-        limit = 5
+        startLimit = 1
+        limit = 2
         index = 1
         uid_list = []
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Objects to import: ' + str(startLimit) + ' to ' + str(limit) + '\n')
@@ -87,7 +87,7 @@ class NotesSyncADS():
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
             if UID not in uid_list:
                 uid_list = uid_list + [UID]
-                final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
+                final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,1.10,2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,2.10,3,3.1,3.2,3.3,3.4,3.5,3.6,3.7,3.8,3.9,3.10,4,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,4.10,5,5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9,5.10,6,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,6.10,7,7.1,7.2,7.3,7.4,7.5,7.6,7.7,7.8,7.9,7.10,8,8.1,8.2,8.3,8.4,8.5,8.6,8.7,8.8.8.9,8.10,9,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9,9.10,10,10.1,10.2,10.3,10.4,10.5,10.6,10.7,10.8,10.8,10.9,10.10'
                 originNotesObjectUrl = URL + TRAVERSE_PATH + value + '/' + UID
                 html = session.get(final_object, headers=cookie)
                 htmlContent = str(html.content)
@@ -98,6 +98,7 @@ class NotesSyncADS():
                         titleObject = 'ERROR in MigratefomrNOTESKBTIC'
                     else:
                         titleObject = re.search(r'(<title>(.*?)</title>)', htmlContent).groups()[1].decode('iso-8859-1').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>').replace("&#8217;", "'")
+                        #titleObject = 'Alarmes SNMP - MIBs'
                 if 'Incorrect data type for operator or @Function: ' in html.content:
                     logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
                 else:
