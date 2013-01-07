@@ -14,7 +14,7 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
 .contenttype-documentcspt {
 
     background-repeat: no-repeat !important;
-    background-image: url(++resource++notes_kbtic_images/notes.ico) !important;
+    background-image: url(++resource++notes_kbtic_images/notesIcon.png) !important;
     padding-left:25px !important;
     background-size: 16px auto;
     background-position: 3px 3px !important;
@@ -23,7 +23,7 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
 .contenttype-documentrrhh {
 
     background-repeat: no-repeat !important;
-    background-image: url(++resource++notes_kbtic_images/notes.ico) !important;
+    background-image: url(++resource++notes_kbtic_images/notesIcon.png) !important;
     padding-left:25px !important;
     background-size: 16px auto;
     background-position: 3px 3px !important;
@@ -31,7 +31,7 @@ select#categoryRRHH_options {width: 325px !important; height: 300px !important;}
 .contenttype-notesdocument {
 
     background-repeat: no-repeat !important;
-    background-image: url(++resource++notes_kbtic_images/notes.ico) !important;
+    background-image: url(++resource++notes_kbtic_images/notesIcon.png) !important;
     padding-left:25px !important;
     background-size: 16px auto;
     background-position: 3px 3px !important;
