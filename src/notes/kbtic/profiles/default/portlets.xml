@@ -1,34 +1,27 @@
 <?xml version="1.0"?>
-<!-- This file is used to register new types of portlets. It can also
-     be used to register completely new column types. See CMFPlone's version
-     of this file for more information.
-  -->
+
 <portlets
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
 
-    <portlet
-    	addview="navegacioEtiquetes"
-    	title="Portlet Etiquetes"
-    	description="Replace Navigation to etiquetes" />
+  <portlet
+      addview="navegacioEtiquetes"
+      title="Etiquetes KBTIC-RIN"
+      description="Replace Navigation to etiquetes KBTIc-RIN" />
 
   <portlet
       addview="navegacioEtiquetesCSPT"
-      title="Portlet Etiquetes CSPT"
+      title="Etiquetes CSPT"
       description="Replace Navigation to etiquetes CSPT" />
 
   <portlet
-      addview="navegacioEtiquetesRRHH"
-      title="Portlet Etiquetes RRHH"
-      description="Replace Navigation to etiquetes RRHH" />
+      addview="navegacioEtiquetesADS"
+      title="Etiquetes ADS-SPO"
+      description="Replace Navigation to etiquetes ADS-SPO" />
 
-    <assignment
-    	name="portlet-etiquetes"
-    	category="context"
-    	key="/"
-    	manager="plone.leftcolumn"
-    	type="navegacioEtiquetes"
-    	visible="True"/>
-
+  <portlet
+      addview="navegacioEtiquetesHOME"
+      title="Etiquetes HOME"
+      description="Replace Navigation to etiquetes HOME" />      
 
 </portlets>

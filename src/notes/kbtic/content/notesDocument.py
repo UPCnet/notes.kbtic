@@ -33,7 +33,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 name='category3',
                 widget=atapi.InAndOutWidget(
                     format="select",
-                    label='By Category',
+                    label='By Category (KBTIC-RIN)',
                     description="Indica les categories de la vista (Notes - By Category) que té l'element",
                     label_msgid='category3_label',
                     description_msgid='category3_help',
@@ -45,6 +45,23 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 vocabulary=NamedVocabulary('category3_keywords'),
                 enforceVocabulary=True,
             ),
+
+            atapi.LinesField(
+                name='categoryADS',
+                widget=atapi.InAndOutWidget(
+                    format="select",
+                    label='By Category (ADS-SPO)',
+                    description="Indicar totes les categories a les que pertany l'element del tipus ADS-SPO",
+                    label_msgid='categoryADS_label',
+                    description_msgid='categoryADS_help',
+                    i18n_domain='notes.kbtic',
+                ),
+                languageIndependent=True,
+                required=False,
+                schemata="categorization",
+                vocabulary=NamedVocabulary('categoryADS_keywords'),
+                enforceVocabulary=True,
+            ),            
 
             atapi.LinesField(
                 name='category1',
@@ -79,24 +96,7 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
                 vocabulary=NamedVocabulary('category2_keywords'),
                 enforceVocabulary=True,
             ),
-
-            atapi.LinesField(
-                name='categoryADS',
-                widget=atapi.InAndOutWidget(
-                    format="select",
-                    label='Categories By Category (per ADS-SPO)',
-                    description="Indicar totes les categories a les que pertany l'element del tipus ADS-SPO",
-                    label_msgid='category4_label',
-                    description_msgid='category4_help',
-                    i18n_domain='notes.kbtic',
-                ),
-                languageIndependent=True,
-                required=False,
-                schemata="categorization",
-                vocabulary=NamedVocabulary('categoryADS_keywords'),
-                enforceVocabulary=True,
-            ),
-
+            
 ))
 
 

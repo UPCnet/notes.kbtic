@@ -78,7 +78,7 @@ class Renderer(base.Renderer):
         results = []
 
         keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
-              if 'category4' in result.getPath()]
+              if 'categoryADS' in result.getPath()]
 
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})

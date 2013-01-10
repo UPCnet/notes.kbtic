@@ -126,3 +126,29 @@ class notesView(BrowserView):
                 None
 
         return results
+
+    def EtiquetesADS(self):
+        """ locate objects assigned to queried keyword
+        """
+        urltool = getToolByName(self.context, 'portal_url')
+        path = '/'.join(urltool.absolute_url().split('/')[:-1]) + '/'
+
+        results = []
+        try:
+            objects = self.context.categoryADS
+        except:
+            objects = ()
+
+        for value in objects:
+            try:
+                obj = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', id=value)[0]
+
+                results.append({'title': obj.Title,
+                            'key': value,
+                            'href': path + 'keywordsListing?' + value,
+                            })
+            except:
+                # When an object is migrated, can come with keywords, but perhaps, doesn't exists still in Plone
+                None
+
+        return results        

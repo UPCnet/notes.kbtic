@@ -4,7 +4,6 @@
 
       <type portal_type="notesDocument" />
       <type portal_type="documentCSPT" />
-      <type portal_type="documentRRHH" />
 
   </factorytypes>
 </object>

@@ -33,13 +33,6 @@
         permission="MigratefromNotes.Execute"
         />
 
-<!--     <browser:page
-        name="MigratefromNotesRRHH"
-        for="*"
-        class=".migrateRRHH.NotesSyncRRHH"
-        permission="MigratefromNotes.Execute"
-        />
--->
      <browser:page
         name="recreateLinksCSPT"
         for="*"
@@ -89,13 +82,5 @@
         class=".keywords_listing.KeywordsView"
         permission="zope2.View"
       />
-
-<!--     <browser:page
-        name="createRRHHfolders"
-        for="*"
-        class=".createRRHHfolders.createRRHHfolders"
-        permission="MigratefromNotes.Execute"
-        />
--->
 
 </configure>
