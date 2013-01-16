@@ -52,7 +52,7 @@ class NotesSyncKBTIC():
             'HabCookie': '1',
             'Desti': BASE_URL,
             'NomUsuari': '%s' % NOTES_USER,
-            'LtpaToken': ''
+            'LtpaToken': 'AAECAzUwRjUzNDNGNTBGNTQ5NTdDTj1Sb2JlcnRvIERpYXovTz1VcGNuZXRLgKiMzlJXHrX8oRx27nO2o6a7eA=='
         }
 
         session.cookies.update(extra_cookies)
@@ -62,7 +62,7 @@ class NotesSyncKBTIC():
         response2 = requests.get(URL + TRAVERSE_PATH + '($All)?OpenView', headers=cookie)
         #data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         #f = open('migrateKBTIC-' + data + '.log', 'a')  # PROD
-        f = open('migrateKBTIC.log', 'a')  # GOLLUM
+        f = open('migrateKBTICwithSections.log', 'a')  # GOLLUM
         value = re.search(r'name="ViewUNID"\s+value="(\w+)"', response2.content).groups()[0]
         toplevelentries = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=1&count=1'
         startLimit = 1
@@ -75,26 +75,26 @@ class NotesSyncKBTIC():
         from zope.component.hooks import getSite
         portal = getSite()
         # Uncomment for manual imports...
-        startLimit = 1
-        limit = 2
-        index = 1
+        startLimit = 2932
+        limit = 4000
+        index = 2932
         uid_list = []
         f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Objects to import: ' + str(startLimit) + ' to ' + str(limit) + '\n')
         logging.info('Objects to import: %s to %s', startLimit, limit)
         for index in range(startLimit, int(limit) + 1):
-            path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&start=' + str(index) + '&count=1'
+            path_notes = URL + TRAVERSE_PATH + value + '?ReadViewEntries&ResortAscending=0&start=' + str(index) + '&count=1'
             #logging.info('#%s# PathNotes: %s', index, path_notes)
             response3 = session.get(path_notes, headers=cookie)
             UID = re.search(r'unid="(\w+)"', response3.content).groups()[0]
             if UID not in uid_list:
                 uid_list = uid_list + [UID]
-                final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,2,3,3.1,3.2,4,5,6,7,8,9,10'
+                final_object = URL + TRAVERSE_PATH + value + '/' + UID + '?OpenDocument&ExpandSection=1,10,11,1.1,1.1.2,12,1.2,13,1.3,14,1.4,15,1.5,16,1.6,17,1.7,18,1.8,19,1.9,2,20,21,2.1,2.1.1,2.1.2,22,2.2,23,2.3,24,2.4,25,2.5,26,2.6,27,2.7,28,2.8,29,2.9,3,30,31,3.1,32,3.2,33,3.3,34,3.4,35,4,4.1,4.3,4.4,4.5,5,6,7,8,9'
                 originNotesObjectUrl = URL + TRAVERSE_PATH + value + '/' + UID
                 #logging.info('#%s# NotesURL: %s', index, originNotesObjectUrl)
                 html = session.get(final_object, headers=cookie)
-                htmlContent = str(html.content)
+                htmlContent = str(html.content) #.encode('iso-8859-1')
                 try:
-                    titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('utf-8').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
+                    titleObject = re.search(r'name="Subject"\s+type="hidden"\s+value="(.*?)"', htmlContent).groups()[0].decode('iso-8859-1').replace("&quot;", '"').replace("&lt;", '<').replace("&gt;", '>')
                 except:
                     if 'Incorrect data type for operator or @Function: ' in html.content:
                         titleObject = 'ERROR in MigratefomrNOTESKBTIC'
@@ -104,7 +104,7 @@ class NotesSyncKBTIC():
                     logging.info("ERROR in object %s. NOT MIGRATED! URL: %s", index, originNotesObjectUrl)
                 else:
                     from datetime import datetime
-                    f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + str(titleObject) + '\n')
+                    f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '#' + str(index) + '# Title: ' + titleObject.encode('utf-8') + '\n')
                     logging.info('#%s# %s', index, titleObject)
                     creator = re.search(r'name="From"\s+type="hidden"\s+value="([\w\(\)]+.*)"', htmlContent).groups()[0]
                     creator = creator.split('/')[0].replace(' ', '.').lower()  # intentem ficar el creator amb id LDAP
