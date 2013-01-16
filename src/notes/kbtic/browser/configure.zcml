@@ -6,6 +6,20 @@
   <include package="plone.app.contentmenu" />
 
      <browser:page
+        name="locateSectionsADS"
+        for="*"
+        class=".locateSections.locateSectionsADS"
+        permission="MigratefromNotes.Execute"
+        />
+
+    <browser:page
+        name="locateSectionsKBTIC"
+        for="*"
+        class=".locateSections.locateSectionsKBTIC"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
         name="MigratefromNotesKBTIC"
         for="*"
         class=".migrateKBTIC.NotesSyncKBTIC"
