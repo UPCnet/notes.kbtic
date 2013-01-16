@@ -12,9 +12,9 @@ class recreateLinks():
 
     def __call__(self):
         linksFile = open('migrateKBTIC.log', 'r')
-  
+
         lista = " Objectes Modificats\n---------------------\n\n"
-        changesFile = open('linksreplaced.log', 'a')
+        changesFile = open('linksreplacedKBTIC.log', 'a')
 
         for line in linksFile:
             if "#Link" in line:
@@ -27,7 +27,7 @@ class recreateLinks():
                         newHTML = re.search(r'parent-fieldname-body">(.*?)viewlet-below-content-body">', HTML_PAGE_WITH_LINK, re.DOTALL | re.MULTILINE).groups()[0][:-100]
                     except:
                         newHTML = ""
-                        logging.info("----------- ERROR: Content corrupte. Es deixa en blanc...: %s ", objecte.absolute_url())
+                        logging.info("----------- ERROR: Content corrupte. Es deixa en blanc...: %s ", obj.absolute_url())
                     NotesUID2Search = link_intern.split('/')[-1:][0].replace('?OPENDOCUMENT', '').replace('\n', '')  # Esta en mays
                     titleLink, nouLink = self.searchNotesDoc(NotesUID2Search)
                     url2search = ('/' + '/'.join(line.split(' ')[9].split('/')[3:])).replace('\n', '')

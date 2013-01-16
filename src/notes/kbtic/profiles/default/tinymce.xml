@@ -43,7 +43,6 @@
    <element value="Large Plone Folder"/>
    <element value="Plone Site"/>
    <element value="documentCSPT"/>
-   <element value="documentRRHH"/>
    <element value="notesDocument"/>
   </containsobjects>
   <entity_encoding value="raw"/>

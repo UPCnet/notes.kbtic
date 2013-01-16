@@ -12,20 +12,20 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 
-class IEtiquetesPortlet(IPortletDataProvider):
+class IEtiquetesADSPortlet(IPortletDataProvider):
     """ Defines a new portlet
     """
 
 
 class Assignment(base.Assignment):
     """ Assigner for portlet. """
-    implements(IEtiquetesPortlet)
-    title = _(u"Portlet Etiquetes", default=u'Portlet etiquetes')
+    implements(IEtiquetesADSPortlet)
+    title = _(u"Portlet Etiquetes ADS-SPO", default=u'Portlet etiquetes ADS-SPO')
 
 
 class Renderer(base.Renderer):
     """ Overrides static.pt in the rendering of the portlet. """
-    render = ViewPageTemplateFile('etiquetes.pt')
+    render = ViewPageTemplateFile('etiquetesADS.pt')
 
     def mostrarEtiquetesCategory1(self):
         """ Busca etiquetes dintre del portal_vocabulary segons idioma

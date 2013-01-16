@@ -18,13 +18,6 @@
         />
   </class>
 
-  <class class=".documentRRHH.DocumentRRHH">
-    <require
-        permission="zope2.View"
-        interface="..interfaces.IDocumentRRHH"
-        />
-  </class>
-
   <browser:page
         for="*"
         name="notes_view"

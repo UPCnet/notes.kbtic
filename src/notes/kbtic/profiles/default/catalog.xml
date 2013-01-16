@@ -22,9 +22,9 @@
   </index>
   <column value="categoryCSPT"/>
 
-  <index name="categoryRRHH" meta_type="KeywordIndex">
-    <indexed_attr value="categoryRRHH"/>
+  <index name="categoryADS" meta_type="KeywordIndex">
+    <indexed_attr value="categoryADS"/>
   </index>
-  <column value="categoryRRHH"/>
+  <column value="categoryADS"/>  
 
 </object>

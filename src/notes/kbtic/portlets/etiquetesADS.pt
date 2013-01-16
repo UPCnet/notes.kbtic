@@ -4,7 +4,7 @@
 		<a href="#"> By Category (KBTIC-RIN)</a>
 		<ul class="caixa_llistats">
 			<li tal:repeat="res view/mostrarEtiquetesCategory3" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/kbtic-rin/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/portal_url}/ads-spo/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
 			</li>
@@ -24,7 +24,7 @@
 		<a href="#"> Categories Servei </a>
 		<ul class="caixa_llistats">
  			<li tal:repeat="res view/mostrarEtiquetesCategory1" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/kbtic-rin/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/portal_url}/ads-spo/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
 			</li>
@@ -34,13 +34,12 @@
 		<a href="#"> Categories Servei PPS </a>
 		<ul class="caixa_llistats">
 			<li tal:repeat="res view/mostrarEtiquetesCategory2" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/kbtic-rin/keywordsListing?${res/id}"
+				<a  href="" tal:attributes="href string:${context/portal_url}/ads-spo/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
 			</li>
 		</ul>
 	</li>
-
 </ul>
 </tal:portletCategorias>
 

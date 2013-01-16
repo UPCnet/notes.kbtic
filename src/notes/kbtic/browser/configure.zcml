@@ -6,6 +6,20 @@
   <include package="plone.app.contentmenu" />
 
      <browser:page
+        name="locateSectionsADS"
+        for="*"
+        class=".locateSections.locateSectionsADS"
+        permission="MigratefromNotes.Execute"
+        />
+
+    <browser:page
+        name="locateSectionsKBTIC"
+        for="*"
+        class=".locateSections.locateSectionsKBTIC"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
         name="MigratefromNotesKBTIC"
         for="*"
         class=".migrateKBTIC.NotesSyncKBTIC"
@@ -33,13 +47,6 @@
         permission="MigratefromNotes.Execute"
         />
 
-<!--     <browser:page
-        name="MigratefromNotesRRHH"
-        for="*"
-        class=".migrateRRHH.NotesSyncRRHH"
-        permission="MigratefromNotes.Execute"
-        />
--->
      <browser:page
         name="recreateLinksCSPT"
         for="*"
@@ -89,13 +96,5 @@
         class=".keywords_listing.KeywordsView"
         permission="zope2.View"
       />
-
-<!--     <browser:page
-        name="createRRHHfolders"
-        for="*"
-        class=".createRRHHfolders.createRRHHfolders"
-        permission="MigratefromNotes.Execute"
-        />
--->
 
 </configure>

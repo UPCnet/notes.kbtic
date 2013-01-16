@@ -26,14 +26,24 @@
          addview=".etiquetesCSPT.AddForm"
          />
 
-<!--     <plone:portlet
-         name="navegacioEtiquetesRRHH"
-         interface=".etiquetesRRHH.IEtiquetesRRHHPortlet"
-         assignment=".etiquetesRRHH.Assignment"
+     <plone:portlet
+         name="navegacioEtiquetesADS"
+         interface=".etiquetesADS.IEtiquetesADSPortlet"
+         assignment=".etiquetesADS.Assignment"
          view_permission="zope2.View"
          edit_permission="cmf.ManagePortal"
-         renderer=".etiquetesRRHH.Renderer"
-         addview=".etiquetesRRHH.AddForm"
+         renderer=".etiquetesADS.Renderer"
+         addview=".etiquetesADS.AddForm"
          />
--->
+
+     <plone:portlet
+         name="navegacioEtiquetesHOME"
+         interface=".etiquetesHOME.IEtiquetesHOMEPortlet"
+         assignment=".etiquetesHOME.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".etiquetesHOME.Renderer"
+         addview=".etiquetesHOME.AddForm"
+         />         
+
 </configure>
