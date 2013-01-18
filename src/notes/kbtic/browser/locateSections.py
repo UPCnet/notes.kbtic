@@ -219,4 +219,16 @@ class locateSectionsADS():
         logging.info('------------------------------------------------------')
         return 'OK! Done'
 
+
+class setCatalanLang():
+
+    def __call__(self):
+        ###
+        ###
+        results = []
+        search_path = '/kbtic/portal_vocabularies/categoryADS_keywords'
+        results = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', path = search_path,  Language= 'en')
+        for obj in results:
+            objecte = obj.getObject()
+            objecte.setLanguage('ca')
 ### EOF ###

@@ -10,16 +10,16 @@
 			</li>
 		</ul>
 	</li>
-	<li tal:define="res view/mostrarEtiquetesCategory4" tal:condition="res" class="categories">
+	<li tal:define="res view/mostrarEtiquetesCategoryADS" tal:condition="res" class="categories">
 		<a href="#"> By Category (ADS-SPO)</a>
 		<ul class="caixa_llistats">
-			<li tal:repeat="res view/mostrarEtiquetesCategory4" class="llistats">
+			<li tal:repeat="res view/mostrarEtiquetesCategoryADS" class="llistats">
 				<a  href="" tal:attributes="href string:${context/portal_url}/ads-spo/keywordsListing?${res/id}"
 					tal:content="res/title">
 				</a>
 			</li>
 		</ul>
-	</li>		
+	</li>
 	<li tal:define="res view/mostrarEtiquetesCategory1" tal:condition="res" class="categories">
 		<a href="#"> Categories Servei </a>
 		<ul class="caixa_llistats">
