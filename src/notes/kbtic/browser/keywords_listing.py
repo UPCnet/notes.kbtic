@@ -16,40 +16,40 @@ class KeywordsView(BrowserView):
         """ locate objects assigned to queried keyword
         """
         results = []
-        
+
         # Search in root (all object) or in context only (ads or kbtic)
-        if len(self.context.getPhysicalPath())>2:
+        if len(self.context.getPhysicalPath()) > 2:
             search_path = '/'.join(self.context.getPhysicalPath()[0:3])
-        else: 
+        else:
             search_path = '/'.join(self.context.getPhysicalPath())
 
         keyword = self.request.environ['QUERY_STRING']
         objects1 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                              sort_on='getObjPositionInParent',
-                                                             path = search_path,
+                                                             path=search_path,
                                                              category1=keyword)
 
         objects2 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                              sort_on='getObjPositionInParent',
-                                                             path = search_path,                                                             
+                                                             path=search_path,
                                                              category2=keyword)
 
         objects3 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                              sort_on='getObjPositionInParent',
-                                                             path = search_path,                                                             
+                                                             path=search_path,
                                                              category3=keyword)
 
         objects4 = self.context.portal_catalog.searchResults(portal_type='documentCSPT',
                                                              sort_on='getObjPositionInParent',
-                                                             path = search_path,                                                             
+                                                             path=search_path,
                                                              categoryCSPT=keyword)
 
         objects5 = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                              sort_on='getObjPositionInParent',
-                                                             path = search_path,                                                             
-                                                             categoryADS=keyword)        
+                                                             path=search_path,
+                                                             categoryADS=keyword)
 
-        objects = objects1 + objects2 + objects3 + objects4 + objects5 
+        objects = objects1 + objects2 + objects3 + objects4 + objects5
 
         for value in objects:
             results.append({'id': value.id,
@@ -74,4 +74,3 @@ class KeywordsView(BrowserView):
             value = "Paraula clau no trobada"
 
         return value
-
