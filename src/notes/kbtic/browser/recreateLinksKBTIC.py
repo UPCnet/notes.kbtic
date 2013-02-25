@@ -24,7 +24,7 @@ class recreateLinks():
                 link_intern = line.split(' ')[9].upper()
                 if "MANUALEXP.NSF" in link_intern:  # Mirem si es link a mateixa BBDD
                     # Agafem contingut html de la pàgina
-                    HTML_PAGE_WITH_LINK = requests.get(str(line.split(' ')[7]), auth=('admin', 'dpmLidT8')).content
+                    HTML_PAGE_WITH_LINK = requests.get(str(line.split(' ')[7]), auth=('admin', '++++++++')).content
                     obj = self.context.portal_catalog.searchResults(portal_type='notesDocument',
                                                                     path='/kbtic/kbtic-rin',
                                                                     id=line.split(' ')[7].replace('\n', '').split('/')[-1:])[0]

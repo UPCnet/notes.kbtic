@@ -52,7 +52,7 @@ class recreateLinks():
             match = re.search('#Link', line)
             if match is not None:
                 try:
-                    HTML = requests.get(match.string.split(' ')[5].replace('\n', ''), auth=('admin', 'admin')).content
+                    HTML = requests.get(match.string.split(' ')[5].replace('\n', ''), auth=('admin', '++++++++')).content
                     obj = self.context.portal_catalog.searchResults(portal_type='documentCSPT', id=match.string.split(' ')[5].replace('\n', '').split('/')[-1:])[0]
                     newHTML = re.search(r'parent-fieldname-body">(.*?)div>(.*?)<div[^>]+id="category[^>]+class="documentByLine">(.*?)</div>(.*?)<div[^>]+id="portal-column-one"[^>]+class="cell width-1:4 position-0">(.*?)</html>', HTML, re.DOTALL | re.MULTILINE).groups()[1][:-20]
                     NotesUID = match.string.split(' ')[4].split('/')[-1:][0].replace('?OpenDocument', '').lower()

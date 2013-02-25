@@ -6,6 +6,13 @@
   <include package="plone.app.contentmenu" />
 
      <browser:page
+        name="setCatalanLang"
+        for="*"
+        class=".locateSections.setCatalanLang"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
         name="locateSectionsADS"
         for="*"
         class=".locateSections.locateSectionsADS"
@@ -95,6 +102,13 @@
         name="keywordsListing"
         class=".keywords_listing.KeywordsView"
         permission="zope2.View"
+      />
+
+      <browser:page
+        name="ModifyCategory3"
+        for="*"
+        class=".locateSections.ModifyCategory3"
+        permission="MigratefromNotes.Execute"
       />
 
 </configure>

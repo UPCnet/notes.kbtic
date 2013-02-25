@@ -3,5 +3,8 @@
   <version>1000</version>
   <dependencies>
     <dependency>profile-Products.ATVocabularyManager:default</dependency>
+    <dependency>profile-collective.uploadify:default</dependency>
+    <dependency>profile-collective.tinymceplugins.imagebrowser:default</dependency>
+    <dependency>profile-collective.tinymceplugins.advfilelinks:default</dependency>
   </dependencies>
 </metadata>

@@ -11,6 +11,7 @@
 import requests
 import logging
 import re
+import transaction
 
 NOTES_USER = ""
 NOTES_PASS = ""
@@ -218,5 +219,62 @@ class locateSectionsADS():
         logging.info('Done!')
         logging.info('------------------------------------------------------')
         return 'OK! Done'
+
+
+class setCatalanLang():
+
+    def __call__(self):
+        ###
+        ###
+        results = []
+        search_path = '/kbtic/portal_vocabularies/categoryADS_keywords'
+        results = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', path = search_path,  Language= 'en')
+        for obj in results:
+            objecte = obj.getObject()
+            objecte.setLanguage('ca')
+
+class ModifyCategory3():
+
+    def __call__(self):
+        ### cat3 must contain 'categoria-xxx' and catADS must contain 'ads-xxx'
+        ### there was an error and we must to swap the incorrect values
+        from datetime import datetime
+
+        filesystem = open('modifyCat3.log', 'a')
+        results = []
+        search_path = '/kbtic/ads-spo'
+        results = self.context.portal_catalog.searchResults(portal_type='notesDocument', path=search_path, )
+        logging.info("# REPLACE CATEGORIES START" + '\n')
+        for obj in results:
+            objecte = obj.getObject()
+            cat3 = objecte.getCategory3()
+            catADS = objecte.getCategoryADS()
+            logging.info("# OLD CAT3: %s URL: %s", cat3, objecte.absolute_url())
+            logging.info("# OLD CATADS: %s URL: %s", catADS, objecte.absolute_url())
+            if len(cat3) == 0:
+                # Categoria buida, no fer res
+                logging.info("# CAT3 EMPTY, NOTHING TO DO... URL: %s", objecte.absolute_url())
+            else:
+                ads_in_cat3 = tuple([a for a in objecte.getCategory3() if 'ads-' in a])
+                categoria_in_cat3 = tuple([a for a in objecte.getCategory3() if 'categoria-' in a])
+                ads_in_catADS = tuple([a for a in objecte.getCategoryADS() if 'ads-' in a])
+                categoria_in_catADS = tuple([a for a in objecte.getCategoryADS() if 'categoria-' in a])
+
+                totCAT3 = categoria_in_cat3 + categoria_in_catADS
+                totADS = ads_in_cat3 + ads_in_catADS
+
+                objecte.setCategory3(totCAT3)
+                objecte.setCategoryADS(totADS)
+
+                objecte.reindexObject()
+                transaction.commit()
+                newCat3 = objecte.getCategory3()
+                newCatADS = objecte.getCategoryADS()
+                logging.info("# CHANGE -> NEW CAT3: %s URL: %s", newCat3, objecte.absolute_url())
+                logging.info("# CHANGE -> NEW CATADS: %s URL: %s", newCatADS, objecte.absolute_url())
+                filesystem.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '' + objecte.absolute_url() + '\n')
+        logging.info("# REPLACE CATEGORIES END" + '\n')
+        logging.info("# --------------------------" + '\n')
+
 
 ### EOF ###

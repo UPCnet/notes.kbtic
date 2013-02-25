@@ -21,8 +21,23 @@
            tal:condition="python:(categories1 or categories2 or categories3 or categories4 or categories5 or categories6)">
 
         <span tal:omit-tag tal:condition="categories3">
-          <tal:filedunder>By Category:</tal:filedunder>
+          <tal:filedunder>By Category (KBTIC-RIN):</tal:filedunder>
           <span tal:repeat="category categories3">
+            <a href=""
+                class="link-category"
+                rel="tag"
+                tal:content="category/title"
+                tal:define="item_href category/href"
+                tal:attributes="href item_href">
+                Category
+            </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
+          </span>
+        <br/>
+        </span>
+
+        <span tal:omit-tag tal:condition="categories5">
+          <tal:filedunder>By Category (ADS-SPO):</tal:filedunder>
+          <span tal:repeat="category categories5">
             <a href=""
                 class="link-category"
                 rel="tag"
@@ -80,21 +95,6 @@
         <br/>
         </span>
 
-        <span tal:omit-tag tal:condition="categories5">
-          <tal:filedunder>By Category (ADS-SPO):</tal:filedunder>
-          <span tal:repeat="category categories5">
-            <a href=""
-                class="link-category"
-                rel="tag"
-                tal:content="category/title"
-                tal:define="item_href category/href"
-                tal:attributes="href item_href">
-                Category
-            </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
-          </span>
-        <br/>
-        </span>        
-
         <span tal:omit-tag tal:condition="categories6">
           <tal:filedunder>Etiquetes:</tal:filedunder>
           <span tal:repeat="category categories6">
@@ -118,4 +118,3 @@
 
   </body>
 </html>
-12312312

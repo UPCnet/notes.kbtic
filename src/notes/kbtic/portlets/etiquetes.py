@@ -20,7 +20,7 @@ class IEtiquetesPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     """ Assigner for portlet. """
     implements(IEtiquetesPortlet)
-    title = _(u"Portlet Etiquetes", default=u'Portlet etiquetes')
+    title = _(u"Etiquetes KBTIC", default=u'Etiquetes KBTIC')
 
 
 class Renderer(base.Renderer):
@@ -28,12 +28,12 @@ class Renderer(base.Renderer):
     render = ViewPageTemplateFile('etiquetes.pt')
 
     def mostrarEtiquetesCategory1(self):
-        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+        """ Categories Servei
         """
         from zope.component.hooks import getSite
         portal = getSite()
         results = []
-        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm', sort_on='Title')
               if 'category1' in result.getPath()]
 
         for value in keys:
@@ -42,13 +42,13 @@ class Renderer(base.Renderer):
         return results
 
     def mostrarEtiquetesCategory2(self):
-        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+        """ Categories Servei PPS
         """
         from zope.component.hooks import getSite
         portal = getSite()
         results = []
 
-        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm', sort_on='Title')
               if 'category2' in result.getPath()]
 
         for value in keys:
@@ -57,12 +57,12 @@ class Renderer(base.Renderer):
         return results
 
     def mostrarEtiquetesCategory3(self):
-        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+        """ By Category (KBTIC-RIN)
         """
         from zope.component.hooks import getSite
         portal = getSite()
         results = []
-        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm', sort_on='Title')
               if 'category3' in result.getPath()]
 
         for value in keys:
@@ -70,14 +70,14 @@ class Renderer(base.Renderer):
 
         return results
 
-    def mostrarEtiquetesCategory4(self):
-        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+    def mostrarEtiquetesCategoryADS(self):
+        """ By Category (ADS-SPO)
         """
         from zope.component.hooks import getSite
         portal = getSite()
         results = []
 
-        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm',)
+        keys = [result for result in portal.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm', sort_on='Title')
               if 'categoryADS' in result.getPath()]
 
         for value in keys:

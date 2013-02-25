@@ -20,7 +20,7 @@ class IEtiquetesCSPTPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     """ Assigner for portlet. """
     implements(IEtiquetesCSPTPortlet)
-    title = _(u"Portlet Etiquetes CSPT", default=u'Portlet etiquetes CSPT')
+    title = _(u"Etiquetes CSPT", default=u'Etiquetes CSPT')
 
 
 class Renderer(base.Renderer):
@@ -28,7 +28,7 @@ class Renderer(base.Renderer):
     render = ViewPageTemplateFile('etiquetesCSPT.pt')
 
     def mostrarEtiquetesCategoryCSPT(self):
-        """ Busca etiquetes dintre del portal_vocabulary segons idioma
+        """ Mostra etiquetes CSPT
         """
         urltool = getToolByName(self.context, 'portal_url')
         path = urltool.getPortalPath()
@@ -37,7 +37,7 @@ class Renderer(base.Renderer):
         path = path + '/portal_vocabularies/categoryCSPT_keywords'
         keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
                                                              path={'query': path, 'depth': 1, },
-                                                             sort_on='getObjPositionInParent')
+                                                             sort_on='Title')
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 

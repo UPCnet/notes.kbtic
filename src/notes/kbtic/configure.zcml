@@ -20,6 +20,10 @@
 
   <!-- Products -->
   <include package="Products.ATVocabularyManager" />
+  <include package="collective.uploadify" />
+  <include package="collective.tinymceplugins.imagebrowser" />
+  <include package="collective.tinymceplugins.advfilelinks" />
+
 
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
