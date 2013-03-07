@@ -6,6 +6,13 @@
   <include package="plone.app.contentmenu" />
 
      <browser:page
+        name="ModifyContentContainingColomers"
+        for="*"
+        class=".locateSections.ModifyContentContainingColomers"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
         name="setCatalanLang"
         for="*"
         class=".locateSections.setCatalanLang"
