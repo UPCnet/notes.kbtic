@@ -292,8 +292,13 @@ class ModifyContentContainingColomers():
         logging.info("# REPLACE CONTENT COLOMERS START" + '\n')
         lista = " Objectes Modificats \n---------------------\n\n"
         for obj in results:
+<<<<<<< HEAD
             import ipdb;ipdb.set_trace()
             HTML_PAGE_WITH_LINK = requests.get(obj.getURL(), auth=('admin', 'dpmLidT8')).content
+=======
+            realURL = 'https://kbtic.upcnet.es/' + '/'.join(obj.getURL().split('/')[4:])
+            HTML_PAGE_WITH_LINK = requests.get(realURL, auth=('admin', '**********')).content
+>>>>>>> 304575d8986d59bc850005de331912125cb81315
             d = pq(HTML_PAGE_WITH_LINK)
             content = d("#parent-fieldname-body").html()
             if 'colomers:11001' in content:
