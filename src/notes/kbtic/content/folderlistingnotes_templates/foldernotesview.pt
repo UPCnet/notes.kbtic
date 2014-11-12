@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:content-core fill-slot="content-core">
+<metal:block define-macro="content-core"
+                    tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                templateId template/getId">
+    <metal:listingmacro define-macro="listing">
+    <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
+                        contentFilter python:contentFilter and dict(contentFilter) or {};
+                        limit_display limit_display|request/limit_display|nothing;
+                        limit_display python:limit_display and int(limit_display) or None;
+                        more_url more_url|request/more_url|string:folder_contents;
+                        is_a_topic python:context.portal_type=='Topic';
+                        friendly_types context/@@plone_portal_state/friendly_types;
+                        dummy python:not is_a_topic and contentFilter.setdefault('portal_type', friendly_types);
+                        folderContents folderContents|nothing;
+                        folderContents python:folderContents or is_a_topic and context.queryCatalog(batch=True, **contentFilter) or context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
+                        site_properties context/portal_properties/site_properties;
+                        use_view_action site_properties/typesUseViewActionInListings|python:();
+                        Batch python:modules['Products.CMFPlone'].Batch;
+                        b_start python:request.get('b_start', 0);
+                        batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, limit_display or 100, int(b_start), orphan=1);
+                        isAnon context/@@plone_portal_state/anonymous;
+                        normalizeString nocall: context/plone_utils/normalizeString;
+                        toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                        show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
+                        navigation_root_url context/@@plone_portal_state/navigation_root_url;
+                        pas_member context/@@pas_member;
+                        plone_view context/@@plone;
+                        path python: view.get_container_path();
+                        continguts python: view.getContent();                       
+                        ">
+    <tal:listing condition="batch">
+    <div>
+        <a class="btn btn-success pull-right" 
+          alt="Nou document ASTIC" title="Nou document ASTIC"
+          href="createObject?type_name=notesDocument"> 
+          <i class="fa fa-plus"></i> Nou document ASTIC
+        </a>
+    </div>
+    <div class="caixessearch">
+      <h3>Cercar als continguts</h3>
+      <div id="searchinputcontent">
+        <div class="input-append">
+          <input class="searchInput" type="text" placeholder="Cerca"
+                 i18n:attributes="placeholder search"  tal:attributes="data-name path">
+          <span class="add-on"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+      <h3 i18n:translate="search_tags">Cercar per etiquetes</h3>
+      <div class="searchbytagcontainer" >
+          <input id="searchbytag"
+                 class="searchInput"
+                 type="hidden"
+                 placeholder="Cerca"
+                 i18n:attributes="placeholder search" tal:attributes="data-name path">
+      </div>
+      <br/>
+      <section id="tagslist">
+        <ul>
+          <tal:llistat repeat="contingut continguts">
+            <li tal:define="item_url contingut/getURL;">
+              <a tal:attributes="href item_url;">
+                <span class="summary" tal:replace="contingut/Title">Title</span>
+                  <span tal:define="modification_date contingut/ModificationDate" 
+                        class="documentModified">
+                        (<span tal:replace="python:toLocalizedTime(modification_date, long_format=0)">
+                    August 16, 2001 at 23:35:59
+                  </span>)
+                </span>
+              </a>
+              <!-- <br/>
+              <span class="documentAuthor">Creat per
+                <a href="#"
+                   tal:attributes="href string:$navigation_root_url/author/${item_creator}"
+                   tal:content="item_creator"
+                   tal:omit-tag="not:item_creator"
+                   >
+                  Bob Dobalina
+                </a>.
+              </span>
+              <span tal:define="publication_date contingut/EffectiveDate;
+                                modification_date contingut/ModificationDate">
+                <span class="documentPublished" tal:condition="python: publication_date != 'None'">
+                  <span i18n:translate="box_published">
+                    published
+                  </span>
+                  <span tal:replace="python:toLocalizedTime(publication_date, long_format=0)">
+                    August 16, 2001 at 23:35:59
+                  </span>
+                </span>
+                <span class="documentModified" tal:condition="python: modification_date != publication_date">
+                  <span>
+                    Darrera modificació: 
+                  </span>
+                  <span tal:replace="python:toLocalizedTime(modification_date, long_format=1)">
+                    August 16, 2001 at 23:35:59
+                  </span>
+                </span>
+              </span>
+              <br/>
+              <span tal:define="categories contingut/Subject|nothing"
+                    tal:condition="categories">
+                <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
+                <span tal:repeat="category categories">
+                  <a href=""
+                     class="link-category"
+                     rel="tag"
+                     tal:content="category"
+                     tal:attributes="href string:$navigation_root_url/@@search?Subject%3Alist=${category}">
+                    Category
+                  </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
+                </span>
+              </span>
+              <br/><br/> -->
+            </li>
+          </tal:llistat>
+        </ul>
+      </section>
+   
+<!--       <div metal:use-macro="context/batch_macros/macros/navigation" /> -->
+
+
+    </tal:listing>
+    <metal:empty metal:define-slot="no_items_in_listing">
+      <p class="discreet"
+         tal:condition="not: folderContents"
+         i18n:translate="description_no_items_in_folder">
+          There are currently no items in this folder.
+      </p>
+    </metal:empty>
+    </tal:foldercontents>
+    </metal:listingmacro>
+</metal:block>
+</metal:content-core>
+</body>
+</html>

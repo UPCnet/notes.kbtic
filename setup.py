@@ -56,7 +56,11 @@ setup(name='notes.kbtic',
       zip_safe=False,
       install_requires=['setuptools',
                         # -*- Extra requirements: -*-
-                        'Products.ATVocabularyManager'
+                        'Products.ATVocabularyManager',
+                        'pyquery',
+                        'five.grok',  
+                        'plone.api',
+                        'plone.batching',
                         ],
       tests_require=tests_require,
       extras_require=dict(test=tests_require),

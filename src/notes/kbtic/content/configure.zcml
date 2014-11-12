@@ -4,20 +4,6 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="notes.kbtic">
 
-  <class class=".notesDocument.NotesDocument">
-    <require
-        permission="zope2.View"
-        interface="..interfaces.INotesDocument"
-        />
-  </class>
-
-  <class class=".documentCSPT.DocumentCSPT">
-    <require
-        permission="zope2.View"
-        interface="..interfaces.IDocumentCSPT"
-        />
-  </class>
-
   <browser:page
         for="*"
         name="notes_view"

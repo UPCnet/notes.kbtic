@@ -6,6 +6,13 @@
   <include package="plone.app.contentmenu" />
 
      <browser:page
+        name="ModifyContentContainingColomers"
+        for="*"
+        class=".locateSections.ModifyContentContainingColomers"
+        permission="MigratefromNotes.Execute"
+        />
+
+     <browser:page
         name="setCatalanLang"
         for="*"
         class=".locateSections.setCatalanLang"
@@ -109,6 +116,20 @@
         for="*"
         class=".locateSections.ModifyCategory3"
         permission="MigratefromNotes.Execute"
+      />
+
+     <browser:page
+        name="ATVocabularyToSubject"
+        for="*"
+        class=".ATVocabularyToSubject.ATVocabularyToSubject"
+        permission="MigratefromNotes.Execute"
+        />
+
+    <browser:page
+      name="getVocabulary"
+      for="*"
+      class=".vocabulary.VocabularyView"
+      permission="zope2.View"
       />
 
 </configure>

@@ -12,6 +12,7 @@ import requests
 import logging
 import re
 import transaction
+from pyquery import PyQuery as pq
 
 NOTES_USER = ""
 NOTES_PASS = ""
@@ -222,19 +223,20 @@ class locateSectionsADS():
 
 
 class setCatalanLang():
-
+    """ Objects imported created in engllish, pass it to Catalan... """
     def __call__(self):
         ###
         ###
         results = []
         search_path = '/kbtic/portal_vocabularies/categoryADS_keywords'
-        results = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', path = search_path,  Language= 'en')
+        results = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm', path=search_path,  Language='en')
         for obj in results:
             objecte = obj.getObject()
             objecte.setLanguage('ca')
 
-class ModifyCategory3():
 
+class ModifyCategory3():
+    """ Error in copy&paste code makes bad import in category. We need to swap values between CAT_ADS and CAT3 """
     def __call__(self):
         ### cat3 must contain 'categoria-xxx' and catADS must contain 'ads-xxx'
         ### there was an error and we must to swap the incorrect values
@@ -275,6 +277,46 @@ class ModifyCategory3():
                 filesystem.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + '' + objecte.absolute_url() + '\n')
         logging.info("# REPLACE CATEGORIES END" + '\n')
         logging.info("# --------------------------" + '\n')
+
+
+class ModifyContentContainingColomers():
+    """ After creating content, saving html creates automatic relative links to current path of script
+        (in this case colomers:11001) :( We need to change colomers to real path...  """
+    def __call__(self):
+        """ locate content colomers and replace it ... """
+        from datetime import datetime
+        filesystem = open('modifyContentColomers.log', 'a')
+        results = []
+        search_path = '/kbtic/ads-spo'
+        results = self.context.portal_catalog.searchResults(portal_type='notesDocument', path=search_path, )
+        logging.info("# REPLACE CONTENT COLOMERS START" + '\n')
+        lista = " Objectes Modificats \n---------------------\n\n"
+        for obj in results:
+            import ipdb;ipdb.set_trace()
+            HTML_PAGE_WITH_LINK = requests.get(obj.getURL(), auth=('admin', 'dpmLidT8')).content
+            d = pq(HTML_PAGE_WITH_LINK)
+            content = d("#parent-fieldname-body").html()
+            if 'colomers:11001' in content:
+                replacedContent = content.replace("http://colomers:11001/", 'https://kbtic.upcnet.es/')
+                objecte = obj.getObject()
+                objecte.setBody(replacedContent)
+                objecte.indexObject()
+                transaction.commit()
+                filesystem.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Replaced Content Colomers: ' + objecte.absolute_url() + '\n')
+                filesystem.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Content with literal: colomers -> ' + obj.getURL() + '\n')
+                logging.info("Object to replace: %s ", obj.getURL())
+                lista = lista + obj.getURL() + '\n'
+            else:
+                filesystem.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'NOT Replaced content: ' + obj.getURL() + '\n')
+                logging.info("NOT REPLACED: %s ", obj.getURL())
+                #lista = lista + obj.getURL() + '\n'
+        filesystem.write('-----------------------------------------------------------------------------' + '\n')
+        filesystem.write('                             END: CONTENT COLOMERS' + '\n')
+        filesystem.write('-----------------------------------------------------------------------------' + '\n')
+        filesystem.close()
+        logging.info("END CONTENT COLOMERS process!")
+
+        return lista
 
 
 ### EOF ###

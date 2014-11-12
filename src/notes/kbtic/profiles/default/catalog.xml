@@ -27,4 +27,9 @@
   </index>
   <column value="categoryADS"/>  
 
+  <index name="obsolete" meta_type="BooleanIndex">
+    <indexed_attr value="obsolete"/>
+  </index>
+  <column value="obsolete"/>    
+
 </object>

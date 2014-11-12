@@ -28,6 +28,16 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
              searchable=True,
              ),
 
+            atapi.BooleanField(
+                name='obsolete',
+                widget=atapi.BooleanWidget(
+                    label='Document obsolet', 
+                    description="Si el document està marcat com a obsolet, no sortirà a les cerques.",
+                    ),
+                required=False,                
+                searchable=True,                
+            ),
+
             #CATEGORIES
             atapi.LinesField(
                 name='category3',
@@ -103,12 +113,18 @@ NotesDocumentSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 NotesDocumentSchema['title'].storage = atapi.AnnotationStorage()
 NotesDocumentSchema['description'].storage = atapi.AnnotationStorage()
 
-# Hide default category option
+#  default category option
 # NotesDocumentSchema['subject'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['description'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['language'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['relatedItems'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 NotesDocumentSchema['location'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+
+# Hide older CUSTOM categorization (VocabularyManager)
+NotesDocumentSchema['category3'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+NotesDocumentSchema['categoryADS'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+NotesDocumentSchema['category1'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
+NotesDocumentSchema['category2'].widget.visible = {'view': 'invisible', 'edit': 'invisible'}
 
 schemata.finalizeATCTSchema(NotesDocumentSchema, folderish=True, moveDiscussion=False)
 
