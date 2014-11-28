@@ -11,4 +11,11 @@
         permission="zope2.Public"
   />
 
+  <browser:page
+        for="*"
+        name="folderNotesView"
+        class=".folderlistingnotes.FolderNotesView"
+        permission="zope2.Public"
+  />
+
 </configure>
