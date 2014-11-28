@@ -1,5 +1,5 @@
 function initMenu() {
-//$('#menu ul').hide();
+$('#menu ul').hide();
 
 $('#menu li a').click(
    function() {
