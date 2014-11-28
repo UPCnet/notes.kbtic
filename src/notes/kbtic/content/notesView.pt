@@ -13,7 +13,7 @@
       <div id="category" tal:omit-tag tal:condition="context/obsolete|nothing" 
         class="alert alert-danger" role="alert" 
         style="background-color: #f2dede; color: #a94442; text-align: right; font-size: 12px; font-weight: bold; border: 1px solid #ebccd1">
-        Atenció: Document marcat com a obsolet
+        Atenció: Document marcat com obsolet
       </div>
 
       <div id="category"

@@ -1,11 +1,13 @@
 <tal:portletCategorias i18n:domain="notes.kbtic">
 <ul id="menu">
 	<li tal:define="res view/mostrarEtiquetes" tal:condition="res" class="categories">
-		<a href="#"> ETIQUETES </a>
+		<img src="++resource++notes_kbtic_images/collapse.gif">
+		<a href="#"> LLISTA D'ETIQUETES </a>
 		<ul class="caixa_llistats">
 			<li tal:repeat="res view/mostrarEtiquetes" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${res}"
-					tal:content="res">
+				<a href=""
+				   tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${res}"
+				   tal:content="res">
 				</a>
 			</li>
 		</ul>
