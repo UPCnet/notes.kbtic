@@ -8,7 +8,7 @@
 
     $.fn.select2.locales['ca'] = {
         formatNoMatches: function () { return "No s'ha trobat cap coincidència"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Introduïu " + n + " caràcter" + (n == 1 ? "" : "s") + " més"; },
+        formatInputTooShort: function (input, min) { var n = min - input.length; return "Introduïu " + n + " caràcter" + (n == 1 ? "" : "s") + " més per fer la cerca"; },
         formatInputTooLong: function (input, max) { var n = input.length - max; return "Introduïu " + n + " caràcter" + (n == 1? "" : "s") + "menys"; },
         formatSelectionTooBig: function (limit) { return "Només podeu seleccionar " + limit + " element" + (limit == 1 ? "" : "s"); },
         formatLoadMore: function (pageNumber) { return "S'estan carregant més resultats…"; },
