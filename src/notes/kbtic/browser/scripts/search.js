@@ -4,7 +4,7 @@ $(document).ready(function () {
 $('#searchbytag').select2({
     tags: [],
     tokenSeparators: [","],
-    minimumInputLength: 1,
+    minimumInputLength: 2,
     ajax: {
         url: portal_url + '/getVocabulary?name=plone.app.vocabularies.Keywords&field=subjects',
         data: function (term) {
