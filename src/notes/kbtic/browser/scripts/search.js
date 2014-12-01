@@ -7,13 +7,12 @@ $('#searchbytag').select2({
     minimumInputLength: 1,
     ajax: {
         url: portal_url + '/getVocabulary?name=plone.app.vocabularies.Keywords&field=subjects',
-        data: function (term, page) {
+        data: function (term) {
             return {
                 query: term,
-                page: page // page number
             };
         },
-        results: function (data, page) {
+        results: function (data) {
             return data;
         }
     }
@@ -26,7 +25,7 @@ $('#searchbytag').on("change", function(e) {
     var tags = $('#searchbytag').val();
 
     $('.listingBar').hide();
-    $.get(portal_url + '/' + path + '/search_filtered_content', { q: query, t: tags }, function(data) {
+    $.get(path + '/search_filtered_content', { q: query, t: tags }, function(data) {
         $('#tagslist').html(data);
     });
 });
