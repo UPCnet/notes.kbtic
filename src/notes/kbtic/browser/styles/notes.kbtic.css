@@ -631,3 +631,7 @@ float: left;
 ul.select2-choices {margin:0px !important;}
 
 li.select2-search-choice {list-style: none!important;}
+
+div.managePortletsLink {
+    display: none;
+}
