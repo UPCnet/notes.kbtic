@@ -11,17 +11,3 @@
     </ul>
 
 </tal:block>
-<!-- 
-
-<dl>
-          <tal:llistat repeat="contingut continguts">
-            <dt tal:define="item_url contingut/getURL;">
-              <a tal:attributes="href item_url;">
-                <span class="summary" tal:replace="contingut/Title">Title</span>
-                  <span tal:define="modification_date contingut/ModificationDate" 
-                        class="documentModified">
-                        (<span tal:replace="python:toLocalizedTime(modification_date, long_format=0)">
-                    August 16, 2001 at 23:35:59
-                  </span>)
-                </span>
-              </a> -->
