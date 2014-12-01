@@ -48,18 +48,18 @@
         </a>
     </div>
     <div class="caixessearch">
-      <h3 i18n:translate="search_tags">Indicar etiquetes a cercar</h3>
+      <h3 i18n:translate="search_tags">Cercar per etiquetes</h3>
       <div class="searchbytagcontainer" >
           <input id="searchbytag"
                  class="searchInput"
                  type="hidden"
-                 placeholder="Cerca etiquetes"
+                 placeholder="Etiqueta"
                  i18n:attributes="placeholder search" tal:attributes="data-name path">
       </div>
-      <h3>Cercar als continguts</h3>
+      <h3>Cercar per continguts</h3>
       <div id="searchinputcontent">
         <div class="input-append">
-          <input class="searchInput" type="text" placeholder="Cerca continguts" 
+          <input class="searchInput" type="text" placeholder="Contingut" 
                  style="width:350px; height: 26px;"
                  i18n:attributes="placeholder search"  tal:attributes="data-name path">
           <span class="add-on"><i class="fa fa-search"></i></span>
@@ -94,7 +94,7 @@
                      class="link-category"
                      rel="tag"
                      tal:content="category"
-                     tal:attributes="href string:$navigation_root_url/@@search?Subject%3Alist=${category}">
+                     tal:attributes="href string:$navigation_root_url/search?Subject%3Alist=${category}">
                     Category
                   </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                 </span>

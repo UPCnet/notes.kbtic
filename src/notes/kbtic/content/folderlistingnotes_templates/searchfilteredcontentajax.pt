@@ -1,4 +1,4 @@
-<tal:block tal:define="navigation_root_url context/@@plone_portal_state;
+<tal:block tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
                        toLocalizedTime nocall: context/@@plone/toLocalizedTime"
             i18n:domain="plone">
 
@@ -24,7 +24,7 @@
                  class="link-category"
                  rel="tag"
                  tal:content="category"
-                 tal:attributes="href string:$navigation_root_url/@@search?Subject%3Alist=${category}">
+                 tal:attributes="href string:$navigation_root_url/search?Subject%3Alist=${category}">
                 Category
               </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
             </span>
