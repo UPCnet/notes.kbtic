@@ -73,9 +73,10 @@
       <section id="tagslist">
         <ul>
           <tal:llistat repeat="contingut continguts">
-            <li tal:define="item_url contingut/getURL;">
-              <a tal:attributes="href item_url;">
-                <span class="summary" tal:replace="contingut/Title">Title</span>
+            <li tal:define="title contingut/Title; id contingut/id">
+              <a tal:attributes="href contingut/getURL;">
+                <span tal:condition="title" tal:content="contingut/Title">Title</span>
+                <span tal:condition="not:title" tal:content="contingut/id">Title</span>                
                   <span tal:define="modification_date contingut/ModificationDate" 
                         class="documentModified">
                         (<span tal:replace="python:toLocalizedTime(modification_date, long_format=0)">
@@ -83,38 +84,10 @@
                   </span>)
                 </span>
               </a>
-              <!-- <br/>
-              <span class="documentAuthor">Creat per
-                <a href="#"
-                   tal:attributes="href string:$navigation_root_url/author/${item_creator}"
-                   tal:content="item_creator"
-                   tal:omit-tag="not:item_creator"
-                   >
-                  Bob Dobalina
-                </a>.
-              </span>
-              <span tal:define="publication_date contingut/EffectiveDate;
-                                modification_date contingut/ModificationDate">
-                <span class="documentPublished" tal:condition="python: publication_date != 'None'">
-                  <span i18n:translate="box_published">
-                    published
-                  </span>
-                  <span tal:replace="python:toLocalizedTime(publication_date, long_format=0)">
-                    August 16, 2001 at 23:35:59
-                  </span>
-                </span>
-                <span class="documentModified" tal:condition="python: modification_date != publication_date">
-                  <span>
-                    Darrera modificació: 
-                  </span>
-                  <span tal:replace="python:toLocalizedTime(modification_date, long_format=1)">
-                    August 16, 2001 at 23:35:59
-                  </span>
-                </span>
-              </span>
               <br/>
               <span tal:define="categories contingut/Subject|nothing"
-                    tal:condition="categories">
+                    tal:condition="categories"
+                    style="padding-left: 10px;">
                 <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
                 <span tal:repeat="category categories">
                   <a href=""
@@ -126,14 +99,11 @@
                   </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                 </span>
               </span>
-              <br/><br/> -->
             </li>
           </tal:llistat>
         </ul>
       </section>
    
-<!--       <div metal:use-macro="context/batch_macros/macros/navigation" /> -->
-
 
     </tal:listing>
     <metal:empty metal:define-slot="no_items_in_listing">
