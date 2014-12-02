@@ -104,8 +104,9 @@ class FolderNotesView(grok.View):
         path = "/".join(path)
 
         items = catalog.searchResults(path={'query': path, 'depth': 1},
-                                      sort_on='getObjPositionInParent',
-                                      sort_order='reverse')
+                                      sort_on='modified',
+                                      sort_order='reverse',
+                                      )
 
         return items
 
