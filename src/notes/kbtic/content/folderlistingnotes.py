@@ -64,7 +64,6 @@ class FolderNotesView(grok.View):
                                          Subject={'query': self.tags, 'operator': 'and'})
 
             return r_results
-            # return self.get_batched_contenttags(query=None, batch=True, b_size=10, b_start=0)
 
     def get_tags_by_query(self):
         pc = getToolByName(self.context, "portal_catalog")
@@ -115,4 +114,3 @@ class SearchFilteredContentAjax(FolderNotesView):
     """ Ajax helper for filtered content search view for every folder. """
     grok.name('search_filtered_content')
     grok.context(Interface)
-    # grok.template('filtered_contents_search_ajax')  

@@ -4,15 +4,16 @@ $(document).ready(function () {
 $('#searchbytag').select2({
     tags: [],
     tokenSeparators: [","],
-    minimumInputLength: 2,
+    minimumInputLength: 1,
     ajax: {
-        url: portal_url + '/getVocabulary?name=plone.app.vocabularies.Keywords&field=subjects',
-        data: function (term) {
+        url: portal_url + '/getVocabularies?name=plone.app.vocabularies.Keywords&field=subjects',
+        data: function (term, page) {
             return {
                 query: term,
+                page: page // page number
             };
         },
-        results: function (data) {
+        results: function (data, page) {
             return data;
         }
     }
@@ -25,7 +26,7 @@ $('#searchbytag').on("change", function(e) {
     var tags = $('#searchbytag').val();
 
     $('.listingBar').hide();
-    $.get(path + '/search_filtered_content', { q: query, t: tags }, function(data) {
+        $.get(path + '/search_filtered_content', { q: query, t: tags }, function(data) {
         $('#tagslist').html(data);
     });
 });

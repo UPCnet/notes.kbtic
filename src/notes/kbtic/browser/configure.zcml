@@ -126,7 +126,7 @@
         />
 
     <browser:page
-      name="getVocabulary"
+      name="getVocabularies"
       for="*"
       class=".vocabulary.VocabularyView"
       permission="zope2.View"
