@@ -49,18 +49,19 @@ class FolderNotesView(grok.View):
             query = self.query.split()
             query = " AND ".join(query)
             query = quote_bad_chars(query) + '*'
+            #import ipdb;ipdb.set_trace()
 
             if self.tags:
-                r_results = pc.searchResults(path=path,
+                r_results = pc.searchResults(path={'query': path, 'depth': 1},
                                              SearchableText=query,
                                              Subject={'query': self.tags, 'operator': 'and'})
             else:
-                r_results = pc.searchResults(path=path,
+                r_results = pc.searchResults(path={'query': path, 'depth': 1},
                                              SearchableText=query)
 
             return r_results
         else:
-            r_results = pc.searchResults(path=path,
+            r_results = pc.searchResults(path={'query': path, 'depth': 1},
                                          Subject={'query': self.tags, 'operator': 'and'})
 
             return r_results
@@ -87,7 +88,7 @@ class FolderNotesView(grok.View):
             query = quote_bad_chars(query)
             path = self.context.absolute_url_path()
 
-            r_results = pc.searchResults(path=path,
+            r_results = pc.searchResults(path={'query': path, 'depth': 1},
                                          Subject=query)
 
             return r_results

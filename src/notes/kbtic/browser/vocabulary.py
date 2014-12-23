@@ -160,7 +160,6 @@ class BaseVocabularyView(BrowserView):
             vocabulary = self.get_vocabulary()
         except VocabLookupException, e:
             return json.dumps({'error': e.message})
-
         results_are_brains = False
         if hasattr(vocabulary, 'search_catalog'):
             query = self.parsed_query()
@@ -237,7 +236,7 @@ class BaseVocabularyView(BrowserView):
                 items.append(item)
         else:
             for item in results:
-                items.append({'id': item.token, 'text': item.title})
+                items.append({'id': (item.token).lower(), 'text': item.title})
 
         if total == 0:
             total = len(items)
