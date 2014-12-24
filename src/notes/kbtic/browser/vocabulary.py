@@ -47,6 +47,9 @@ def _parseJSON(s):
         if (s.startswith('{') and s.endswith('}')) or \
                 (s.startswith('[') and s.endswith(']')):  # detect if json
             return json.loads(s)
+
+    # TODO: si hacemos 'return s.lower()'' sólo busca content en minúscula, no
+    # encuentra nada en mayus xq el dict de vocab está con Mayúsc
     return s
 
 
@@ -236,7 +239,10 @@ class BaseVocabularyView(BrowserView):
                 items.append(item)
         else:
             for item in results:
-                items.append({'id': item.token, 'text': item.title})
+                items.append({'id': item.token,
+                              'text': item.title,
+                              'lower': item.title.lower()})
+                # TODO: Added to check values in lower, but not found :( Then not used now...
 
         if total == 0:
             total = len(items)
@@ -267,7 +273,6 @@ class VocabularyView(BaseVocabularyView):
 
     def get_vocabulary(self):
         # Look up named vocabulary and check permission.
-
         context = self.context
         factory_name = self.request.get('name', None)
         field_name = self.request.get('field', None)
