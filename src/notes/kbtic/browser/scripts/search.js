@@ -24,8 +24,8 @@ $('#searchbytag').on("change", function(e) {
     var query = $('#searchinputcontent .searchInput').val();
     var path = $(this).data().name;
     var tags = $('#searchbytag').val();
-    var obsolete = $('#include_obsolets:checked').val();
-
+    var obsolete = $('#include_obsolets:checked').length;
+    if (obsolete == 'undefined'){ var obsolete = false;};
     $('.listingBar').hide();
     $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete}, function(data) {
         $('#tagslist').html(data);
@@ -37,7 +37,8 @@ $('#searchinputcontent .searchInput').on('keyup', function(event) {
     var query = $(this).val();
     var path = $(this).data().name;
     var tags = $('#searchbytag').val();
-    var obsolete = $('#include_obsolets:checked').val();
+    var obsolete = $('#include_obsolets:checked').length;
+    if (obsolete == 'undefined'){ var obsolete = false;};
 
     $('.listingBar').hide();
     $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete }, function(data) {

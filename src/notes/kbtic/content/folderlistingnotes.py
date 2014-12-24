@@ -11,6 +11,9 @@ class FolderNotesView(grok.View):
 
     def update(self):
         self.query = self.request.form.get('q', '')
+        self.query = self.query.lstrip(' ')
+        self.obsolete = self.request.form.get('o', '')
+
         if self.request.form.get('t', ''):
             self.tags = [v for v in self.request.form.get('t').split(',')]
         else:
@@ -49,19 +52,49 @@ class FolderNotesView(grok.View):
             query = self.query.split()
             query = " AND ".join(query)
             query = quote_bad_chars(query) + '*'
-            #import ipdb;ipdb.set_trace()
 
             if self.tags:
-                r_results = pc.searchResults(path={'query': path, 'depth': 1},
-                                             SearchableText=query,
-                                             Subject={'query': self.tags, 'operator': 'and'})
+                if self.obsolete == '1':
+                    if query == '*':
+                        r_results = pc.searchResults(path=path,
+                                                     Subject={'query': self.tags, 'operator': 'and'},
+                                                     obsolete=True)
+                    else:
+                        r_results = pc.searchResults(path=path,
+                                                     SearchableText=query,
+                                                     Subject={'query': self.tags, 'operator': 'and'},
+                                                     obsolete=True)
+                else:
+                    if query == '*':
+                        r_results = pc.searchResults(path=path,
+                                                     Subject={'query': self.tags, 'operator': 'and'},
+                                                     obsolete=False)
+                    else:
+                        r_results = pc.searchResults(path=path,
+                                                     SearchableText=query,
+                                                     Subject={'query': self.tags, 'operator': 'and'},
+                                                     obsolete=False)
             else:
-                r_results = pc.searchResults(path={'query': path, 'depth': 1},
-                                             SearchableText=query)
+                if self.obsolete == '1':
+                    if query == '*':
+                        r_results = pc.searchResults(path=path,
+                                                     obsolete=True)
+                    else:
+                        r_results = pc.searchResults(path=path,
+                                                     SearchableText=query,
+                                                     obsolete=True)
+                else:
+                    if query == '*':
+                        r_results = pc.searchResults(path=path,
+                                                     obsolete=False)
+                    else:
+                        r_results = pc.searchResults(path=path,
+                                                     SearchableText=query,
+                                                     obsolete=False)
 
             return r_results
         else:
-            r_results = pc.searchResults(path={'query': path, 'depth': 1},
+            r_results = pc.searchResults(path= path,
                                          Subject={'query': self.tags, 'operator': 'and'})
 
             return r_results
@@ -103,11 +136,16 @@ class FolderNotesView(grok.View):
         catalog = getToolByName(portal, 'portal_catalog')
         path = self.context.getPhysicalPath()
         path = "/".join(path)
-
-        items = catalog.searchResults(path={'query': path, 'depth': 1},
-                                      sort_on='modified',
-                                      sort_order='reverse',
-                                      )
+        if self.obsolete == '1':
+            items = catalog.searchResults(path={'query': path, 'depth': 1},
+                                          sort_on='modified',
+                                          sort_order='reverse',
+                                          obsolete=True,)
+        else:
+            items = catalog.searchResults(path={'query': path, 'depth': 1},
+                                          sort_on='modified',
+                                          sort_order='reverse',
+                                          obsolete=False,)
 
         return items
 
