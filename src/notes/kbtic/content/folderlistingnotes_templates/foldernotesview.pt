@@ -50,7 +50,7 @@
                  i18n:attributes="placeholder search" tal:attributes="data-name path">
       </div>
       <h3>Cercar per continguts</h3>
-      <p>Per defect només busca contingut a documents NO OBSOLETS</p>
+      <p>Per defecte només busca contingut a documents NO OBSOLETS</p>
       <div id="searchinputcontent">
         <div class="input-append">
           <input class="searchInput" type="text" placeholder="Contingut" 
