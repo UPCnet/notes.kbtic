@@ -59,7 +59,7 @@
       <h3>Cercar per continguts</h3>
       <div id="searchinputcontent">
         <div class="input-append">
-          <input class="searchInput" type="text" placeholder="Contingut" 
+          <input id="searchInput" class="searchInput" type="text" placeholder="Contingut" 
                  style="width:350px; height: 26px;"
                  i18n:attributes="placeholder search"  tal:attributes="data-name path">
           <input id="include_obsolets" class="noborder" type="checkbox" name="obsolet" value="true">

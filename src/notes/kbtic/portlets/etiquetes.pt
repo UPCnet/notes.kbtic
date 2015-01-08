@@ -7,9 +7,7 @@
 		</a>
 		<ul class="caixa_llistats">
 			<li tal:repeat="res view/mostrarEtiquetes" class="llistats">
-				<a href=""
-				   tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${res}"
-				   tal:content="res">
+				<a href="#" class="CatItem" tal:attributes="value res" tal:content="res">
 				</a>
 			</li>
 		</ul>

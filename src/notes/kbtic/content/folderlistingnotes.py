@@ -11,6 +11,7 @@ class FolderNotesView(grok.View):
 
     def update(self):
         self.query = self.request.form.get('q', '')
+        self.obsolete = self.request.form.get('o', '')
         if self.request.form.get('t', ''):
             self.tags = [v for v in self.request.form.get('t').split(',')]
         else:
@@ -52,17 +53,39 @@ class FolderNotesView(grok.View):
             #import ipdb;ipdb.set_trace()
 
             if self.tags:
-                r_results = pc.searchResults(path={'query': path, 'depth': 1},
-                                             SearchableText=query,
-                                             Subject={'query': self.tags, 'operator': 'and'})
+                if not self.obsolete == '':
+                    r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                                 SearchableText=query,
+                                                 Subject={'query': self.tags, 'operator': 'and'},
+                                                 )
+                else:
+                    r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                                 SearchableText=query,
+                                                 Subject={'query': self.tags, 'operator': 'and'},
+                                                 obsolete=False
+                                                 )
             else:
-                r_results = pc.searchResults(path={'query': path, 'depth': 1},
-                                             SearchableText=query)
+                if not self.obsolete == '':                
+                    r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                                 SearchableText=query
+                                                 )
+                else:
+                    r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                                 SearchableText=query,
+                                                 obsolete=False
+                                                 )                    
 
             return r_results
         else:
-            r_results = pc.searchResults(path={'query': path, 'depth': 1},
-                                         Subject={'query': self.tags, 'operator': 'and'})
+            if not self.obsolete == '':
+                r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                             Subject={'query': self.tags, 'operator': 'and'})
+            else:
+                r_results = pc.searchResults(path={'query': path, 'depth': 1},
+                                             Subject={'query': self.tags, 'operator': 'and'},
+                                             obsolete=False
+                                             )
+
 
             return r_results
 
