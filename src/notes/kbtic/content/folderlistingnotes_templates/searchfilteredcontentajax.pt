@@ -1,8 +1,9 @@
 <tal:block tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
-                       toLocalizedTime nocall: context/@@plone/toLocalizedTime"
+                       toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                       continguts view/get_contenttags_by_query"
             i18n:domain="plone">
 
-    <ul tal:define="continguts view/get_contenttags_by_query">
+    <ul tal:condition="continguts">
       <tal:llistat repeat="contingut continguts">
         <li tal:define="title contingut/Title; id contingut/id">
           <a tal:attributes="href contingut/getURL">
@@ -33,5 +34,9 @@
 
       </tal:llistat>
     </ul>
+
+    <ul tal:condition="not:continguts">
+      <h4>No s'ha trobat cap element amb aquesta cadena</h4><br/>
+    </ul>    
 
 </tal:block>

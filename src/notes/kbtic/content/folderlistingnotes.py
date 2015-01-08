@@ -50,7 +50,6 @@ class FolderNotesView(grok.View):
             query = self.query.split()
             query = " AND ".join(query)
             query = quote_bad_chars(query) + '*'
-            #import ipdb;ipdb.set_trace()
 
             if self.tags:
                 if not self.obsolete == '':
@@ -85,6 +84,7 @@ class FolderNotesView(grok.View):
                                              Subject={'query': self.tags, 'operator': 'and'},
                                              obsolete=False
                                              )
+
 
 
             return r_results
@@ -126,11 +126,16 @@ class FolderNotesView(grok.View):
         catalog = getToolByName(portal, 'portal_catalog')
         path = self.context.getPhysicalPath()
         path = "/".join(path)
-
-        items = catalog.searchResults(path={'query': path, 'depth': 1},
-                                      sort_on='modified',
-                                      sort_order='reverse',
-                                      )
+        if self.obsolete == '1':
+            items = catalog.searchResults(path={'query': path, 'depth': 1},
+                                          sort_on='modified',
+                                          sort_order='reverse',
+                                          obsolete=True,)
+        else:
+            items = catalog.searchResults(path={'query': path, 'depth': 1},
+                                          sort_on='modified',
+                                          sort_order='reverse',
+                                          obsolete=False,)
 
         return items
 
