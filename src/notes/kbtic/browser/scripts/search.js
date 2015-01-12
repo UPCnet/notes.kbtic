@@ -61,29 +61,66 @@ $("a.CatItem").on("click", function () {
     
     var category = $(this).attr("value");
 
-    $('#searchbytag').select2('destroy');
-    $('#searchbytag').select2({
-        tags: [],
-        tokenSeparators: [","],
-        minimumInputLength: 1,
-        ajax: {
-            url: portal_url + '/getVocabularies?name=plone.app.vocabularies.Keywords',
-            data: function (term, page) {
-                return {
-                    query: term,
-                    page: page // page number
-                };
+    //$('#searchbytag').select2('destroy');
+    if ($("#searchbytag").val() == ''){
+        $('#searchbytag').select2({
+            tags: [],
+            tokenSeparators: [","],
+            minimumInputLength: 1,
+            ajax: {
+                url: portal_url + '/getVocabularies?name=plone.app.vocabularies.Keywords',
+                data: function (term, page) {
+                    return {
+                        query: term,
+                        page: page // page number
+                    };
+                },
+                results: function (data, page) {
+                    return data;
+                }
             },
-            results: function (data, page) {
-                return data;
+            initSelection: function (element, callback) {
+                callback({id: category, text: category });
             }
-        },
-        initSelection: function (element, callback) {
-            callback({id: category, text: category });
-        }
-    }).select2('val', []);
+        }).select2('val', []);
 
-    $("#searchbytag").val(category).trigger("change");    
+        $("#searchbytag").val(category).trigger("change");
+    }
+    else{
+
+        var catSelect = $("#searchbytag").val().split(",");
+         $('#searchbytag').select2({
+            tags: [],
+            tokenSeparators: [","],
+            minimumInputLength: 1,
+            ajax: {
+                url: portal_url + '/getVocabularies?name=plone.app.vocabularies.Keywords',
+                data: function (term, page) {
+                    return {
+                        query: term,
+                        page: page // page number
+                    };
+                },
+                results: function (data, page) {
+                    return data;
+                }
+            },
+            initSelection: function (element, callback) {
+
+                var data = [];
+                
+                for(var i = 0; i < catSelect.length; i++){
+                    data.push({id:catSelect[i],text:catSelect[i]});
+                }
+                data.push({id: category, text: category});
+                callback(data);
+
+            }
+        }).select2('val', []);
+
+        var catToSearch = $("#searchbytag").val();
+        $("#searchbytag").val(catToSearch).trigger("change");
+    }
 
 });
 
