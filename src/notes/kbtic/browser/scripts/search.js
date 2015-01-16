@@ -33,15 +33,17 @@ $('#searchbytag').on("change", function(e) {
 });
 
 // Content search
-$('#searchinputcontent .searchInput').on('keyup', function(event) {
-    var query = $(this).val();
-    var path = $(this).data().name;
-    var tags = $('#searchbytag').val();
-    var obsolete = $('#include_obsolets:checked').val();
-    $('.listingBar').hide();
-    $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete }, function(data) {
-        $('#tagslist').html(data);
-    });
+$('#searchinputcontent .searchInput').on('keydown', function(event) {
+    if (event.keyCode == 13) {
+        var query = $(this).val();
+        var path = $(this).data().name;
+        var tags = $('#searchbytag').val();
+        var obsolete = $('#include_obsolets:checked').val();
+        $('.listingBar').hide();
+        $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete }, function(data) {
+            $('#tagslist').html(data);
+        });
+    }
 });
 
 $('#searchinputcontent #include_obsolets').click( function(event){
@@ -51,14 +53,15 @@ $('#searchinputcontent #include_obsolets').click( function(event){
     var tags = $('#searchbytag').val();
     var obsolete = $('#include_obsolets:checked').val();
     $('.listingBar').hide();
-    new_path = path.substring(0, path.length-1);
-    $.get(new_path + '/search_filtered_content', { q: query, t: tags, o: obsolete }, function(data) {
+    $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete }, function(data) {
         $('#tagslist').html(data);
     });
 });
 
-$("a.CatItem").on("click", function () { 
-    
+$("a.CatItem").on("click", function (event) { 
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     var category = $(this).attr("value");
 
     //$('#searchbytag').select2('destroy');
