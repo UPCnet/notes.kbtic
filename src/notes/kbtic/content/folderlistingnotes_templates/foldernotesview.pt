@@ -45,7 +45,7 @@
           <input id="searchbytag"
                  class="searchInput"
                  type="hidden"
-                 placeholder="Etiqueta"
+                 placeholder="Etiqueta (tot en minúscules)"
                  i18n:attributes="placeholder search" tal:attributes="data-name path">
       </div>
       <h3>Cercar per continguts</h3>
@@ -55,6 +55,9 @@
           <input id="searchInput" class="searchInput" type="text" placeholder="Contingut" 
                  style="width:350px; height: 26px;"
                  i18n:attributes="placeholder search"  tal:attributes="data-name path">
+        </div>
+        <div>
+          <br>
           <input id="include_obsolets" class="noborder" type="checkbox" name="obsolet" value="true">
           <label for="include_obsolets" style="cursor: pointer">Marcar per buscar només documents OBSOLETS</label>
         </div>
