@@ -49,11 +49,12 @@ class ATVocabularyToSubject():
                 if lineData[0] == 'By Category (ADS-SPO)':
                     # ADS-SPO --> categoryADS_keywords
                     if lineData[2] == '':
-                        # No cal fer assignació a empty
+                        # No cal fer res --> assignació a empty
                         log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Nothing to do, empty destination category' + '\n')
                         logging.info('Nothing to do, empty destination category')
                         pass
                     else:
+
                         id_cat = ''
                         for value in keysADS:
                             if unicode(value.Title.decode('iso-8859-1')) == lineData[1] and 'categoryADS_keywords' in value.getPath():
@@ -64,6 +65,7 @@ class ATVocabularyToSubject():
                                     newKeys = lineData[2].encode('iso-8859-1')
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
+                                    newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
                                     log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Object: ' + str(obj.getPath()) + ' New Etiquetes: ' + str(newlist) + '\n')
                                     logging.info('Object: %s New Etiquetes: %s ', obj.getPath(), newlist)
@@ -86,6 +88,7 @@ class ATVocabularyToSubject():
                                     newKeys = lineData[2].encode('iso-8859-1')
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
+                                    newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
                                     log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Object: ' + str(obj.getPath()) + ' New Etiquetes: ' + str(newlist) + '\n')
                                     logging.info('Object: %s New Etiquetes: %s ', obj.getPath(), newlist)
@@ -107,6 +110,7 @@ class ATVocabularyToSubject():
                                     newKeys = lineData[2].encode('iso-8859-1')
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
+                                    newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
                                     log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Object: ' + str(obj.getPath()) + ' New Etiquetes: ' + str(newlist) + '\n')
                                     logging.info('Object: %s New Etiquetes: %s ', obj.getPath(), newlist)
