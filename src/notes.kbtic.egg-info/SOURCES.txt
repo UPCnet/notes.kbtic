@@ -12,7 +12,6 @@ src/notes.kbtic.egg-info/requires.txt
 src/notes.kbtic.egg-info/top_level.txt
 src/notes/kbtic/__init__.py
 src/notes/kbtic/config.py
-src/notes/kbtic/extender.py
 src/notes/kbtic/setuphandlers.py
 src/notes/kbtic/testing.py
 src/notes/kbtic/browser/ATVocabularyToSubject.py

@@ -89,7 +89,6 @@ class ATVocabularyToSubject():
                                     obj.getObject().edit(subject=newlist)
                                     log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Object: ' + str(obj.getPath()) + ' New Etiquetes: ' + str(newlist) + '\n')
                                     logging.info('Object: %s New Etiquetes: %s ', obj.getPath(), newlist)
-
                 if lineData[0] == 'Categories servei':
                     # Categories Servei --> category1
                     if lineData[2] == '':
@@ -111,7 +110,6 @@ class ATVocabularyToSubject():
                                     obj.getObject().edit(subject=newlist)
                                     log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Object: ' + str(obj.getPath()) + ' New Etiquetes: ' + str(newlist) + '\n')
                                     logging.info('Object: %s New Etiquetes: %s ', obj.getPath(), newlist)
-
         endtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'End process. Started at: ' + starttime + ' Ended at: ' + endtime + '\n')
         logging.info('End process.  Started at: %s Ended at: %s', starttime, endtime)

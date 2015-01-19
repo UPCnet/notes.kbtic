@@ -1,8 +1,6 @@
 setuptools
 Products.ATVocabularyManager
 pyquery
-ipdb == 0.8
-ipython == 1.2.0
 five.grok
 plone.api
 plone.batching
