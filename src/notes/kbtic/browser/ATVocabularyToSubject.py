@@ -63,7 +63,7 @@ class ATVocabularyToSubject():
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
                                     newKeys = lineData[2].encode('iso-8859-1').lower()
-                                    newlist = (list(actualKeys))
+                                    newlist = map(str.lower, actualKeys)
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
@@ -86,7 +86,7 @@ class ATVocabularyToSubject():
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
                                     newKeys = lineData[2].encode('iso-8859-1').lower()
-                                    newlist = (list(actualKeys))
+                                    newlist = map(str.lower, actualKeys)
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
@@ -108,7 +108,7 @@ class ATVocabularyToSubject():
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
                                     newKeys = lineData[2].encode('iso-8859-1').lower()
-                                    newlist = (list(actualKeys))
+                                    newlist = map(str.lower, actualKeys)
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
                                     obj.getObject().edit(subject=newlist)
