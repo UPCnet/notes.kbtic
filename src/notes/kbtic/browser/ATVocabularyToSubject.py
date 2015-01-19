@@ -62,7 +62,7 @@ class ATVocabularyToSubject():
                                 objects = self.context.portal_catalog.searchResults(portal_type='notesDocument', categoryADS=id_cat)
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
-                                    newKeys = lineData[2].encode('iso-8859-1')
+                                    newKeys = lineData[2].encode('iso-8859-1').lower()
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
@@ -85,7 +85,7 @@ class ATVocabularyToSubject():
                                 objects = self.context.portal_catalog.searchResults(portal_type='notesDocument', category3=id_cat)
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
-                                    newKeys = lineData[2].encode('iso-8859-1')
+                                    newKeys = lineData[2].encode('iso-8859-1').lower()
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
@@ -107,7 +107,7 @@ class ATVocabularyToSubject():
                                 objects = self.context.portal_catalog.searchResults(portal_type='notesDocument', category1=id_cat)
                                 for obj in objects:
                                     actualKeys = obj.getObject().Subject()
-                                    newKeys = lineData[2].encode('iso-8859-1')
+                                    newKeys = lineData[2].encode('iso-8859-1').lower()
                                     newlist = (list(actualKeys))
                                     newlist.append(newKeys)
                                     newlist = sorted(set(newlist), key=newlist.index)
