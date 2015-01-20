@@ -37,7 +37,7 @@ class Renderer(base.Renderer):
         path = path + '/portal_vocabularies/categoryCSPT_keywords'
         keys = self.context.portal_catalog.searchResults(portal_type='SimpleVocabularyTerm',
                                                              path={'query': path, 'depth': 1, },
-                                                             sort_on='Title')
+                                                             )
         for value in keys:
             results.append({'id': value.id, 'title': value.Title})
 
