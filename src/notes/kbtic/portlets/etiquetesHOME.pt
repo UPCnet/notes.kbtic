@@ -7,7 +7,7 @@
 		</a>
 		<ul class="caixa_llistats_home">
 			<li tal:repeat="res view/mostrarEtiquetes" class="llistats">
-				<a href="#" class="CatItem" tal:attributes="value res" tal:content="res">
+				<a href="#" class="searchRedirect" tal:attributes="value res" tal:content="res">
 				</a>
 			</li>
 		</ul>
