@@ -3,7 +3,7 @@
 	<li tal:define="res view/mostrarEtiquetes" tal:condition="res" class="categories">
 		<a href="#"> 
 			<img src="++resource++notes_kbtic_images/collapse.gif">
-			ETIQUETES REDIRECT
+			LLISTA D'ETIQUETES
 		</a>
 		<ul class="caixa_llistats_home">
 			<li tal:repeat="res view/mostrarEtiquetes" class="llistats">

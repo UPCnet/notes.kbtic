@@ -1,5 +1,5 @@
 <tal:portletCategorias i18n:domain="notes.kbtic">
-<ul id="menu">
+<ul id="menu" class="toHide">
 	<li tal:define="res view/mostrarEtiquetes" tal:condition="res" class="categories">
 		<a href="#"> 
 			<img src="++resource++notes_kbtic_images/collapse.gif">

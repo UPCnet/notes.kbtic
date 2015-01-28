@@ -645,3 +645,5 @@ section#tagslist {
   padding:10px 10px 0 10px;
   _padding:10px;
 }
+
+.template-notes_view .toHide {display:none;}
