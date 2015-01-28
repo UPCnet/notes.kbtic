@@ -28,7 +28,7 @@ class Renderer(base.Renderer):
     render = ViewPageTemplateFile('etiquetesHOME.pt')
 
     def mostrarEtiquetesCategory1(self):
-        """ Mostra etiquetes "Categories Servei"
+        """ Categories Servei
         """
         from zope.component.hooks import getSite
         portal = getSite()
@@ -42,7 +42,7 @@ class Renderer(base.Renderer):
         return results
 
     def mostrarEtiquetesCategory2(self):
-        """ Mostra etiquetes "Categories Servei PPS"
+        """ Categories Servei PPS
         """
         from zope.component.hooks import getSite
         portal = getSite()
@@ -57,7 +57,7 @@ class Renderer(base.Renderer):
         return results
 
     def mostrarEtiquetesCategory3(self):
-        """ Mostra etiquetes "By Category (KBTIC-RIN)"
+        """ By Category (KBTIC-RIN)
         """
         from zope.component.hooks import getSite
         portal = getSite()
@@ -71,7 +71,7 @@ class Renderer(base.Renderer):
         return results
 
     def mostrarEtiquetesCategoryADS(self):
-        """ Mostra etiquetes "By Category (ADS-SPO)"
+        """ By Category (ADS-SPO)
         """
         from zope.component.hooks import getSite
         portal = getSite()
@@ -84,6 +84,35 @@ class Renderer(base.Renderer):
             results.append({'id': value.id, 'title': value.Title})
 
         return results
+
+
+    def mostrarEtiquetes(self):
+        """ Etiquetes del sistema
+        """
+        indexName='Subject'
+        catalog = getToolByName(self, 'portal_catalog')
+        keywords = list(catalog.uniqueValuesFor(indexName))
+        keywords.sort(key=lambda x:x.lower())
+        return keywords    
+
+
+    def getKeywordIndexes(self):
+        """Gets a list of indexes from the catalog. Uses config.py to choose the
+        meta type and filters out a subset of known indexes that should not be
+        managed.
+        """
+        IGNORE_INDEXES = [
+            'object_provides',
+            'allowedRolesAndUsers',
+            'getRawRelatedItems',
+            'getEventType',
+        ]        
+        catalog = getToolByName(self, 'portal_catalog')
+        idxs = catalog.index_objects()
+        idxs = [i.id for i in idxs if i.meta_type == 'KeywordIndex' and
+                i.id not in IGNORE_INDEXES]
+        idxs.sort()
+        return idxs
 
 
 class AddForm(base.NullAddForm):

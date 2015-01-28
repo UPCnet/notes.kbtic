@@ -1,44 +1,17 @@
 <tal:portletCategorias i18n:domain="notes.kbtic">
 <ul id="menu">
-	<li tal:define="res view/mostrarEtiquetesCategory3" tal:condition="res" class="categories">
-		<a href="#"> By Category (KBTIC-RIN)</a>
-		<ul class="caixa_llistats">
-			<li tal:repeat="res view/mostrarEtiquetesCategory3" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/keywordsListing?${res/id}"
-					tal:content="res/title">
-				</a>
-			</li>
-		</ul>
-	</li>
-	<li tal:define="res view/mostrarEtiquetesCategoryADS" tal:condition="res" class="categories">
-		<a href="#"> By Category (ADS-SPO)</a>
-		<ul class="caixa_llistats">
-			<li tal:repeat="res view/mostrarEtiquetesCategoryADS" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/keywordsListing?${res/id}"
-					tal:content="res/title">
-				</a>
-			</li>
-		</ul>
-	</li>
-	<li tal:define="res view/mostrarEtiquetesCategory1" tal:condition="res" class="categories">
-		<a href="#"> Categories Servei </a>
-		<ul class="caixa_llistats">
- 			<li tal:repeat="res view/mostrarEtiquetesCategory1" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/keywordsListing?${res/id}"
-					tal:content="res/title">
-				</a>
-			</li>
-		</ul>
-	</li>
-	<li tal:define="res view/mostrarEtiquetesCategory2" tal:condition="res" class="categories">
-		<a href="#"> Categories Servei PPS </a>
-		<ul class="caixa_llistats">
-			<li tal:repeat="res view/mostrarEtiquetesCategory2" class="llistats">
-				<a  href="" tal:attributes="href string:${context/portal_url}/keywordsListing?${res/id}"
-					tal:content="res/title">
+	<li tal:define="res view/mostrarEtiquetes" tal:condition="res" class="categories">
+		<a href="#"> 
+			<img src="++resource++notes_kbtic_images/collapse.gif">
+			ETIQUETES REDIRECT
+		</a>
+		<ul class="caixa_llistats_home">
+			<li tal:repeat="res view/mostrarEtiquetes" class="llistats">
+				<a href="#" class="CatItem" tal:attributes="value res" tal:content="res">
 				</a>
 			</li>
 		</ul>
 	</li>
 </ul>
 </tal:portletCategorias>
+
