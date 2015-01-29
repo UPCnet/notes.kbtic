@@ -136,9 +136,8 @@ $("a.CatItem").on("click", function (event) {
             key = key.replace(/[\]]/, '\\]');  
             var pattern = "[\\?&]" + key + "=([^&#]*)";  
             var regex = new RegExp(pattern);  
-            var url = unescape(window.location.href);  
+            var url = decodeURIComponent(window.location.href);
             var results = regex.exec(url);
-            //alert(url);
             if (results === null) {  
                 return null;  
             } else {  
