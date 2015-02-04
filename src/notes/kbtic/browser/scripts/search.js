@@ -27,6 +27,7 @@ $('#searchbytag').on("change", function(e) {
     var tags = $('#searchbytag').val();
     var obsolete = $('#include_obsolets:checked').val();
     $('.listingBar').hide();
+    tags = decodeURI(tags.replace(/=/g,'%'));
     $.get(path + '/search_filtered_content', { q: query, t: tags, o: obsolete}, function(data) {
         $('#tagslist').html(data);
     });
@@ -136,8 +137,9 @@ $("a.CatItem").on("click", function (event) {
             key = key.replace(/[\]]/, '\\]');  
             var pattern = "[\\?&]" + key + "=([^&#]*)";  
             var regex = new RegExp(pattern);  
-            var url = decodeURIComponent(window.location.href);
+            var url = unescape(window.location.href);  
             var results = regex.exec(url);
+            //alert(url);
             if (results === null) {  
                 return null;  
             } else {  
