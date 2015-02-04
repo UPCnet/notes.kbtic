@@ -137,9 +137,8 @@ $("a.CatItem").on("click", function (event) {
             key = key.replace(/[\]]/, '\\]');  
             var pattern = "[\\?&]" + key + "=([^&#]*)";  
             var regex = new RegExp(pattern);  
-            var url = unescape(window.location.href);  
+            var url = decodeURI(window.location.href);
             var results = regex.exec(url);
-            //alert(url);
             if (results === null) {  
                 return null;  
             } else {  
@@ -163,7 +162,6 @@ $("a.searchRedirect").on("click", function (event) {
 
 if (getVal != null) {
     var category = getVal
-
     //$('#searchbytag').select2('destroy');
     if ($("#searchbytag").val() == ''){
         $('#searchbytag').select2({
