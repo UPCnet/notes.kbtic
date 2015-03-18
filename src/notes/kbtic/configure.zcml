@@ -10,6 +10,7 @@
 
   <five:registerPackage package="." initialize=".initialize" />
   
+  <includeDependencies package="." />  
   <include package="grokcore.component" file="meta.zcml" />
   <grok:grok package="." />
 

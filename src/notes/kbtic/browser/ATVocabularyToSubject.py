@@ -23,31 +23,32 @@ class ATVocabularyToSubject():
 
         here = os.path.abspath(os.path.dirname(__file__))
         csvfile = os.path.join(here, 'newKeywords.csv')
+        #import ipdb;ipdb.set_trace()
         totalLines = len(list(csv.reader(open(csvfile))))
-        log = open('MigrateToSubjects.log', mode='r+')  # GOLLUM
+        log = open(csvfile, mode='r+')  # GOLLUM
         log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Starting process. Total Objects: ' + str(totalLines) + '\n')
         logging.info('Starting process. Total Objects: %s', totalLines)
 
-        log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Moving objects from ads to kbti folder' + '\n')
+        #log.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S ") + 'Moving objects from ads to kbti folder' + '\n')
         # Moving objects between folders
-        from plone import api
-        src = api.portal.get()['ads-spo']
-        dst = api.portal.get()['kbtic-rin']
-        idList = src.objectIds()
+        #from plone import api
+        #src = api.portal.get()['ads-spo']
+        #dst = api.portal.get()['kbtic-rin']
+        #idList = src.objectIds()
 
-        for id in idList:
-            if id in dst.objectIds():
-                new_id = id + '-ads'
-                new_object = api.content.rename(obj=src[id], new_id=new_id)
-                logging.info('Renaming object: ' + id + ' to ' + new_id + ' \n')
-                api.content.move(new_object, dst)
-                transaction.commit()
-                logging.info('Moving object: ' + src.absolute_url() + '/' + new_object.id + ' to ' + dst.absolute_url() + '/' + new_id + ' \n')
-            else:
-                new_id = id
-                api.content.move(src[id], dst)
-                transaction.commit()
-                logging.info('Moving object: ' + src.absolute_url() + '/' + id + ' to ' + dst.absolute_url() + '/' + new_id + ' \n')
+        #for id in idList:
+        #    if id in dst.objectIds():
+        #        new_id = id + '-ads'
+        #        new_object = api.content.rename(obj=src[id], new_id=new_id)
+        #        logging.info('Renaming object: ' + id + ' to ' + new_id + ' \n')
+        #        api.content.move(new_object, dst)
+        #        transaction.commit()
+        #        logging.info('Moving object: ' + src.absolute_url() + '/' + new_object.id + ' to ' + dst.absolute_url() + '/' + new_id + ' \n')
+        #    else:
+        #        new_id = id
+        #        api.content.move(src[id], dst)
+        #        transaction.commit()
+        #        logging.info('Moving object: ' + src.absolute_url() + '/' + id + ' to ' + dst.absolute_url() + '/' + new_id + ' \n')
 
         keysADS = [result for result in self.context.uid_catalog.searchResults(portal_type='SimpleVocabularyTerm')
                    if 'categoryADS_keywords' in result.getPath()]
