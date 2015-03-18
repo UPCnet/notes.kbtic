@@ -646,4 +646,5 @@ section#tagslist {
   _padding:10px;
 }
 
-.template-notes_view .toHide {display:none;}
+.template-notes_view .toHide,
+.template-atct_edit .toHide {display:none;}
