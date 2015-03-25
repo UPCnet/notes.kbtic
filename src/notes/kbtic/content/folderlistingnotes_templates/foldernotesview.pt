@@ -41,6 +41,7 @@
     <tal:listing condition="batch">
     <div class="caixessearch">
       <h3 i18n:translate="search_tags">Cercar per etiquetes</h3>
+      <p>Fa la cerca a documents NO OBSOLETS</p>
       <div class="searchbytagcontainer" >
           <input id="searchbytag"
                  class="searchInput"
@@ -49,7 +50,7 @@
                  i18n:attributes="placeholder search" tal:attributes="data-name path">
       </div>
       <h3>Cercar per continguts</h3>
-      <p>Per defecte només busca contingut a documents NO OBSOLETS</p>
+      <p>Fa la cerca a documents NO OBSOLETS</p>
       <div id="searchinputcontent">
         <div class="input-append">
           <input id="searchInput" class="searchInput" type="text" placeholder="Contingut" 
@@ -59,7 +60,7 @@
         <div>
           <br>
           <input id="include_obsolets" class="noborder" type="checkbox" name="obsolet" value="true">
-          <label for="include_obsolets" style="cursor: pointer">Marcar per buscar només documents OBSOLETS</label>
+          <label for="include_obsolets" style="cursor: pointer">Incloure els documents OBSOLETS a la cerca</label>
         </div>
 
 
